@@ -266,6 +266,7 @@ void Map::gen_map(glm::ivec3 _map_size,unsigned _seed,int _ground_height){
 	noise.init(seed);
 	//srand(seed);
 	regen_map();
+	init_path();
 	dp_map->update_whole_map();
 }
 glm::ivec3 Map::get_size()const{
