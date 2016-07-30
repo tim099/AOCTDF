@@ -8,6 +8,7 @@ namespace Display{
 	class DrawObject;
 }
 namespace AOC {
+class Condition;
 
 class Minion: public Unit{
 public:
@@ -25,6 +26,9 @@ public:
 
 	virtual math::vec3<double> get_size(){
 		return math::vec3<double>(rigid_body.radius*2.0,rigid_body.radius*2.0,rigid_body.radius*2.0);
+	}
+	virtual math::vec3<double> get_vel(){
+		return rigid_body.vel;
 	}
 	virtual double get_attack_size();
 	virtual math::vec3<double> get_rotate();
