@@ -306,8 +306,10 @@ void ScenePlayTD::scene_update() {
 	camera->update();
 	if(pause_timer){
 		return;
+	}else{
+		field->update();
 	}
-	field->update();
+
 }
 void ScenePlayTD::scene_update_end(){
 	handle_input();

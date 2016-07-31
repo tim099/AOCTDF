@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "class/game/ageOfCube/player/playerUI/PlayerUI.h"
+#include "class/game/ageOfCube/player/playerUI/GameOverUI.h"
 #include "class/game/ageOfCube/player/resource/Resource.h"
 #include "class/game/ageOfCube/player/resource/ResourceModifier.h"
 #include "class/tim/map/MapContainer.h"
@@ -25,6 +26,7 @@ public:
 	int get_score(){return score;}
 	void score_alter(int amount){set_score(score+amount);}
 	void set_score(int _score);
+	void set_gameover(bool _over){game_over = _over;}
 	void modify_score(int amount){score += amount;}
 	void init_UI();
 	bool modify_resource(ResourceModifier modifier);
@@ -33,11 +35,13 @@ public:
 	void save(FILE *file);
 	void load(FILE *file);
 private:
+	bool game_over;
 	unsigned int id;
 	int score;
 	std::string name;
 	PlayerType type;
 	UI::PlayerUI *player_UI;
+	UI::GameOverUI *game_over_UI;
 	Tim::MapContainer<std::string,Resource> resources;
 };
 

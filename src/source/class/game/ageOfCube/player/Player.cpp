@@ -3,7 +3,9 @@
 namespace AOC {
 
 Player::Player(int _id, PlayerType _type) {
+	game_over = false;
 	player_UI = 0;
+	game_over_UI = 0;
 	score = 0;
 	type = _type;
 	id = _id;
@@ -16,6 +18,7 @@ Player::Player(int _id, PlayerType _type) {
 }
 Player::~Player() {
 	if(player_UI)delete player_UI;
+	if(game_over_UI)delete game_over_UI;
 }
 void Player::save(FILE *file){
 	fprintf(file,"%d %d %d %d %d %d\n",resources.get("cube")->get_amount(),
@@ -49,19 +52,27 @@ void Player::init_UI(){
 	player_UI=new UI::PlayerUI();
 	player_UI->Load_script("files/AgeOfCube/scenes/playTD/UI/player_UI.txt");
 	player_UI->init_playerUI();
+	game_over_UI=new UI::GameOverUI();
+	game_over_UI->Load_script("files/AgeOfCube/scenes/playTD/UI/gameover_UI.txt");
+	game_over_UI->init_gameOverUI();
 }
 
 void Player::draw(Display::Draw* draw){
-	if(!player_UI)
-		return;
-	player_UI->draw_UIObject(draw);
+	if(player_UI){
+		player_UI->draw_UIObject(draw);
+	}
+	if(game_over_UI && game_over){
+		game_over_UI->draw_UIObject(draw);
+	}
 }
 
 void Player::update(){
-	//std::cout<<"player update"<<std::endl;
+	std::cout<<"player update"<<std::endl;
+
+
 	if(!player_UI)
 		return;
-
+	player_UI->update_UIObject();
 	player_UI->set_resource_amount(0, resources.get("cube")->get_amount());
 	player_UI->set_resource_amount(1, resources.get("fire")->get_amount());
 	player_UI->set_resource_amount(2, resources.get("water")->get_amount());
@@ -69,6 +80,12 @@ void Player::update(){
 	player_UI->set_resource_amount(4, resources.get("air")->get_amount());
 	player_UI->set_resource_amount(5, resources.get("tech")->get_amount());
 	player_UI->set_score(score);
+
+	if(!game_over_UI)
+		return;
+	std::cout<<"player update2"<<std::endl;
+	game_over_UI->update_UIObject();
+
 }
 
 bool Player::modify_resource(ResourceModifier modifier){
