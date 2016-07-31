@@ -107,7 +107,7 @@ UIObject* UIObject::get_child(std::string name) {
 			return find;
 		}
 	}
-	//std::cout<<"UIObject : not find "<<name<<std::endl;
+	std::cerr<<"UIObject : "<<name<<" not find "<<std::endl;
 	return 0;
 }
 std::string UIObject::get_name() const {

@@ -67,23 +67,18 @@ void Player::draw(Display::Draw* draw){
 }
 
 void Player::update(){
-	std::cout<<"player update"<<std::endl;
+	//std::cout<<"player update"<<std::endl;
 
 
 	if(!player_UI)
 		return;
 	player_UI->update_UIObject();
-	player_UI->set_resource_amount(0, resources.get("cube")->get_amount());
-	player_UI->set_resource_amount(1, resources.get("fire")->get_amount());
-	player_UI->set_resource_amount(2, resources.get("water")->get_amount());
-	player_UI->set_resource_amount(3, resources.get("earth")->get_amount());
-	player_UI->set_resource_amount(4, resources.get("air")->get_amount());
-	player_UI->set_resource_amount(5, resources.get("tech")->get_amount());
+	player_UI->set_resource_amount(resources.get("cube")->get_amount());
 	player_UI->set_score(score);
 
 	if(!game_over_UI)
 		return;
-	std::cout<<"player update2"<<std::endl;
+	//std::cout<<"player update2"<<std::endl;
 	game_over_UI->update_UIObject();
 
 }

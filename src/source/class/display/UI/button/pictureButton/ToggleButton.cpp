@@ -1,5 +1,6 @@
 #include <iostream>
 #include "class/display/UI/button/pictureButton/ToggleButton.h"
+#include "class/audio/AudioController.h"
 
 namespace UI {
 
@@ -19,7 +20,14 @@ ToggleButton::~ToggleButton() {
 }
 
 void ToggleButton::selected(Input::Mouse* mou){
-	//std::cout<<"toggle"<<std::endl;
+	if(check_mode(UI::Mode::EDIT)){
+		return;
+	}
+	Input::Signal *sig=get_signal();
+	if(sig){
+		sig->sent();
+	}
+	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav");
 	hide_children^=1;
 }
 void ToggleButton::update(){

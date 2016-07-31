@@ -2,10 +2,12 @@
 #define SOURCE_CLASS_DISPLAY_UI_BUTTON_BUTTON_H_
 #include <glm/vec2.hpp>
 #include "class/display/UI/UIObject.h"
+#include "class/input/signal/Signal.h"
+
 class Draw;
-namespace Input{
+/*namespace Input{
 class Signal;
-}
+}*/
 namespace UI {
 
 class Button: public UIObject {

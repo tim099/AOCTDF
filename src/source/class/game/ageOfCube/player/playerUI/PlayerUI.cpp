@@ -21,19 +21,9 @@ PlayerUI::~PlayerUI() {
 }
 
 void PlayerUI::init_playerUI(){
-	resource_amount_strings[0] = dynamic_cast<UIString *>(get_child("resource1_amount"));
-	resource_amount_strings[1] = dynamic_cast<UIString *>(get_child("resource2_amount"));
-	resource_amount_strings[2] = dynamic_cast<UIString *>(get_child("resource3_amount"));
-	resource_amount_strings[3] = dynamic_cast<UIString *>(get_child("resource4_amount"));
-	resource_amount_strings[4] = dynamic_cast<UIString *>(get_child("resource5_amount"));
-	resource_amount_strings[5] = dynamic_cast<UIString *>(get_child("resource6_amount"));
-	for(int i=0;i<6; i++){
-		if(!resource_amount_strings[i]){
-			std::cout<<"resource string "<<i<<" cast fail"<<std::endl;
-		}
-	}
-
+	resource_amount_string = dynamic_cast<UIString *>(get_child("resource1_amount"));
 	score_string = dynamic_cast<UIString *>(get_child("player_score"));
+	health_string = dynamic_cast<UIString *>(get_child("player_health"));
 
 	inited = true;
 }
@@ -42,16 +32,12 @@ bool PlayerUI::check_script(){
 	return true;
 }
 
-void PlayerUI::set_resource_amount(unsigned int resource_string_id, int value){
+void PlayerUI::set_resource_amount(int value){
 	//std::cout<<"set_resource "<<resource_string_id<<" amount "<<value<<std::endl;
 	if(!inited){
 		return;
 	}
-	if(resource_string_id > 5){
-		std::cerr<<"resource string id out of bound"<<std::endl;
-		return;
-	}
-	resource_amount_strings[resource_string_id]->set_string(Tim::String::to_string(value));
+	resource_amount_string->set_string(Tim::String::to_string(value));
 }
 
 void PlayerUI::set_score(int score){

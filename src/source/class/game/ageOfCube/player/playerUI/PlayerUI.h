@@ -30,10 +30,11 @@ public:
 	}
 	bool check_script();
 	void init_playerUI();
-	void set_resource_amount(unsigned int resource_string_id, int value);
+	void set_resource_amount(int value);
 	void set_score(int score);
 private:
-	UIString *resource_amount_strings[6];
+	UIString *health_string;
+	UIString *resource_amount_string;
 	UIString *score_string;
 	bool inited;
 };

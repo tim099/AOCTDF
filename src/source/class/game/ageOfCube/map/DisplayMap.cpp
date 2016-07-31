@@ -377,8 +377,8 @@ void DisplayMap::draw_map(Display::Camera *camera,Tim::ThreadPool* threadpool) {
 	}
 	char dphbuff[20];
 	sprintf(dphbuff, "display_height=%d\n", display_height);
-	Display::Draw::get_cur_object()->push(new Display::RenderString(dphbuff,
-			0.015, glm::vec2(0.8, 1.0)));
+	/*Display::Draw::get_cur_object()->push(new Display::RenderString(dphbuff,
+			0.015, glm::vec2(0.8, 1.0)));*/
 	gen_map_model(threadpool,update_maps);
 	gen_water_model(threadpool,update_waters);
 	Display::Draw::get_cur_object()->water_height=map->get_water_height()*Map::CUBE_SIZE;
