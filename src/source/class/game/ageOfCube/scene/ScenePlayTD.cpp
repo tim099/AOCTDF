@@ -165,6 +165,9 @@ void ScenePlayTD::handle_signal(Input::Signal *sig){
 	else if(sig->get_data() == "reload"){
 		reload_map();
 	}
+	else if(sig->get_data() == "option"){
+		pause_timer^=1;
+	}
 
 }
 void ScenePlayTD::handle_input() {
@@ -186,7 +189,7 @@ void ScenePlayTD::handle_input() {
 		}
 
 		if(mode == constructing){
-			std::cout<<"constructing!"<<std::endl;
+			//std::cout<<"constructing!"<<std::endl;
 			//BuildingCreator* creator2=BuildingCreator::get_cur_object();
 			//constructing_building = creator2->create("Tower");
 			if(!constructing_building)return;
@@ -221,10 +224,10 @@ void ScenePlayTD::handle_input() {
 									  field->map->selected_cube.z,
 							   Cube::cubeNull);
 		}else{
-			field->map->set_cube_type(field->map->selected_on.x,
+			/*field->map->set_cube_type(field->map->selected_on.x,
 									  field->map->selected_on.y,
 									  field->map->selected_on.z,
-							   Cube::dirt);
+							   Cube::dirt);*/
 		}
 
 	}
