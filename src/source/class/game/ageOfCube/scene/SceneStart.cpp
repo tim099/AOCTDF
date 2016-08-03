@@ -36,14 +36,16 @@ void SceneStart::pause(){
 
 }
 void SceneStart::resume(){
-	std::cout<<"SceneStart::resume()"<<std::endl;
+	std::cout<<"SceneStart::resume() 1"<<std::endl;
 	music_player.play();
 	draw->Enable3D=false;
 	if(UI){
 		delete UI;
 		UI=0;
 	}
+	std::cout<<"SceneStart::resume() 2"<<std::endl;
 	UI = new UI::UI("files/AgeOfCube/scenes/startScene/UI/startSceneUI.txt");
+	std::cout<<"SceneStart::resume() 3"<<std::endl;
 	p_control=(UI::PageControl*)UI->get_child("pageControl");
 	auto_p_control=(UI::AutoPageControl*)UI->get_child("newGame_autoPageControl");
 	//if(UI)delete UI;

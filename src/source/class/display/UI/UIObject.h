@@ -76,7 +76,7 @@ public:
 	UIObject* get_root();
 
 	//find a child(include object itself)which name match and return it's pointer
-	UIObject* get_child(std::string name);
+	UIObject* get_child(std::string name,bool first_search=true);
 
 	//search UIObject in this Object's root(search the whole UI Tree
 	UIObject* search_root(std::string name);

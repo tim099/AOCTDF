@@ -96,18 +96,22 @@ void UIObject::Parse_UIScript(std::ostream &os) {
 UIObject* UIObject::search_root(std::string name){
 	return get_root()->get_child(name);
 }
-UIObject* UIObject::get_child(std::string name) {
-	if (name == get_name())
+UIObject* UIObject::get_child(std::string name,bool first_search) {
+	if (name == get_name()){
 		return this;
+	}
+
 	UIObject* find;
 	for (unsigned i = 0; i < childs.size(); i++) {
-		find = childs.at(i)->get_child(name);
+		find = childs.at(i)->get_child(name,false);
 		if (find){
 			//std::cout<<"UIObject : find "<<name<<std::endl;
 			return find;
 		}
 	}
-	std::cerr<<"UIObject : "<<name<<" not find "<<std::endl;
+	if(first_search){
+		std::cerr<<"UIObject::get_child UIObject:"<<get_name()<<",child:"<<name<<" not find "<<std::endl;
+	}
 	return 0;
 }
 std::string UIObject::get_name() const {
