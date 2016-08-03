@@ -46,7 +46,7 @@ Player* PlayerController::search_player(unsigned int player_id){
 			return players.at(i);
 		}
 	}
-	std::cerr<<"player id:"<<player_id<<" not exist"<<std::endl;
+	std::cerr<<"PlayerController::search_player player id:"<<player_id<<" not exist"<<std::endl;
 	return 0;
 }
 

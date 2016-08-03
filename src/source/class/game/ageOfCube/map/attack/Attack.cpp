@@ -15,6 +15,7 @@ Attack::Attack() {
 	attack_created=false;
 	damage=10;
 	player_id=0;
+	mass=0.01;
 }
 Attack::~Attack() {
 	if(attack_created){

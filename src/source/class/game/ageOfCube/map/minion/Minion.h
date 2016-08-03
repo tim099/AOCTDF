@@ -4,13 +4,18 @@
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/physic/RigidBody.h"
 #include "class/tim/math/Position.h"
+#include "class/game/ageOfCube/map/ai/search/finder/FindPath.h"
+#include "class/tim/pointer/SmartPointer.h"
+#include "class/game/ageOfCube/map/minion/MinionAI.h"
 namespace Display{
 	class DrawObject;
 }
 namespace AOC {
+
 class Condition;
 
 class Minion: public Unit{
+	static const float gravity=-0.003f;
 public:
 	Minion();
 	virtual ~Minion();
@@ -46,11 +51,22 @@ protected:
 	virtual void minion_update(){}
 	virtual void miniod_collide(entity::Entity* entity){};
 	virtual void miniod_be_collide(entity::Entity* entity){miniod_collide(entity);};
+
+	void AI_update();
 	void draw_hp();
-	//void push_minion_to_controller();
+
+
+	void move();
+	void find_path();
+	void moving();
+
+	MinionAI *ai;
 	math::Position dp_pos;
 	physic::RigidBody rigid_body;
+	Tim::SmartPointer<AI::search::Finder> *finder;
 	bool minion_created;
+	int stuck_timer,stuck_times,colli_timer;
+	int timer;
 };
 
 } /* namespace AOC */
