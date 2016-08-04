@@ -49,12 +49,20 @@ void Field::load(const std::string& path){
 	fclose(file);
 }
 void Field::update(){
+
 	timer.tic(1);
 	map->update(&timer);
+	map->find_select_cube();
+
 	unit_controller->update();
 	player_controller->update();
 	attack_controller->update();
 	rigid_body_controller->update();
+
+
+}
+void Field::pause_update(){
+	map->find_select_cube();
 }
 void Field::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool){
 	map->draw(draw,camera,threadpool);

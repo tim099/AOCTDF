@@ -69,7 +69,6 @@ void Player::draw(Display::Draw* draw){
 void Player::update(){
 	//std::cout<<"player update"<<std::endl;
 
-
 	if(!player_UI)
 		return;
 	player_UI->update_UIObject();
@@ -78,8 +77,14 @@ void Player::update(){
 
 	if(!game_over_UI)
 		return;
-	//std::cout<<"player update2"<<std::endl;
+	if(game_over){
+		game_over_UI->hide=false;
+	}else{
+		game_over_UI->hide=true;
+	}
 	game_over_UI->update_UIObject();
+	//std::cout<<"player update2"<<std::endl;
+
 
 }
 

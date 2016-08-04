@@ -112,6 +112,7 @@ void Mouse::mouse_button_input(GLFWwindow* window,int button,int action,int mods
 					if(left)left_click=true;
 					left=false;
 				}
+				std::cout<<"Mouse::mouse_button_input left_click!!"<<std::endl;
 				break;
 			case 1:
 				if(action==1){
@@ -157,6 +158,7 @@ bool Mouse::get_mid_click(){
 	return false;
 }
 void Mouse::clear(){
+	//std::cout<<"Mouse::clear():"<<left_click<<std::endl;
 	left_click=false;
 	right_click=false;
 	mid_click=false;

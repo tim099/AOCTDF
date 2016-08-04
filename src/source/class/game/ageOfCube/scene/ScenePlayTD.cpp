@@ -308,6 +308,7 @@ void ScenePlayTD::scene_update() {
 	UI->update_UIObject();
 	camera->update();
 	if(pause_timer){
+		field->pause_update();
 		return;
 	}else{
 		field->update();

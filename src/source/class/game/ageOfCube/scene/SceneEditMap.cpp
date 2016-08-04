@@ -202,6 +202,9 @@ void SceneEditMap::handle_input() {
 		//back_music->set_volume(0.97*back_music->get_volume());
 	}
 	if (input->mouse->left_clicked()) {//->left_pressed()
+		std::cout<<"clicked:"<<field->map->selected_on.x<<","<<
+				field->map->selected_on.y<<","<<
+				field->map->selected_on.z<<std::endl;
 		if(constructing_building){
 			if(constructing_building->create_building()){
 			}else{
@@ -214,6 +217,9 @@ void SceneEditMap::handle_input() {
 									field->map->selected_on.y,
 									field->map->selected_on.z,
 									cube_type);
+				std::cout<<"build:"<<field->map->selected_on.x<<","<<
+						field->map->selected_on.y<<","<<
+						field->map->selected_on.z<<std::endl;
 			}else{
 				if(Unit* unit=dynamic_cast<Unit*>(field->map->get_cube
 								  (field->map->selected_cube.x,
@@ -229,8 +235,6 @@ void SceneEditMap::handle_input() {
 				}
 			}
 		}
-
-
 	}
 	if (input->keyboard->pressed_char('w')) {
 		field->map->dp_map->display_height_alter(1, thread_pool);
@@ -302,18 +306,20 @@ void SceneEditMap::handle_input() {
 	}
 }
 void SceneEditMap::scene_update() {
-
+	//std::cout<<"SceneEditMap::scene_update() 1"<<std::endl;
 	UI->update_UIObject();
 	camera->update();
 
 	if(!pause_timer){
 		field->update();
+		//field->pause_update();
 		//field->update();
 		//map->update(&timer);
 	}else{
-		field->map->find_select_cube();
+		field->pause_update();
 		//std::cout<<"pause"<<std::endl;
 	}
+	//std::cout<<"SceneEditMap::scene_update() 2"<<std::endl;
 }
 void SceneEditMap::scene_update_end(){
 	handle_input();

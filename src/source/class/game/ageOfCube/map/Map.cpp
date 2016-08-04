@@ -675,6 +675,6 @@ void Map::update(Timer* timer){
 		}
 		cur_update_pos->clear();
 	}
-	find_select_cube();
+	//find_select_cube();
 }
 }

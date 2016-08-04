@@ -14,6 +14,8 @@ namespace UI {
 PlayerUI::PlayerUI() {
 	inited = false;
 	score_string = 0;
+	resource_amount_string=0;
+	health_string=0;
 }
 
 PlayerUI::~PlayerUI() {
