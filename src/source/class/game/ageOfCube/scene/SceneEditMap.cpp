@@ -188,6 +188,18 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
 		constructing_building = creator->create(strs.at(1));
 	}
+	else if(sig->get_data() == "reload"){
+		reload_map();
+	}
+	else if(sig->get_data() == "build_dirt_cube"){
+		cube_type = Cube::dirt;
+	}
+	else if(sig->get_data() == "build_grass_cube"){
+		cube_type = Cube::grass;
+	}
+	else if(sig->get_data() == "build_stone_cube"){
+		cube_type = Cube::stone;
+	}
 }
 void SceneEditMap::handle_input() {
 	camera_control();
@@ -357,6 +369,17 @@ void SceneEditMap::scene_draw() {
 			lightControl->push_temp_light(cl);
 		}
 	}
+}
+
+void SceneEditMap::reload_map(){
+
+	Input::Signal *sig=new Input::Signal("push_scene","Game");
+	Input::Signal *sig2=new Input::Signal("pop_scene","Game");
+
+	sig2->sent();
+
+	sig->ex_data=new AOC::SceneEditMap(map_name,glm::ivec3(1,1,1));
+	sig->sent();
 }
 
 }

@@ -3,6 +3,9 @@
 
 #include <string>
 #include "class/game/scene/Scene.h"
+#include "class/game/ageOfCube/field/Field.h"
+#include "class/display/camera/Camera.h"
+#include "class/display/light/LightControl.h"
 #include "class/display/UI/UI.h"
 #include "class/display/UI/page/PageControl.h"
 #include "class/display/UI/page/AutoPageControl.h"
@@ -27,7 +30,7 @@ protected:
 
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
-
+	virtual void loading2();
 
 	void create_new_map();
 	void create_map();
@@ -36,6 +39,11 @@ protected:
 
 	void handle_input();
 	virtual void handle_signal(Input::Signal *sig);
+
+	Field* field;
+	Display::Camera *camera;
+	Display::LightControl* lightControl;
+
 	std::string map_folder_path;
 	UI::PageControl *p_control;
 	UI::AutoPageControl *auto_p_control;

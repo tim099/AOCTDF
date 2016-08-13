@@ -43,6 +43,7 @@ void Field::load(const std::string& path){
 	FILE * file = fopen(path.c_str(),"r");
 	entity_controller->load(file);
 	map->load_map(file);
+
 	unit_controller->load(file);
 	attack_controller->load(file);
 	player_controller->load(file);

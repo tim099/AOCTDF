@@ -23,9 +23,9 @@ public:
 	virtual ~Field();
 	void save(const std::string& path);
 	void load(const std::string& path);
-	void update();
-	void pause_update();//update for game state is pause
-	void draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool);
+	virtual void update();
+	virtual void pause_update();//update for game state is pause
+	virtual void draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool);
 	void draw_back_ground();
 	physic::RigidBodyController* rigid_body_controller;
 	AttackController* attack_controller;

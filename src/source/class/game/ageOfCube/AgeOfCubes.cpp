@@ -24,6 +24,12 @@ void AgeOfCubes::initialize_game(){
 	audioSources->register_cur();
 
 	push_scene(new AOC::SceneStart());
+	/*std::string map_name = "TDF0";
+	std::string map_folder_path="files/AgeOfCube/maps/";
+	Input::Signal *sig=new Input::Signal("push_scene","Game");
+	sig->ex_data=new AOC::SceneStart();
+	sig->sent();*/
+
 }
 AgeOfCubes::~AgeOfCubes() {
 	//all handle by AgeOfCubes::terminate_game()

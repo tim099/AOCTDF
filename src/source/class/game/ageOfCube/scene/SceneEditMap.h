@@ -32,6 +32,8 @@ protected:
 
 	void camera_control();
 	void handle_input();
+	void reload_map();
+
 	int cube_type;
 	//Map *map;
 	Field* field;

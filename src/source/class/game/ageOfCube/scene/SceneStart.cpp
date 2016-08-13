@@ -4,6 +4,9 @@
 #include "class/tim/string/String.h"
 #include "class/game/ageOfCube/scene/SceneEditMap.h"
 #include "class/game/ageOfCube/scene/ScenePlayTD.h"
+#include "class/game/ageOfCube/field/StaticField.h"
+#include <ctime>
+#include <iostream>
 
 namespace AOC{
 SceneStart::SceneStart() {
@@ -12,12 +15,37 @@ SceneStart::SceneStart() {
 	p_control=0;
 	auto_p_control=0;
 	map_folder_path="files/AgeOfCube/maps/";
-	music_player = Audio::AudioPlayer("default_music/prepare_your_swords.wav");
-	music_player.set_loop(true);
+	music_player = 0;
+	field = 0;
+	camera = 0;
+	lightControl = 0;
+	//loading();
 }
 void SceneStart::scene_initialize(){
 
-	resume();
+	glm::vec3 pos(10,80,10);
+
+	camera = new Display::Camera(pos,
+			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
+			10000.0f);
+	camera->shadow_far=120.0;
+	draw->set_camera(camera);
+
+	lightControl = new Display::LightControl(120);
+	lightControl->push_light(
+			new Display::ParallelLight(glm::vec3(0.05, -1.2, -0.2),
+					glm::vec3(0.3, 0.3, 0.3),false));
+	draw->set_lightControl(lightControl);
+
+	UI = new UI::UI();
+	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
+	music_player = Audio::AudioPlayer("default_music/prepare_your_swords.wav");
+	music_player.set_loop(true);
+
+	field=new StaticField();
+
+	loading2();
+	//resume();
 	//std::vector<std::string> files=Tim::File::get_all_dirs("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
 }
@@ -27,6 +55,7 @@ void SceneStart::scene_terminate(){
 		delete UI;
 		UI=0;
 	}
+	if(field)delete field;
 }
 SceneStart::~SceneStart() {
 
@@ -38,7 +67,10 @@ void SceneStart::pause(){
 void SceneStart::resume(){
 	std::cout<<"SceneStart::resume() 1"<<std::endl;
 	music_player.play();
-	draw->Enable3D=false;
+	draw->Enable3D=true;
+	draw->set_camera(camera);
+	draw->set_lightControl(lightControl);
+
 	if(UI){
 		delete UI;
 		UI=0;
@@ -70,6 +102,18 @@ void SceneStart::handle_signal(Input::Signal* sig){
 	}else if(sig->get_data()=="play"){
 		load_map("play");
 	}
+}
+void SceneStart::loading2(){
+	std::string map_name = "title";
+	glm::ivec3 map_size(200,50,200);
+	if(Tim::File::check_if_file_exist(map_folder_path+map_name)){
+		std::cout<<"find map"<<std::endl;
+		field->load(map_folder_path+map_name);
+	}else{
+		std::cout<<"not find map"<<std::endl;
+		field->map->gen_map(map_size,time(NULL));
+	}
+	resume();
 }
 void SceneStart::load_map(std::string mode){
 	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();
@@ -145,13 +189,67 @@ void SceneStart::handle_input(){
 		//UI = new UI::UI("files/AgeOfCube/startScene/UI/startSceneUI.txt");
 	}
 	//*/
+
+
+	if (input->mouse->mid_pressed()||input->keyboard->pressed('Z')) {
+		//std::cout<<"move"<<(int)(mouse->pos.x)<<","<<(int)mouse->prev_pos.x<<std::endl;
+		camera->rotate(glm::vec3(0, 1, 0), -0.15 * input->mouse->pos_delta().x);
+		camera->rotate(camera->yaw_vec(), 0.15 * input->mouse->pos_delta().y);
+	}
+	//camera->rotate(glm::vec3(0, 1, 0), 1.0f);
+	if(input->mouse->screen_pos.y>0.95){
+		camera->v += (float) (-0.02f * sqrt(camera->look_dis() + 0.001))
+				* camera->look_vec_xz();
+	}
+	if(input->mouse->screen_pos.y<-0.95){
+		camera->v += (float) (0.02f * sqrt(camera->look_dis() + 0.001))
+				* camera->look_vec_xz();
+	}
+	if(input->mouse->screen_pos.x>0.95){
+		camera->v += (float) (-0.02f * sqrt(camera->look_dis() + 0.001))
+		* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+	}
+	if(input->mouse->screen_pos.x<-0.95){
+		camera->v += (float) (0.02f * sqrt(camera->look_dis() + 0.001))
+		* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+	}
+	if (input->mouse->right_pressed()) {
+		camera->v += (float) (0.001f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().y) * camera->look_vec_xz();
+		camera->v += (float) (-0.001f * sqrt(camera->look_dis() + 0.001)
+				* input->mouse->pos_delta().x)
+				* glm::cross(camera->look_vec_xz(), glm::vec3(0, 1, 0));
+	}
+	if (input->mouse->scroll) {
+		camera->dis_alter_v += sqrt(camera->look_dis() + 0.1)
+				* (0.05 * input->mouse->scroll);
+	}
+	if(camera->look_at.x>Map::CUBE_SIZE*field->map->get_size().x+4.0){
+		if(camera->v.x>0.0f){
+			camera->v.x*=-0.9f;
+		}
+	}else if(camera->look_at.x<-4.0){
+		if(camera->v.x<0.0f){
+			camera->v.x*=-0.9f;
+		}
+	}
+	if(camera->look_at.z>Map::CUBE_SIZE*field->map->get_size().z+4.0){
+		if(camera->v.z>0.0f){
+			camera->v.z*=-0.9f;
+		}
+	}else if(camera->look_at.z<-4.0){
+		if(camera->v.z<0.0f){
+			camera->v.z*=-0.9f;
+		}
+	}
 }
 void SceneStart::scene_update(){
 	handle_input();
-
+	field->update();
 	UI->update_UIObject();
 }
 void SceneStart::scene_draw(){
+	field->draw(draw,camera,thread_pool);
 	UI->draw_UIObject(draw);
 }
 }
