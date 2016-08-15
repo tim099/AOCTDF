@@ -25,7 +25,7 @@ AudioSource::AudioSource(std::string _file_name) {
 		std::cout<<"audio source name : "<<file_name<<" create failed !"<<std::endl;
 	}
 	else{
-		//std::cout<<"audio source name : "<<file_name<<" buffer = "<<buffer<<std::endl;
+		std::cout<<"audio source name : "<<file_name<<" buffer = "<<buffer<<std::endl;
 	}
 }
 

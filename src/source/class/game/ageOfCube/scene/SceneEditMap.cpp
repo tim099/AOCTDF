@@ -65,8 +65,7 @@ void SceneEditMap::resume() {
 }
 void SceneEditMap::scene_terminate() {
 	std::cout<<"SceneEditMap::scene_terminate() 0"<<std::endl;
-	delete lightControl;
-	delete camera;
+
 	if(back_music)delete back_music;
 	std::cout<<"SceneEditMap::scene_terminate() 1"<<std::endl;
 	if(constructing_building)delete constructing_building;
@@ -76,6 +75,8 @@ void SceneEditMap::scene_terminate() {
 		delete UI;
 		UI = 0;
 	}
+	delete lightControl;
+	delete camera;
 	std::cout<<"SceneEditMap::scene_terminate() end"<<std::endl;
 }
 SceneEditMap::~SceneEditMap() {

@@ -59,6 +59,7 @@ void Laser::draw_attack(){
 void Laser::burn_target(){
 	burning_target=false;
 	if(!target)return;
+
 	burning_target=true;
 	damage_target(damage);
 	//target->hp_alter(-damage);

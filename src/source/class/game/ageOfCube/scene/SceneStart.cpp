@@ -42,10 +42,10 @@ void SceneStart::scene_initialize(){
 	music_player = Audio::AudioPlayer("default_music/prepare_your_swords.wav");
 	music_player.set_loop(true);
 
-	field=new StaticField();
 
-	loading2();
-	//resume();
+
+	//loading2();
+	resume();
 	//std::vector<std::string> files=Tim::File::get_all_dirs("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
 }
@@ -55,14 +55,20 @@ void SceneStart::scene_terminate(){
 		delete UI;
 		UI=0;
 	}
-	if(field)delete field;
+	if(field){
+		delete field;
+		field = 0;
+	}
 }
 SceneStart::~SceneStart() {
 
 }
 void SceneStart::pause(){
 	music_player.pause();
-
+	if(field){
+		delete field;
+		field = 0;
+	}
 }
 void SceneStart::resume(){
 	std::cout<<"SceneStart::resume() 1"<<std::endl;
@@ -88,6 +94,8 @@ void SceneStart::resume(){
 		p_control->switch_page("startPage");
 	}
 	std::cout<<"SceneStart::resume() END"<<std::endl;
+
+	loading2();
 }
 void SceneStart::handle_signal(Input::Signal* sig){
 	std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;
@@ -104,6 +112,8 @@ void SceneStart::handle_signal(Input::Signal* sig){
 	}
 }
 void SceneStart::loading2(){
+	field=new StaticField();
+
 	std::string map_name = "title";
 	glm::ivec3 map_size(200,50,200);
 	if(Tim::File::check_if_file_exist(map_folder_path+map_name)){
@@ -113,7 +123,7 @@ void SceneStart::loading2(){
 		std::cout<<"not find map"<<std::endl;
 		field->map->gen_map(map_size,time(NULL));
 	}
-	resume();
+	//resume();
 }
 void SceneStart::load_map(std::string mode){
 	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();

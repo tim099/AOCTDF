@@ -22,11 +22,13 @@ Field::~Field() {
 	std::cout<<"Field::~Field() 1"<<std::endl;
 	delete astar;
 	if(map)delete map;
-	delete player_controller;
-	delete attack_controller;
-	delete unit_controller;
-	delete entity_controller;
-	delete rigid_body_controller;
+	if(player_controller)delete player_controller;
+	if(attack_controller)delete attack_controller;
+	if(unit_controller)delete unit_controller;
+	if(entity_controller)delete entity_controller;
+	if(rigid_body_controller)delete rigid_body_controller;
+	std::cout<<"Field::~Field() 5"<<std::endl;
+	Display::Draw::get_cur_object()->lightControl->remove_light(sun_light);
 	std::cout<<"Field::~Field() 6"<<std::endl;
 
 }

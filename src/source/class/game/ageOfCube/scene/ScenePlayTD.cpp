@@ -65,14 +65,15 @@ void ScenePlayTD::scene_initialize() {
 	//std::cout << "SceneEditMap::scene_initialize()" << std::endl;
 }
 void ScenePlayTD::scene_terminate() {
-	delete lightControl;
-	delete camera;
+
 	if(field)delete field;
 	if (UI) {
 		delete UI;
 		UI = 0;
 	}
 	if(back_music)delete back_music;
+	delete lightControl;
+	delete camera;
 }
 ScenePlayTD::~ScenePlayTD() {
 
