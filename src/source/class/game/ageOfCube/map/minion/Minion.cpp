@@ -98,6 +98,11 @@ void Minion::draw_hp(){
 
 
 	double hp_percent=((double)cur_hp/(double)max_hp_bar);
+
+	if(i>1&&hp_percent>0.5){
+		hp_percent-=0.5;
+		hp_percent*=2.0;
+	}
 	Display::Draw::get_cur_object()->draw_bill_board("misc/hp"+Tim::String::to_string(i),
 			rigid_body.pos+math::vec3<double>(0,1.5*rigid_body.radius+0.1,0),
 			math::vec2<double>(width*hp_percent,height));
