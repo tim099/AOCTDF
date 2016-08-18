@@ -26,6 +26,7 @@ public:
 	virtual void update();
 	void play(std::string name,double volume=1.0);
 	void play_by_dis(std::string name,math::vec3<double> pos,double volume=1.0);
+	double config_volume;
 private:
 	Tim::ObjPool<AudioPlayer>*player_pool;
 	std::vector<AudioPlayer*>auto_players;

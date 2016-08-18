@@ -51,26 +51,11 @@ void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 	draw_shadow = true;
 	layer_texture = _layer_texture;
 	mat = math::vec4<float>(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
-	/*
-	Draw* cur_draw=Draw::get_cur_object();
-	if(cur_draw){
-		cur_draw->push(this);
-	}else{
-		std::cerr<<"cur Draw is not exist!!can't initialize DrawObject"<<std::endl;
-	}
-	*/
+
 }
 DrawObject::~DrawObject() {
 	//std::cout << "delete draw object" << std::endl;
 	clear_temp_drawdata();
-	/*
-	Draw* cur_draw=Draw::get_cur_object();
-	if(cur_draw){
-		cur_draw->remove(this);
-	}else{
-		std::cerr<<"cur \"Draw\" object is not exist!!can't remove DrawObject"<<std::endl;
-	}
-	*/
 }
 void DrawObject::update() {
 
@@ -108,7 +93,7 @@ void DrawObject::draw_shadow_vec(Shader *shader,
 void DrawObject::draw_vec(Shader *shader, std::vector<DrawDataObj*> &data_v) {
 	DrawDataObj* data;
 	for (unsigned i = 0; i < data_v.size(); i++) {
-		data = data_v.at(i);
+		data=data_v.at(i);
 		data->prepare_to_draw(shader);
 		sent_model_veiw_uniform(shader->programID, data->pos->get_pos_mat());
 		model_buffer->draw(shader->programID);
@@ -128,8 +113,7 @@ void DrawObject::draw_object(Shader *shader) {
 	if(temp_datas.empty())return;
 
 	model_buffer->bind_buffer(shader);
-	glUniform4f(glGetUniformLocation(shader->programID, "mat"), mat.x, mat.y,
-			mat.z, mat.w);
+	glUniform4f(glGetUniformLocation(shader->programID,"mat"),mat.x,mat.y,mat.z,mat.w);
 	if(alpha_drawobject){
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -140,10 +124,10 @@ void DrawObject::draw_object(Shader *shader) {
 		if(texture->format==GL_RGBA){
 			shader->Enable(Shader::AlphaTexture);
 		}
-		if (!layer_texture) { //simple texture
-			texture->sent_uniform(shader, 0, "Texture");
+		if(!layer_texture){ //simple texture
+			texture->sent_uniform(shader,0,"Texture");
 			shader->sent_Uniform("TextureArr",2);
-		} else {
+		}else{
 			texture->sent_uniform(shader, 2, "TextureArr");
 			shader->sent_Uniform("Texture",0);
 		}

@@ -41,6 +41,7 @@ LightControl::~LightControl() {
 	delete shadowData;
 }
 void LightControl::gen_shadow(Shader *shaderShadowMapping,Camera *camera,Draw *d_obj){
+	camera->gen_PSSM_AABB(3,1);
 	choose_point_light(camera->pos);
 	shadowData->gen_shadow_map(shaderShadowMapping,
 			selected_point_lights,parallel_lights,camera,shadow_dis,d_obj);

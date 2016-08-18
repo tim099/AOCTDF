@@ -2,6 +2,7 @@
 #define DRAWTEXTURE_H_
 #include "class/display/draw/drawData/DrawData.h"
 #include "class/display/texture/Texture.h"
+
 namespace Display{
 class Shader2D;
 class DrawTexture{

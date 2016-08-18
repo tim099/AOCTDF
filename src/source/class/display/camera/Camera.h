@@ -16,7 +16,6 @@ public:
 	glm::mat4 view()const;
 	glm::mat4 perspective(float aspect);
 
-
 	glm::vec3 look_vec()const;
 	glm::vec3 look_vec_xz()const;
 	float look_ry()const;

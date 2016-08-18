@@ -9,7 +9,7 @@ namespace Audio {
 AudioController::AudioController() {
 	Audio::AudioConfig::audio_init();
 	player_pool=new Tim::ObjPool<AudioPlayer>(10);
-
+	config_volume=1.0;
 
 	register_cur();
 }
@@ -22,7 +22,7 @@ void AudioController::play(std::string name,double volume){
 	AudioPlayer* player=player_pool->create();
 	player->init();
 	player->set_source(name);
-	player->set_volume(volume);
+	player->set_volume(config_volume*volume);
 	player->play();
 	auto_players.push_back(player);
 }

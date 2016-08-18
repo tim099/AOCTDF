@@ -102,6 +102,7 @@ Texture2D* Texture2D::loadPNG(const char * imagepath,int Parameteri){
 	return texture;
 }
 Texture2D* Texture2D::loadBMP(const char * imagepath,int Parameteri){
+	//std::cout<<"Texture2D::loadBMP:"<<imagepath<<std::endl;
 	Image<unsigned char>* bmp_img=new Image<unsigned char>();
 	bmp_img->loadBMP(imagepath);
 	Texture2D* texture=gen_texture2D(bmp_img,GL_RGB,GL_UNSIGNED_BYTE,Parameteri);//BMP is BGR Format

@@ -85,6 +85,29 @@ glm::vec4 Position::multiply_quaternion(glm::vec4 a, glm::vec4 b) {
 			b.w * a.z + b.z * a.w + b.x * a.y - b.y * a.x,
 			b.w * a.w - b.x * a.x - b.y * a.y - b.z * a.z);
 }
+glm::mat4 Position::get_rotate_mat(){
+	if(rotated_x||rotated_y||rotated_z){
+		glm::quat total;
+		if (rotated_x) {
+			quat_x = get_quaternion(glm::vec3(1, 0, 0), r.x);
+			rotated_x=false;
+		}
+		if (rotated_y) {
+			quat_y = get_quaternion(glm::vec3(0, 1, 0), r.y);
+			//glm::mat4 rmat = glm::rotate(r.y, glm::vec3(0, 1, 0));
+			rotated_y=false;
+		}
+		if (rotated_z) {
+			quat_z = get_quaternion(glm::vec3(0, 0, 1), r.z);
+			rotated_z=false;
+		}
+		r_mat=glm::mat4_cast(glm::cross(glm::cross(quat_y,quat_x),quat_z));
+	}
+	return r_mat;
+}
+glm::mat4 Position::gen_rotate_mat(glm::vec3 axis,float angle){
+	return glm::mat4_cast(get_quaternion(axis,angle));
+}
 glm::mat4 Position::get_pos_mat() {
 	if (!updated){
 		if (parent_pos) {

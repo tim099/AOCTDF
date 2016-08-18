@@ -19,7 +19,7 @@ Field::Field() {
 	Display::Draw::get_cur_object()->lightControl->push_light(sun_light);
 }
 Field::~Field() {
-	std::cout<<"Field::~Field() 1"<<std::endl;
+	//std::cout<<"Field::~Field() 1"<<std::endl;
 	delete astar;
 	if(map)delete map;
 	if(player_controller)delete player_controller;
@@ -27,9 +27,9 @@ Field::~Field() {
 	if(unit_controller)delete unit_controller;
 	if(entity_controller)delete entity_controller;
 	if(rigid_body_controller)delete rigid_body_controller;
-	std::cout<<"Field::~Field() 5"<<std::endl;
+	//std::cout<<"Field::~Field() 5"<<std::endl;
 	Display::Draw::get_cur_object()->lightControl->remove_light(sun_light);
-	std::cout<<"Field::~Field() 6"<<std::endl;
+	//std::cout<<"Field::~Field() 6"<<std::endl;
 
 }
 void Field::save(const std::string& path){

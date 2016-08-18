@@ -14,7 +14,6 @@
 #include <iostream>
 namespace Display{
 Renderer::Renderer(Draw *_d_obj, Window *_window) {
-
 	draw = _d_obj;
 	rendering = false;
 	window = _window;

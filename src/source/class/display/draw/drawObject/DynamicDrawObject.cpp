@@ -7,7 +7,7 @@ DynamicDrawObject::DynamicDrawObject() {
 }
 DynamicDrawObject::~DynamicDrawObject() {
 	delete model;
-	if(model_buffer)delete model_buffer;
+	clear_model_buffer();
 }
 void DynamicDrawObject::update_model_buffer(){
 	if(!model_buffer){

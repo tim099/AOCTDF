@@ -39,6 +39,18 @@ void Buffer::bind_buffer(){
 void Buffer::unbind_buffer(){
 	glDisableVertexAttribArray(index);
 }
+void Buffer::unbind_vtbuffer(){
+	glDisableVertexAttribArray(0);//vertexbuffer
+}
+void Buffer::unbind_uvbuffer(){
+	glDisableVertexAttribArray(1);//uv
+}
+void Buffer::unbind_vnbuffer(){
+	glDisableVertexAttribArray(2);//vn
+}
+void Buffer::unbind_lybuffer(){
+	glDisableVertexAttribArray(3);//ly
+}
 void Buffer::bind_vtbuffer(GLuint vertexbuffer){
 	glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
 	glEnableVertexAttribArray(0);

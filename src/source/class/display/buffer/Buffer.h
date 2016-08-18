@@ -14,6 +14,11 @@ public:
 	static void bind_vtbuffer(GLuint vertexbuffer);
 	static void bind_uvbuffer(GLuint uvbuffer);
 	static void bind_vnbuffer(GLuint vnbuffer);
+
+	static void unbind_vtbuffer();
+	static void unbind_uvbuffer();
+	static void unbind_vnbuffer();
+	static void unbind_lybuffer();
 	static void disable_all_buffer();
 	void update_buffer(GLfloat* data,int datasize);
 	void bind_buffer();

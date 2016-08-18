@@ -8,10 +8,7 @@
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/display/font/RenderString.h"
 
-
-
-
-
+#include "class/display/draw/billboard/BillBoardRenderer.h"
 namespace Display{
 class DrawData;
 class StringRenderer;
@@ -29,8 +26,6 @@ public:
 			Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO,
 			FrameBuffer * waterRefractFBO);
 
-	void draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
-			FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO);
 	/*
 	 * draw all 2D object(texture,font...etc)
 	 */
@@ -46,6 +41,8 @@ public:
 	void push(DrawObject* obj);
 	void push(DrawTexture* tex);
 	void push(RenderString* renderStr);
+	void push(BillBoard* billboard);
+
 	DrawData* push_as_tex(RenderString* renderStr);
 
 	void set_lightControl(LightControl* lightControl);
@@ -61,15 +58,17 @@ public:
 	float water_height;
 	bool real_water;
 protected:
-
-
+	void draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
+			FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO);
+	void drawBillBoard(Shader *shader,Camera *camera);
 
 	std::vector<DrawObject*> d_objs;
 	std::vector<DrawObject*> water_d_objs;
 	std::vector<DrawTexture*> d_texs;
+	//std::vector<BillBoard*> d_bill_board;
 
 	StringRenderer* strRenderer;
-
+	BillBoardRenderer* billBoardRenderer;
 	Tim::Mutex* d_objsMutex;
 	Tim::Mutex* d_texsMutex;
 };

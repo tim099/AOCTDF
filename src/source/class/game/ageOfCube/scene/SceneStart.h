@@ -30,7 +30,6 @@ protected:
 
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
-	virtual void loading2();
 
 	void create_new_map();
 	void create_map();

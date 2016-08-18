@@ -71,6 +71,7 @@ void ModelBuffer::bind_buffer(Shader *shader) {
 		lybuffer->bind_buffer();
 		shader->Enable(Shader::LayerTexture); //enable lybuffer
 	} else {
+		Buffer::unbind_lybuffer();
 		shader->Disable(Shader::LayerTexture); //disable lybuffer
 	}
 }

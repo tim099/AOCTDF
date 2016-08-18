@@ -5,6 +5,7 @@
 #include "class/game/ageOfCube/map/unit/UnitController.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
+#include "class/display/draw/Draw.h"
 #include <iostream>
 namespace AOC {
 
@@ -71,6 +72,18 @@ math::vec3<int> Minion::get_pos_int(){
 			get_pos().z/Map::CUBE_SIZE);
 }
 void Minion::draw_hp(){
+	//====
+	double hp_percent=((double)get_hp()/(double)100.0);
+	double width=0.5;
+
+	Display::BillBoard *bill_board2=new Display::BillBoard("misc/hp",
+			rigid_body.pos+math::vec3<double>(0,1.5*rigid_body.radius+0.1,0),
+			math::vec2<double>(width*hp_percent,0.1));
+
+
+	Display::Draw::get_cur_object()->push(bill_board2);
+	//====
+	/*
 	if(get_hp()==get_max_hp())return;
 	Display::AllDrawObjects* all_dobj=Display::AllDrawObjects::get_cur_object();
 	double hp_percent=((double)get_hp()/(double)get_max_hp());
@@ -94,6 +107,7 @@ void Minion::draw_hp(){
 		data=new Display::DrawDataObj(pos,true,true);
 		all_dobj->get("misc/hp_dark")->push_temp_drawdata(data);
 	}
+	*/
 }
 void Minion::draw(){
 	if(is_dead){
@@ -184,7 +198,6 @@ void Minion::move(){
 				delete finder;
 				finder=0;
 			}
-
 		}
 	}
 	if(timer==50){

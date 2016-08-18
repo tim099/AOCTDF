@@ -64,20 +64,20 @@ void SceneEditMap::resume() {
 	draw->set_lightControl(lightControl);
 }
 void SceneEditMap::scene_terminate() {
-	std::cout<<"SceneEditMap::scene_terminate() 0"<<std::endl;
+	//std::cout<<"SceneEditMap::scene_terminate() 0"<<std::endl;
 
 	if(back_music)delete back_music;
-	std::cout<<"SceneEditMap::scene_terminate() 1"<<std::endl;
+	//std::cout<<"SceneEditMap::scene_terminate() 1"<<std::endl;
 	if(constructing_building)delete constructing_building;
 	if(field)delete field;
-	std::cout<<"SceneEditMap::scene_terminate() 2"<<std::endl;
+	//std::cout<<"SceneEditMap::scene_terminate() 2"<<std::endl;
 	if (UI) {
 		delete UI;
 		UI = 0;
 	}
 	delete lightControl;
 	delete camera;
-	std::cout<<"SceneEditMap::scene_terminate() end"<<std::endl;
+	//std::cout<<"SceneEditMap::scene_terminate() end"<<std::endl;
 }
 SceneEditMap::~SceneEditMap() {
 
@@ -188,17 +188,13 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 		if(constructing_building)delete constructing_building;
 		BuildingCreator* creator=BuildingCreator::get_cur_object();
 		constructing_building = creator->create(strs.at(1));
-	}
-	else if(sig->get_data() == "reload"){
+	}else if(sig->get_data() == "reload"){
 		reload_map();
-	}
-	else if(sig->get_data() == "build_dirt_cube"){
+	}else if(sig->get_data() == "build_dirt_cube"){
 		cube_type = Cube::dirt;
-	}
-	else if(sig->get_data() == "build_grass_cube"){
+	}else if(sig->get_data() == "build_grass_cube"){
 		cube_type = Cube::grass;
-	}
-	else if(sig->get_data() == "build_stone_cube"){
+	}else if(sig->get_data() == "build_stone_cube"){
 		cube_type = Cube::stone;
 	}
 }
@@ -215,9 +211,9 @@ void SceneEditMap::handle_input() {
 		//back_music->set_volume(0.97*back_music->get_volume());
 	}
 	if (input->mouse->left_clicked()) {//->left_pressed()
-		std::cout<<"clicked:"<<field->map->selected_on.x<<","<<
-				field->map->selected_on.y<<","<<
-				field->map->selected_on.z<<std::endl;
+		//std::cout<<"clicked:"<<field->map->selected_on.x<<","<<
+				//field->map->selected_on.y<<","<<
+				//field->map->selected_on.z<<std::endl;
 		if(constructing_building){
 			if(constructing_building->create_building()){
 			}else{
@@ -230,16 +226,15 @@ void SceneEditMap::handle_input() {
 									field->map->selected_on.y,
 									field->map->selected_on.z,
 									cube_type);
-				std::cout<<"build:"<<field->map->selected_on.x<<","<<
-						field->map->selected_on.y<<","<<
-						field->map->selected_on.z<<std::endl;
+				//std::cout<<"build:"<<field->map->selected_on.x<<","<<
+						//field->map->selected_on.y<<","<<
+						//field->map->selected_on.z<<std::endl;
 			}else{
 				if(Unit* unit=dynamic_cast<Unit*>(field->map->get_cube
 								  (field->map->selected_cube.x,
 								   field->map->selected_cube.y,
 								   field->map->selected_cube.z))){
 					unit->set_hp(0);
-
 				}else{
 					field->map->set_cube_type(field->map->selected_cube.x,
 									   field->map->selected_cube.y,

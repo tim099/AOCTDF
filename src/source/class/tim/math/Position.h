@@ -18,6 +18,9 @@ public:
 	void init(glm::vec3 pos,glm::vec3 r,Position *parent_pos=0);
 
 	glm::mat4 get_pos_mat();
+	glm::mat4 get_rotate_mat();
+
+	static glm::mat4 gen_rotate_mat(glm::vec3 axis,float angle);
 
 	void set_parent(Position *_parent_pos){
 		parent_pos=_parent_pos;
@@ -37,7 +40,7 @@ protected:
 	/*
 	 * need a normalize axis
 	 */
-	glm::quat get_quaternion(glm::vec3 axis,float angle);
+	static glm::quat get_quaternion(glm::vec3 axis,float angle);
 	glm::vec4 multiply_quaternion(glm::vec4 a,glm::vec4 b);
 	Position *parent_pos;
 

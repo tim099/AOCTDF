@@ -71,7 +71,7 @@ void SceneStart::pause(){
 	}
 }
 void SceneStart::resume(){
-	std::cout<<"SceneStart::resume() 1"<<std::endl;
+	//std::cout<<"SceneStart::resume() 1"<<std::endl;
 	music_player.play();
 	draw->Enable3D=true;
 	draw->set_camera(camera);
@@ -81,9 +81,7 @@ void SceneStart::resume(){
 		delete UI;
 		UI=0;
 	}
-	std::cout<<"SceneStart::resume() 2"<<std::endl;
 	UI = new UI::UI("files/AgeOfCube/scenes/startScene/UI/startSceneUI.txt");
-	std::cout<<"SceneStart::resume() 3"<<std::endl;
 	p_control=(UI::PageControl*)UI->get_child("pageControl");
 	auto_p_control=(UI::AutoPageControl*)UI->get_child("newGame_autoPageControl");
 	//if(UI)delete UI;
@@ -93,12 +91,21 @@ void SceneStart::resume(){
 	}else{
 		p_control->switch_page("startPage");
 	}
-	std::cout<<"SceneStart::resume() END"<<std::endl;
+	field=new StaticField();
 
-	loading2();
+	std::string map_name = "title";
+	glm::ivec3 map_size(200,50,200);
+	if(Tim::File::check_if_file_exist(map_folder_path+map_name)){
+		//std::cout<<"find map"<<std::endl;
+		field->load(map_folder_path+map_name);
+	}else{
+		//std::cout<<"not find map"<<std::endl;
+		field->map->gen_map(map_size,time(NULL));
+	}
+	//std::cout<<"SceneStart::resume() END"<<std::endl;
 }
 void SceneStart::handle_signal(Input::Signal* sig){
-	std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;
+	//std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;
 	if(sig->get_data()=="CreateNewMap"){
 		create_new_map();
 	}else if(sig->get_data()=="CreateMap"){
@@ -110,20 +117,6 @@ void SceneStart::handle_signal(Input::Signal* sig){
 	}else if(sig->get_data()=="play"){
 		load_map("play");
 	}
-}
-void SceneStart::loading2(){
-	field=new StaticField();
-
-	std::string map_name = "title";
-	glm::ivec3 map_size(200,50,200);
-	if(Tim::File::check_if_file_exist(map_folder_path+map_name)){
-		std::cout<<"find map"<<std::endl;
-		field->load(map_folder_path+map_name);
-	}else{
-		std::cout<<"not find map"<<std::endl;
-		field->map->gen_map(map_size,time(NULL));
-	}
-	//resume();
 }
 void SceneStart::load_map(std::string mode){
 	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();

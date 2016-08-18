@@ -12,6 +12,7 @@ void MissileLauncher::weapon_update(){
 
 }
 void MissileLauncher::draw_weapon(){
+	/*
 	Display::DrawObject* dobj=Display::AllDrawObjects::get_cur_object()->get("attack/missile_launcher");
 	math::Position *dp_pos=new math::Position();//attack/cube_missile_1
 	math::vec3<double> atk_pos=get_attack_pos();
@@ -25,5 +26,6 @@ void MissileLauncher::draw_weapon(){
 
 	dobj->push_temp_drawdata(new Display::DrawDataObj(dp_pos,true,true));
 	dobj->push_temp_drawdata(new Display::DrawDataObj(dp_pos2,true,true));
+	*/
 }
 } /* namespace AOC */

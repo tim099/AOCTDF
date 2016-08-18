@@ -20,6 +20,7 @@ Draw::Draw() {
 	d_texsMutex=new Tim::Mutex();
 	//strRenderer=new StringRenderer("files/texture/font/font.bmp");
 	strRenderer=new StringRenderer("files/texture/font/font1.png");
+	billBoardRenderer=new BillBoardRenderer();
 	lightControl=0;
 	camera=0;
 	Enable3D=true;
@@ -32,7 +33,7 @@ Draw::~Draw() {
 	delete d_objsMutex;
 	delete d_texsMutex;
 	delete strRenderer;
-
+	delete billBoardRenderer;
 	while(!d_texs.empty()){
 		delete d_texs.back();
 		d_texs.pop_back();
@@ -57,24 +58,31 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 		std::cerr<<"Draw::draw3D fail,light control or camera no set yet!!"<<std::endl;
 		return;
 	}
-	camera->gen_PSSM_AABB(3, 1);
+
 	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 
 	shader->active_shader();
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
-	AllTextures::get_cur_tex("default/skybox")->sent_uniform(shader, 30, "skybox");
-	camera->sent_uniform(shader->programID, FBO->aspect());
+	AllTextures::get_cur_tex("default/skybox")->sent_uniform(shader,30,"skybox");
+	camera->sent_uniform(shader->programID,FBO->aspect());
 	lightControl->sent_uniform(shader,camera->pos);
     for(unsigned i=0;i<d_objs.size();i++){//100
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
-    draw_water(shader2D,shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
+
+    drawBillBoard(shader,camera);
+    draw_water(shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
+
     Input::Mouse::get_cur_mouse()->get_world_space_pos(FBO,
 			glm::inverse(camera->view_matrix(FBO->aspect())));
+
 }
-void Draw::draw_water(Shader2D *shader2D,Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
+void Draw::drawBillBoard(Shader *shader,Camera *camera){
+	billBoardRenderer->draw(shader,camera);
+}
+void Draw::draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 		FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO){
 	Camera reflect_cam(camera);
 	Camera refract_cam(camera);
@@ -194,7 +202,6 @@ void Draw::remove(DrawObject* obj){
 			}
 		}
 	}
-
 	std::cerr<<"Draw::remove(DrawObject* obj) fail,can't find obj:"<<obj<<std::endl;
 }
 void Draw::push(DrawObject* obj){
@@ -216,6 +223,10 @@ void Draw::push(DrawTexture* tex){
 void Draw::push(RenderString* renderStr){
 	//std::cout<<"push "<<renderStr->str<<std::endl;
 	strRenderer->push(renderStr);
+}
+void Draw::push(BillBoard* billboard){
+	billBoardRenderer->push(billboard);
+	//d_bill_board.push_back(billboard);
 }
 DrawData* Draw::push_as_tex(RenderString* renderStr){
 	//std::cout<<"push as tex"<<renderStr->str<<std::endl;
@@ -248,6 +259,9 @@ void Draw::clear_tmp_data(){
     for(unsigned i=0;i<water_d_objs.size();i++){
     	water_d_objs.at(i)->clear_temp_drawdata();
     }
+    billBoardRenderer->clear_temp_drawdata();
+
+
     while(!d_texs.empty()){
     	delete d_texs.back();
     	d_texs.pop_back();

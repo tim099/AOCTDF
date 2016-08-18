@@ -10,6 +10,7 @@
 #include <string>
 #include "class/display/texture/image/png/lodepng.h"
 #include "class/tim/file/File.h"
+#include <iostream>
 namespace Display{
 template<class DataType>
 Image<DataType>::Image() {
@@ -89,13 +90,13 @@ void Image<DataType>::loadBMP(const char * imagepath) {
 	unsigned char header[54]; // Each BMP file begins by a 54-bytes header
 	FILE * file = fopen(imagepath, "rb"); // Open the file
 	if (!file) {
-		printf("Image could not be opened:%s\n", imagepath);
+		std::cerr<<"Image could not be opened:"<<imagepath<<std::endl;
 	}
 	if (fread(header, 1, 54, file) != 54) { // If not 54 bytes read : problem
-		printf("Not a correct BMP file:%s\n", imagepath);
+		std::cerr<<"Not a correct BMP file:"<<imagepath<<std::endl;
 	}
 	if (header[0] != 'B' || header[1] != 'M') {
-		printf("Not a correct BMP file:%s\n", imagepath);
+		std::cerr<<"Not a correct BMP file:"<<imagepath<<std::endl;
 	}
 	initialize(glm::ivec2(*(int*) &(header[0x12]), *(int*) &(header[0x16])),
 	GL_BGR);
