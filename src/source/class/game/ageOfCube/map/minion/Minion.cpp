@@ -6,6 +6,7 @@
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
 #include "class/display/draw/Draw.h"
+#include "class/tim/string/String.h"
 #include <iostream>
 namespace AOC {
 
@@ -73,15 +74,33 @@ math::vec3<int> Minion::get_pos_int(){
 }
 void Minion::draw_hp(){
 	//====
+	/*
 	double hp_percent=((double)get_hp()/(double)100.0);
 	double width=0.5;
 
-	Display::BillBoard *bill_board2=new Display::BillBoard("misc/hp",
+	Display::Draw::get_cur_object()->draw_bill_board("misc/hp",
 			rigid_body.pos+math::vec3<double>(0,1.5*rigid_body.radius+0.1,0),
 			math::vec2<double>(width*hp_percent,0.1));
+	*/
 
 
-	Display::Draw::get_cur_object()->push(bill_board2);
+
+
+	int max_hp_bar=50;
+	double width=0.5,height=0.1;
+
+	double cur_hp=get_hp();
+	int i=1;
+	for(;i<=7&&cur_hp>max_hp_bar;i++){
+		cur_hp*=0.5;
+	}
+
+
+
+	double hp_percent=((double)cur_hp/(double)max_hp_bar);
+	Display::Draw::get_cur_object()->draw_bill_board("misc/hp"+Tim::String::to_string(i),
+			rigid_body.pos+math::vec3<double>(0,1.5*rigid_body.radius+0.1,0),
+			math::vec2<double>(width*hp_percent,height));
 	//====
 	/*
 	if(get_hp()==get_max_hp())return;

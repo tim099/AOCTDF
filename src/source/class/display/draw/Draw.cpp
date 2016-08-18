@@ -226,7 +226,10 @@ void Draw::push(RenderString* renderStr){
 }
 void Draw::push(BillBoard* billboard){
 	billBoardRenderer->push(billboard);
-	//d_bill_board.push_back(billboard);
+}
+void Draw::draw_bill_board(std::string texture,math::vec3<double> pos,math::vec2<double> size){
+	Display::BillBoard *bill_board=new Display::BillBoard(texture,pos,size);
+	push(bill_board);
 }
 DrawData* Draw::push_as_tex(RenderString* renderStr){
 	//std::cout<<"push as tex"<<renderStr->str<<std::endl;

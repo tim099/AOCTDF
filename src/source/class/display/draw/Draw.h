@@ -42,6 +42,7 @@ public:
 	void push(DrawTexture* tex);
 	void push(RenderString* renderStr);
 	void push(BillBoard* billboard);
+	void draw_bill_board(std::string texture,math::vec3<double> pos,math::vec2<double> size);
 
 	DrawData* push_as_tex(RenderString* renderStr);
 
