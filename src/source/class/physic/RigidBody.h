@@ -35,6 +35,7 @@ public:
 
 	bool special_collide_off;
 	bool stop_when_collide;
+	bool stable; //wont move when collided
 
 	math::vec3<double> rotate;
 	math::vec3<double> vel;
@@ -47,6 +48,7 @@ public:
 protected:
 	virtual void collide_action(RigidBody* b);
 	virtual void be_collide_action(RigidBody* b);
+	void bounce_off_from(RigidBody* b);
 };
 
 } /* namespace physic */

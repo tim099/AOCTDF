@@ -24,7 +24,7 @@ protected:
 	virtual void attack_update();
 	virtual void collide_action(RigidBody* b);
 	virtual Display::DrawObject *get_missile_drawobj();
-	void explode();
+	virtual void explode();
 	int explode_timer;
 	int timer;
 	int type;
