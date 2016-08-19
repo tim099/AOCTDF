@@ -15,6 +15,7 @@ Missile::Missile() {
 	type=0;
 	explode_timer=0;
 	be_collide_off=true;
+	//special_collide_off=true;
 }
 Missile::Missile(Missile* missile){
 	radius=missile->radius;
@@ -36,6 +37,8 @@ void Missile::collide_action(RigidBody* b){
 }
 void  Missile::explode(){
 	//std::cout<<"Missile::explode()"<<std::endl;
+	//radius = 3;
+
 	for(unsigned i=0;i<collied_units.size();i++){
 		if(target==collied_units.at(i)){
 			damage_target(damage);
