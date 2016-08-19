@@ -22,7 +22,7 @@ namespace Tim {
 
 class Thread{
 public:
-	Thread(int priority=NORMAL_PRIORITY_CLASS,Tim::ExecuteDone *done=0);
+	Thread(int priority=NORMAL_PRIORITY_CLASS,Tim::ExecuteDone *done=0,bool auto_terminate=false);
 	virtual ~Thread();
 	/*
 	 *start execute task inside this thread
@@ -68,6 +68,7 @@ protected:
 	bool end;
 	bool terminate;
 	bool thread_start;
+	bool auto_terminate;
 	int priority;
 	Mutex threadMutex;
 	Mutex endMutex;

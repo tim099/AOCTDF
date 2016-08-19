@@ -17,6 +17,7 @@ bool MapRigidBody::handle_stuck(physic::RigidBody* b){
 	math::vec3<int> pos((b->pos.x)/Map::CUBE_SIZE,
 						(b->pos.y)/Map::CUBE_SIZE,
 						(b->pos.z)/Map::CUBE_SIZE);
+
 	if(check_stuck(b)){//stuck
 
 		std::set<math::vec3<int> >visited;
@@ -26,7 +27,9 @@ bool MapRigidBody::handle_stuck(physic::RigidBody* b){
 
 		bool find=false;
 
-		while(!find&&!next.empty()){
+		int i=0;
+		while(!find&&!next.empty()&&i<20){
+			i++;
 			cur=next.front();
 			next.pop();
 			b->pos.x=(cur.x+0.5)*Map::CUBE_SIZE;

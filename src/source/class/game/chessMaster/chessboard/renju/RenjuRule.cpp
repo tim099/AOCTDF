@@ -85,7 +85,9 @@ int RenjuRule::check_winner(CM::Board<short int> *chess_board){
 		}
 	}
 	//================2=====================
-
+	if(chess_board->get(9,4)){
+		return -1;
+	}
 	return 0;
 }
 } /* namespace CM */

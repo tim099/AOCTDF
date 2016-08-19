@@ -1,6 +1,5 @@
 #include "class/game/chessMaster/chessboard/othello/piece/OthelloStone.h"
 
-#include "class/game/chessMaster/chessboard/renju/Renju.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 namespace CM {
 
@@ -135,8 +134,8 @@ void OthelloStone::next_step(CM::Board<short int> *chess_board,
 
 				if(cur_step.move_num>0){
 					cur_step.add_move(i,j,player,1);
-					if(chess_board->get(8,3))cur_step.add_move(8,3,player,0);
-					if(chess_board->get(8,4))cur_step.add_move(8,4,player,0);
+					if(chess_board->get(8,3))cur_step.add_move(8,3,0,-1);
+					if(chess_board->get(8,4))cur_step.add_move(8,4,0,-1);
 					/*
 					for(unsigned i=0;i<cur_step.move_num;i++){
 						std::cout<<"step="<<cur_step.moves[i].x<<","<<cur_step.moves[i].y<<
@@ -153,9 +152,9 @@ void OthelloStone::next_step(CM::Board<short int> *chess_board,
 	if(next_step.size()==0){
 		cur_step.move_num=0;
 		if(player==1){
-			cur_step.add_move(8,3,player,1);
+			cur_step.add_move(8,3,2*player,1);
 		}else{
-			cur_step.add_move(8,4,player,1);
+			cur_step.add_move(8,4,2*player,1);
 		}
 		next_step.push_back(cur_step);
 	}

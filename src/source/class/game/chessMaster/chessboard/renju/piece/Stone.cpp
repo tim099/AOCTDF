@@ -28,5 +28,10 @@ void Stone::next_step(CM::Board<short int> *chess_board,
 			}
 		}
 	}
+	if(next_step.size()==0){
+		CM::Step null_step;
+		null_step.add_move(9,4,player,1);
+		next_step.push_back(null_step);
+	}
 }
 } /* namespace CM */

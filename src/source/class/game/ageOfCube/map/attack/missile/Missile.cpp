@@ -14,6 +14,7 @@ Missile::Missile() {
 	timer=0;
 	type=0;
 	explode_timer=0;
+	be_collide_off=true;
 }
 Missile::Missile(Missile* missile){
 	radius=missile->radius;

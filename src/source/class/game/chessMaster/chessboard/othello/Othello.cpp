@@ -1,6 +1,7 @@
 #include "class/game/chessMaster/chessboard/othello/Othello.h"
 #include "class/game/chessMaster/chessboard/othello/OthelloRule.h"
 #include "class/game/chessMaster/chessboard/othello/piece/OthelloStone.h"
+#include "class/game/chessMaster/chessboard/othello/piece/OthelloSkipStone.h"
 #include <iostream>
 namespace CM {
 
@@ -46,5 +47,6 @@ int Othello::evaluate_score(CM::Board<short int> *chess_board,int player){
 }
 void Othello::create_pieces(){
 	pieces.push_back(new OthelloStone());
+	pieces.push_back(new OthelloSkipStone());
 }
 } /* namespace CM */

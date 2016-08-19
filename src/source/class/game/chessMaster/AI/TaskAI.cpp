@@ -17,7 +17,6 @@ TaskAI::~TaskAI() {
 	//std::cout<<"TaskAI::~TaskAI()"<<std::endl;
 }
 void TaskAI::ExecuteTask(){
-
 	ai->find_best_step(pool,chess_board,player,depth,pruning);
 }
 } /* namespace CM */

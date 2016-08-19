@@ -4,6 +4,7 @@ namespace AOC {
 
 CubeMissileLauncher::CubeMissileLauncher() {
 	attack_range=20.0;
+
 }
 CubeMissileLauncher::~CubeMissileLauncher() {
 

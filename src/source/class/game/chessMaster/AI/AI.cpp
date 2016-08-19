@@ -56,22 +56,9 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,i
 	total_compute=0;
 	board=_chess_board;
 	//std::cout<<"AI::find_best_step start"<<std::endl;
-	/*
-	total_test=0;
-	start_time=glfwGetTime();
-	Tim::ObjPool<Tim::vector<CM::Step> >*tmp_pool=steps_pool->create();
-	CM::Board<short int> *clone_board=new CM::Board<short int>(board->chess_board);
-	test(clone_board,1,4,tmp_pool);
-	delete clone_board;
-	steps_pool->free(tmp_pool);
-
-	std::cout<<"total test:"<<total_test<<std::endl;
-	std::cout<<"test time used:"<<(float)(glfwGetTime()-start_time)<<std::endl;
-	*/
-
 	start_time=glfwGetTime();
 
-	CM::Board<short int> *cb=new CM::Board<short int>(board->chess_board);
+	CM::Board<short int> *cb=board->chess_board->clone();
 	CM::Step best=find_best_step(pool,cb,player,depth,pruning,true);
 	delete cb;
 

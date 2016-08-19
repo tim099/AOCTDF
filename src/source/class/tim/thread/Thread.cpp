@@ -2,9 +2,10 @@
 #include <iostream>
 namespace Tim {
 
-Thread::Thread(int priority,Tim::ExecuteDone *_done) {
+Thread::Thread(int priority,Tim::ExecuteDone *_done,bool _auto_terminate) {
 	end=false;
 	terminate=false;
+	auto_terminate=_auto_terminate;
 	threadhandle=CreateThread(NULL,0,Execute,this,CREATE_SUSPENDED,&ThreadID);
 	//threadhandle=CreateThread(NULL,0,Execute,this,0,&ThreadID);
 	thread_start=false;
@@ -13,7 +14,7 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done) {
 }
 Thread::~Thread() {
 	if(!terminate)std::cout<<"thread delete error not terminated yet!!"<<std::endl;
-	//else std::cout<<"thread delete success!!"<<std::endl;
+	else std::cout<<"thread delete success!!"<<std::endl;
 	//if(done)delete done; dont!!if done=thread pool
 
 }
@@ -89,7 +90,9 @@ void Thread::ExecuteTask(){
 		task_q.pop();
 	}
 	if(done)done->done(this);
-
+	if(auto_terminate){
+		Terminate();
+	}
 
 	//std::cout<<"all task finish"<<std::endl;
 }

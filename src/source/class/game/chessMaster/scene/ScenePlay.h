@@ -21,10 +21,9 @@ public:
 		return "ScenePlay";
 	}
 	virtual void pause();
-	/*
-	 * define behavior when this scene resume from pause state
-	 */
-	virtual void resume();
+
+
+	virtual void resume();//define behavior when this scene resume from pause state
 
 	virtual void loading();
 	virtual void scene_update_end();

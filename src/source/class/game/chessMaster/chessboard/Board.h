@@ -26,7 +26,9 @@ public:
 		for(int i=0;i<piece_type_num;i++){
 			piece_num[i]=board->piece_num[i];
 		}
-
+	}
+	virtual Board* clone(){
+		return new Board(this);
 	}
 	virtual ~Board(){
 		delete[] piece_num;

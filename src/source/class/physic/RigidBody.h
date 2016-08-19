@@ -31,6 +31,8 @@ public:
 	double mass;
 	bool collision_off;//turn of collision
 	bool be_collide_off;
+
+
 	bool special_collide_off;
 	bool stop_when_collide;
 
