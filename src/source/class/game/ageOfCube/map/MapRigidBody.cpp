@@ -26,10 +26,16 @@ bool MapRigidBody::handle_stuck(physic::RigidBody* b){
 		math::vec3<int> cur;
 
 		bool find=false;
+<<<<<<< HEAD
 
 		int i=0;
 		while(!find&&!next.empty()&&i<20){
 			i++;
+=======
+		int times=0;
+		while(!find&&!next.empty()&&times<10){
+			times++;
+>>>>>>> stash
 			cur=next.front();
 			next.pop();
 			b->pos.x=(cur.x+0.5)*Map::CUBE_SIZE;
