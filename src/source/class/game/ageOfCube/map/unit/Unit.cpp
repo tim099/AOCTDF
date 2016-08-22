@@ -1,6 +1,7 @@
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/game/ageOfCube/map/unit/UnitController.h"
 #include "class/game/ageOfCube/map/attack/AttackCreator.h"
+#include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 #include <cstdio>
 namespace AOC {
 
@@ -59,8 +60,15 @@ void Unit::save_weapons(FILE* file){
 void Unit::load_weapons(FILE* file){
 	unsigned weapons_size;
 	fscanf(file,"%u\n",&weapons_size);
-	for(unsigned i=0;i<weapons.size()&&i<weapons_size;i++){
-		weapons.at(i)->load(file);
+	for(unsigned i=0;i<weapons_size;i++){
+		if(i<weapons.size()){
+			weapons.at(i)->load(file);
+		}else{
+			Weapon* weapon=WeaponCreator::get_cur_object()->create("RailGun");
+			weapon->load(file);
+			delete weapon;
+		}
+
 	}
 }
 void Unit::save_unit(FILE * file){

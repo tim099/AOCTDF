@@ -19,7 +19,6 @@ void BillBoard::sent_uniform(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u)
 	tex->sent_uniform(shader,0,"Texture");
 	shader->sent_Uniform("TextureArr",2);
 
-	//l=glm::normalize(glm::cross(r,u));
 	glm::mat4 m=glm::mat4
 			(r.x,r.y,r.z,0,
 			 u.x,u.y,u.z,0,

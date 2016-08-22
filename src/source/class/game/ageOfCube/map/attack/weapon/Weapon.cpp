@@ -10,16 +10,17 @@ Weapon::Weapon() {
 	attack_range=10;
 	attack_damage=10;
 	attack_size=0.05;
+	fire_rate=1.0;
 	unit=0;
 }
 Weapon::~Weapon() {
 
 }
 void Weapon::save(FILE* file){
-	fprintf(file,"%d %d\n",attack_timer,attack_cycle);
+	fprintf(file,"%lf %d\n",attack_timer,attack_cycle);
 }
 void Weapon::load(FILE* file){
-	fscanf(file,"%d %d\n",&attack_timer,&attack_cycle);
+	fscanf(file,"%lf %d\n",&attack_timer,&attack_cycle);
 }
 math::vec3<double> Weapon::get_pos(){
 	math::vec3<double>real_pos=pos;
@@ -69,7 +70,7 @@ void Weapon::update(){
 		return;
 	}
 
-	attack_timer++;
+	attack_timer+=fire_rate;
 	if(attack_timer>attack_cycle){
 		if(attack()){
 			attack_timer=0;

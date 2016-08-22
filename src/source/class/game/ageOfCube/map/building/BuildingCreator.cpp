@@ -18,6 +18,14 @@ BuildingCreator::BuildingCreator() {
 BuildingCreator::~BuildingCreator() {
 	//delete handle by Tim::MapContainer
 }
+std::vector<std::string> BuildingCreator::get_buildings_name(){
+	std::vector<std::string> names;
+	std::map<std::string,Building*>::iterator it = creator.get_map()->begin();
+	while (it != creator.get_map()->end()) {
+		names.push_back(it->first);
+	}
+	return names;
+}
 void BuildingCreator::push(AOC::Building* obj){
 	obj->building_pre_init();
 	creator.push(obj->get_name(),obj);

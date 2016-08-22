@@ -37,7 +37,7 @@ MainTower::MainTower(MainTower* tower){
 	weapon->set_attack_size(0.4);
 	push_weapon(weapon);
 
-	weapon=WeaponCreator::get_cur_object()->create("CubeMissileLauncher");
+	weapon=WeaponCreator::get_cur_object()->create("RailGun");
 	weapon->set_attack_range(30.0);
 	weapon->set_attack_damage(80);
 	weapon->set_attack_size(0.4);

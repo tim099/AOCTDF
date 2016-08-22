@@ -8,10 +8,10 @@ namespace AOC {
 class CubeMissile: public Missile {
 public:
 	CubeMissile();
-	CubeMissile(CubeMissile* cube);
+	//CubeMissile(CubeMissile* cube);
 	virtual ~CubeMissile();
 	virtual Attack* clone(){
-		return new CubeMissile(this);
+		return new CubeMissile();
 	}
 	virtual std::string get_name(){
 		return std::string("CubeMissile");

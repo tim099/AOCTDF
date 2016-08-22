@@ -13,6 +13,7 @@ public:
 	BuildingCreator();
 	virtual ~BuildingCreator();
 	AOC::Building* create(std::string type_name);
+	std::vector<std::string> get_buildings_name();
 protected:
 	void push(AOC::Building* obj);
 	Tim::MapContainer<std::string,Building>creator;

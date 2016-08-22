@@ -31,7 +31,9 @@ protected:
 	virtual bool attack();
 	virtual void fire(Unit* target);
 	Unit* find_target(math::vec3<double> attack_pos);
-	int attack_timer,attack_cycle;
+	double attack_timer;
+	double fire_rate;
+	int attack_cycle;
 	int attack_damage;
 	double attack_range;
 	double attack_size;

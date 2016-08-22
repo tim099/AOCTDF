@@ -35,6 +35,7 @@ void Attack::load(FILE* file){
 void Attack::create_attack(){
 	attack_created=true;
 	AttackController::get_cur_object()->push(this);
+	fire();
 }
 void Attack::set_target(Unit* _target){
 	target=_target;target_id=target->get_id();

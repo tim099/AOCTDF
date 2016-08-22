@@ -14,7 +14,7 @@ Thread::Thread(int priority,Tim::ExecuteDone *_done,bool _auto_terminate) {
 }
 Thread::~Thread() {
 	if(!terminate)std::cout<<"thread delete error not terminated yet!!"<<std::endl;
-	else std::cout<<"thread delete success!!"<<std::endl;
+	//else std::cout<<"thread delete success!!"<<std::endl;
 	//if(done)delete done; dont!!if done=thread pool
 
 }

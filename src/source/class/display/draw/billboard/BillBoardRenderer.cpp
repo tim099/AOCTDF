@@ -31,10 +31,8 @@ void BillBoardRenderer::draw(Shader *shader,Camera *camera){
 	shader->Disable(Shader::LayerTexture);
 	shader->Enable(Shader::BillBoard);
 
-	glm::vec3 l=glm::normalize(camera->look_vec());
-	glm::vec3 r=glm::normalize(glm::cross(camera->up,l));
-	glm::vec3 u=glm::normalize(glm::cross(l,r));
-
+	glm::vec3 l,r,u;
+	camera->gen_bill_board_lru(l,r,u);
 
 	for(unsigned i=0;i<billboards.size();i++){
 		//std::cout<<"BillBoardRenderer::draw"<<std::endl;

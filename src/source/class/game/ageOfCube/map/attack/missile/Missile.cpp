@@ -16,12 +16,15 @@ Missile::Missile() {
 	explode_timer=0;
 	be_collide_off=true;
 }
+/*
 Missile::Missile(Missile* missile){
 	radius=missile->radius;
 	timer=missile->timer;
 	type=missile->type;
 	explode_timer=0;
+	be_collide_off=true;
 }
+*/
 Missile::~Missile() {
 
 }
@@ -79,13 +82,6 @@ void Missile::attack_update(){
 	if(be_collided==true||collided==true){
 		explode();
 	}
-	/*
-	if(timer<50){
-		this->collision_off=true;
-	}else{
-		this->collision_off=false;
-	}
-	*/
 	if(target){
 		vel*=0.8;
 		math::vec3<double> target_pos=target->get_mid_pos();

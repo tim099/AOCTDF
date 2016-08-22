@@ -80,17 +80,11 @@ void Camera::update(){
 	move(v);
 	v*=0.9;
 }
-/*
-glm::mat4 Camera::get_inverse_rotate_mat(){
-	glm::vec3 vec1(0,0,1);
-	glm::vec3 vec2=look_vec();
-	glm::vec3 axis=glm::cross(vec1,vec2);
-
-	float angle=glm::acos(glm::dot(vec1,vec2));
-	//std::cout<<"Camera::get_inverse_rotate_mat angle="<<(180.0/M_PI)*angle<<std::endl;
-	return math::Position::gen_rotate_mat(axis,(90.0/M_PI)*angle);
+void Camera::gen_bill_board_lru(glm::vec3 &l,glm::vec3 &r,glm::vec3 &u){
+	l=glm::normalize(look_vec());
+	r=glm::normalize(glm::cross(up,l));
+	u=glm::normalize(glm::cross(l,r));
 }
-*/
 void Camera::gen_PSSM_AABB(int split_num, float aspect){
 	std::vector<float> PSSM_split_points;
 	float c_log, c_uni, c_ratio=0.5;

@@ -16,6 +16,7 @@ public:
 	glm::mat4 view()const;
 	glm::mat4 perspective(float aspect);
 
+
 	glm::vec3 look_vec()const;
 	glm::vec3 look_vec_xz()const;
 	float look_ry()const;
@@ -32,7 +33,7 @@ public:
 
 	glm::mat4 sent_uniform(GLuint programID,float aspect,
 			std::string name=std::string("VP"));
-
+	void gen_bill_board_lru(glm::vec3 &l,glm::vec3 &r,glm::vec3 &u);
 	void gen_PSSM_AABB(int split_num, float aspect);
 	std::vector<Tim::AABB> * get_PSSM_AABBs();
 

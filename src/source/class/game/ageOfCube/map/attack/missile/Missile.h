@@ -9,10 +9,10 @@ class Missile: public Attack {
 public:
 	virtual void attack_pre_init();
 	Missile();
-	Missile(Missile* missile);
+	//Missile(Missile* missile);
 	virtual ~Missile();
 	virtual Attack* clone(){
-		return new Missile(this);
+		return new Missile();
 	}
 	virtual std::string get_name(){
 		return std::string("Missile");

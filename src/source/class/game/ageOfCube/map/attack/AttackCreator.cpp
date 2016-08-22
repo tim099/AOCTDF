@@ -2,12 +2,13 @@
 #include "class/game/ageOfCube/map/attack/missile/Missile.h"
 #include "class/game/ageOfCube/map/attack/missile/CubeMissile.h"
 #include "class/game/ageOfCube/map/attack/laser/Laser.h"
+#include "class/game/ageOfCube/map/attack/railgun/Bullet.h"
 namespace AOC {
 
 AttackCreator::AttackCreator() {
 	push(new Missile());
 	push(new CubeMissile());
-
+	push(new Bullet());
 	push(new Laser());
 	register_cur();
 }
