@@ -1,6 +1,7 @@
 #include "class/game/ageOfCube/map/attack/weapon/WeaponCreator.h"
 #include "class/game/ageOfCube/map/attack/missile/MissileLauncher.h"
 #include "class/game/ageOfCube/map/attack/missile/CubeMissileLauncher.h"
+#include "class/game/ageOfCube/map/attack/missile/BombLauncher.h"
 #include "class/game/ageOfCube/map/attack/laser/LaserCannon.h"
 #include "class/game/ageOfCube/map/attack/railgun/RailGun.h"
 namespace AOC {
@@ -8,6 +9,7 @@ namespace AOC {
 WeaponCreator::WeaponCreator() {
 	push(new MissileLauncher());
 	push(new CubeMissileLauncher());
+	push(new BombLauncher());
 	push(new LaserCannon());
 	push(new RailGun());
 	register_cur();

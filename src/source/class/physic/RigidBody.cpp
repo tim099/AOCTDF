@@ -13,6 +13,7 @@ RigidBody::RigidBody() {
 	stop_when_collide=true;
 	collided=false;
 	be_collided=false;
+	stable = false;
 	mass=1.0;
 }
 RigidBody::~RigidBody() {
@@ -55,23 +56,19 @@ void RigidBody::be_collide(RigidBody* b){
 	if(b->id)be_collided_id.push_back(b->id);
 	be_collide_action(b);
 }
-void RigidBody::collide_action(RigidBody* b){
+
+void RigidBody::bounce_off_from(RigidBody* b){
 	math::vec3<double> o_pos=0.5*(b->pos+pos);
 	math::vec3<double> o_v=(mass*vel+b->mass*b->vel)/(mass+b->mass);
 
 	vel-=2.0*math::vec3<double>::normalize(pos-o_pos)*
 			((vel-o_v).dot(math::vec3<double>::normalize(pos-o_pos)));
-	b->vel-=2.0*math::vec3<double>::normalize(b->pos-o_pos)*
-			((b->vel-o_v).dot(math::vec3<double>::normalize(b->pos-o_pos)));
 	///*
 	static const int range=100;
 	vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
 							0.01*((rand()%range)-range/2)/(double)range,
 							0.01*((rand()%range)-range/2)/(double)range)*vel.get_length();
 
-	b->vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
-							   0.01*((rand()%range)-range/2)/(double)range,
-							   0.01*((rand()%range)-range/2)/(double)range)*b->vel.get_length();
 	//*/
 	bool stuck=true;
 	for(int i=0;i<4;i++){
@@ -93,6 +90,11 @@ void RigidBody::collide_action(RigidBody* b){
 		}
 		//*/
 	}
+}
+
+void RigidBody::collide_action(RigidBody* b){
+	if(!stable)bounce_off_from(b);
+	if(!b->stable)b->bounce_off_from(this);
 }
 void RigidBody::be_collide_action(RigidBody* b){
 
