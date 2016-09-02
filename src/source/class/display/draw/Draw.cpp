@@ -25,8 +25,8 @@ Draw::Draw() {
 	camera=0;
 	Enable3D=true;
 	real_water=false;
-	wave_height=0.15f;
-	wave_width=1.2f;
+	wave_height=0.2f;
+	wave_width=0.8f;
 	water_height=40.0f;
 }
 Draw::~Draw() {

@@ -7,6 +7,7 @@ OthelloStone::OthelloStone() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/black");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/white");
 	weight=1;
+	name="stone";
 }
 OthelloStone::~OthelloStone() {
 

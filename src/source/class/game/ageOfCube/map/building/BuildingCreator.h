@@ -8,14 +8,14 @@
 
 namespace AOC {
 
-class BuildingCreator :public Tim::GlobalObject<BuildingCreator> {
+class BuildingCreator : public Tim::GlobalObject<BuildingCreator> {
 public:
 	BuildingCreator();
 	virtual ~BuildingCreator();
-	AOC::Building* create(std::string type_name);
+	Building* create(std::string type_name);
 	std::vector<std::string> get_buildings_name();
 protected:
-	void push(AOC::Building* obj);
+	void push(Building* obj);
 	Tim::MapContainer<std::string,Building>creator;
 };
 

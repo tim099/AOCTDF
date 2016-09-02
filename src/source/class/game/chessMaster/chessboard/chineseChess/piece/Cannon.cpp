@@ -7,6 +7,7 @@ Cannon::Cannon() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_cannon");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_cannon");
 	weight=50;
+	name="Cannon";
 }
 Cannon::~Cannon() {
 

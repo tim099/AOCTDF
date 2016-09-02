@@ -26,11 +26,11 @@ std::vector<std::string> BuildingCreator::get_buildings_name(){
 	}
 	return names;
 }
-void BuildingCreator::push(AOC::Building* obj){
+void BuildingCreator::push(Building* obj){
 	obj->building_pre_init();
 	creator.push(obj->get_name(),obj);
 }
-AOC::Building* BuildingCreator::create(std::string type_name){
+Building* BuildingCreator::create(std::string type_name){
 	if (!creator.get(type_name)) {
 		std::cerr << "Building name:" << type_name
 				<< " not exist in this BuildingCreator" << std::endl;

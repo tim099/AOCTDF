@@ -7,6 +7,7 @@ Chariot::Chariot() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_chariot");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_chariot");
 	weight=50;
+	name="Chariot";
 }
 Chariot::~Chariot() {
 

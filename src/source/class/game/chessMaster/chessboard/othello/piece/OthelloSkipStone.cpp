@@ -6,6 +6,7 @@ OthelloSkipStone::OthelloSkipStone() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/black_skip");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/white_skip");
 	weight=1;
+	name="skip_stone";
 }
 OthelloSkipStone::~OthelloSkipStone() {
 

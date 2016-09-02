@@ -14,7 +14,7 @@
 #include "class/game/chessMaster/chessboard/BoardMCT.h"
 #include "class/game/chessMaster/chessboard/Board.h"
 #include "class/tim/array/vector.h"
-
+#include "class/tim/math/vec2.h"
 namespace Display{
 	class ModelBufferMap;
 	class TextureMap;
@@ -114,6 +114,8 @@ public:
 	glm::ivec2 selected_piece;
 	double cube_size;
 	std::vector<Piece*>pieces;
+	math::vec2<int>board_size;
+	math::vec2<int>board_start;
 	CM::Board<short int>*chess_board;//all chess on the board
 	//Tim::Array2D<short int> *chess_board;
 	Tim::Array3D<unsigned char> *board;//the chess_board's structure

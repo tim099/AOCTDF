@@ -4,6 +4,7 @@
 namespace CM {
 
 Renju::Renju() {
+
 	dir_path="files/game/chessMaster/game/renju/";
 	game_name="Renju";
 	init_drawobject();

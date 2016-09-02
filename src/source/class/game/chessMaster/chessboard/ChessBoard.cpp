@@ -23,6 +23,8 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	model_map=0;
 	tex_map=0;
 	draw_map=0;
+	board_size=math::vec2<int>(8,8);
+	board_start=math::vec2<int>(0,0);
 	game_name="unknown chess game";
 	dboard = new Display::DynamicDrawObject();
 	Display::Draw::get_cur_object()->push(dboard);//remember to remove before delete dboard
@@ -161,12 +163,14 @@ int ChessBoard::get_chess_num_delta(lua_State *L){
 
 	return 1;
 }
+
 bool ChessBoard::bound_check(int x,int y){
-	if(x<0||y<0||x>=chess_board->sizex||y>=chess_board->sizey){
+	if(x<board_start.x||y<board_start.y||x>=board_size.x+board_start.x||y>=board_size.y+board_start.y){
 		return false;
 	}
 	return true;
 }
+
 bool ChessBoard::set_type(int x,int y,short int val){
 	if(x<0||y<0||x>=chess_board->sizex||y>chess_board->sizey){
 		return false;
@@ -188,7 +192,11 @@ Piece* ChessBoard::get_piece(int x,int y){
 	if(type==0)return 0;
 
 	if(type<0)type*=-1;
-	return pieces.at(type-1);
+	type-=1;
+	if(type>=0&&type<(int)pieces.size()){
+		return pieces.at(type);
+	}
+	return 0;
 }
 int ChessBoard::get_type(int x,int y,int z){
 	if(x<0||y<0||z<0||x>=board->sizex||y>=board->sizey||z>board->sizez){
@@ -229,11 +237,20 @@ void ChessBoard::load_script(std::string path){
 		}else if(line=="cube_type_num:"){
 			Tim::String::get_line(is, line, true, true);
 			sscanf(line.c_str(),"%d",&cube_type_num);
+		}else if(line=="board_size:"){
+			Tim::String::get_line(is,line, true, true);
+			sscanf(line.c_str(),"%d,%d",&board_size.x,&board_size.y);
+			//::cout<<"board size="<<board_size.x<<","<<board_size.y<<std::endl;
+		}else if(line=="board_start:"){
+			Tim::String::get_line(is,line, true, true);
+			sscanf(line.c_str(),"%d,%d",&board_start.x,&board_start.y);
+			//std::cout<<"board size="<<board_size.x<<","<<board_size.y<<std::endl;
 		}
 	}
 
 	init_drawobject();
 	load_pieces(dir_path+"chessBoard/pieces.txt");
+
 	load_board(dir_path+"chessBoard/board.txt");
 
 	dboard->init_drawObject("",tex_path,normal_path,true);
@@ -283,11 +300,11 @@ void ChessBoard::load_pieces(std::string path){
 		if(line=="piece_name:"){
 			Tim::String::get_line(is, line, true, true);
 			piece=new Piece();
-			piece->load_script(dir_path,"chessBoard/piece/"+line);
-
+			piece->load_script(dir_path+"chessBoard/piece/",line);
 			pieces.push_back(piece);
 		}
 	}
+
 	file.close();
 	init_pieces();
 }
@@ -305,6 +322,9 @@ void ChessBoard::load_mct(){
 			",total wins:"<<mct->step_root->data.wins<<std::endl;
 }
 void ChessBoard::save_board(std::string path){
+	for(unsigned i=0;i<pieces.size();i++){
+		pieces.at(i)->save_basic_rule(dir_path+"chessBoard/piece/"+pieces.at(i)->get_name()+".rule");
+	}
 	FILE * file = fopen(path.c_str(),"w+t");
 	fprintf(file,"%d %d %d\n",board->sizex,board->sizey,board->sizez);
 	int type;
@@ -327,9 +347,13 @@ void ChessBoard::save_board(std::string path){
 			fprintf(file,"\n");
 	}
 	fclose(file);
+
+
 }
 void ChessBoard::load_board(std::string path){
-
+	for(unsigned i=0;i<pieces.size();i++){
+		pieces.at(i)->load_basic_rule(dir_path+"chessBoard/piece/"+pieces.at(i)->get_name()+".rule");
+	}
 	FILE * file = fopen(path.c_str(),"r");
 	int sizex,sizey,sizez;
 	fscanf(file,"%d %d %d\n",&sizex,&sizey,&sizez);

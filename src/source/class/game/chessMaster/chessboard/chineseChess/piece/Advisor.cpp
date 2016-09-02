@@ -7,6 +7,7 @@ Advisor::Advisor() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_advisor");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_advisor");
 	weight=10;
+	name="Advisor";
 }
 Advisor::~Advisor() {
 

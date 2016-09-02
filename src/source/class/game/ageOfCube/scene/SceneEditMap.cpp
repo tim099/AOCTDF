@@ -5,6 +5,7 @@
 #include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
 #include "class/audio/AllAudioSources.h"
 #include "class/tim/string/String.h"
+#include "class/display/render/Renderer.h"
 #include <ctime>
 namespace AOC{
 SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size) {
@@ -34,7 +35,7 @@ void SceneEditMap::scene_initialize() {
 	camera = new Display::Camera(pos,
 			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
-	camera->shadow_far=120.0;
+	camera->shadow_far=200.0;
 	lightControl = new Display::LightControl(120);
 
 
@@ -196,6 +197,8 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 		cube_type = Cube::grass;
 	}else if(sig->get_data() == "build_stone_cube"){
 		cube_type = Cube::stone;
+	}else if(sig->get_data() == "reload_shader"){
+		Display::Renderer::get_cur_object()->reload_water_shader();
 	}
 }
 void SceneEditMap::handle_input() {

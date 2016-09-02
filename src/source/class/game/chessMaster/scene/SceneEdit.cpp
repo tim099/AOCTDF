@@ -1,8 +1,9 @@
 #include "class/game/chessMaster/scene/SceneEdit.h"
 
+#include "class/game/chessMaster/common.h"
+
 #include "class/game/chessMaster/chessboard/chineseChess/ChineseChess.h"
 #include "class/game/chessMaster/chessboard/renju/Renju.h"
-#include "class/game/chessMaster/common.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/game/chessMaster/AI/AI.h"
@@ -13,12 +14,19 @@
 #include "class/display/texture/AllTextures.h"
 #include "class/tim/string/String.h"
 #include "class/game/chessMaster/chessboard/ChessBoardCreator.h"
+
 #include <stdlib.h>
 #include <time.h>
 namespace CM {
 namespace scene{
 SceneEdit::SceneEdit() {
 	UI = 0;
+	edit_board_UI=0;
+	edit_chess_UI=0;
+	edit_rule_UI=0;
+	rule_UI=0;
+	selected_piece=0;
+	selected_rule=0;
 	local_path = std::string("scene/edit/");
 	chess_board = 0;
 	camera = 0;
@@ -26,8 +34,10 @@ SceneEdit::SceneEdit() {
 	destruct_mode=false;
 	type=1;
 	chess_type=0;
-	edit_chess=false;
+	//edit_chess=false;
 	back_music=0;
+
+	mode=edit_board;
 }
 SceneEdit::~SceneEdit() {
 
@@ -35,6 +45,11 @@ SceneEdit::~SceneEdit() {
 void SceneEdit::init_board(){
 	type=1;
 	chess_type=0;
+	selected_piece=0;
+	selected_rule=0;
+}
+void SceneEdit::loading(){
+
 }
 void SceneEdit::scene_initialize() {
 	chess_board=new Renju();
@@ -67,28 +82,38 @@ void SceneEdit::scene_initialize() {
 
 	draw->set_lightControl(light_control);
 	UI = new UI::UI(CM::folder_path+local_path+"UI/UI.txt");
-
+	edit_chess_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_chessUI.txt");
+	edit_board_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_boardUI.txt");
+	edit_rule_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_ruleUI.txt");
+	rule_UI=new UI::UI(CM::folder_path+local_path+"UI/pieceUI.txt");
 	back_music=new Audio::AudioPlayer();
 	back_music->set_source("default_music/prepare_your_swords.wav");
 	back_music->set_volume(0.2);
 	back_music->set_loop(true);
 	input->push_receiver(new Input::Receiver("edit_chess"));
+	input->push_receiver(new Input::Receiver("edit_rule"));
+	input->push_receiver(new Input::Receiver("add_rule"));
 	resume();
 	std::cout<<"SceneEdit::scene_initialize() 2"<<std::endl;
-}
-void SceneEdit::loading(){
-
 }
 void SceneEdit::scene_terminate() {
 	std::cout<<"SceneEdit::scene_terminate() 1"<<std::endl;
 	input->remove_receiver("edit_chess");
+	input->remove_receiver("edit_rule");
+	input->remove_receiver("add_rule");
 	if(back_music)delete back_music;
 	std::cout<<"SceneEdit::scene_terminate() 2"<<std::endl;
 	delete chess_board;
 	std::cout<<"SceneEdit::scene_terminate() 3"<<std::endl;
 	delete camera;
 	delete light_control;
-	delete UI;
+
+	if(edit_chess_UI)delete edit_chess_UI;
+	if(edit_board_UI)delete edit_board_UI;
+	if(edit_rule_UI)delete edit_rule_UI;
+	if(rule_UI)delete rule_UI;
+	if(UI)delete UI;
+
 	std::cout<<"SceneEdit::scene_terminate() 4"<<std::endl;
 }
 void SceneEdit::pause(){
@@ -104,32 +129,42 @@ void SceneEdit::handle_signal(Input::Signal *sig){
 	std::vector<std::string> strs;
 	Tim::String::split(sig->get_data(),"_",strs);
 	if(sig->get_data()=="Edit_chess"){
-		edit_chess=true;
+		mode=edit_piece;
 	}else if(sig->get_data()=="Edit_board"){
-		edit_chess=false;
+		mode=edit_board;
+	}else if(sig->get_data()=="Edit_rule"){
+		mode=edit_rule;
 	}else if(sig->get_data()=="load_board"){
 		chess_board->load_board(chess_board->dir_path+"chessBoard/board.txt");
 	}else if(sig->get_data()=="save_board"){
 		chess_board->save_board(chess_board->dir_path+"chessBoard/board.txt");
 	}else if(sig->get_data()=="plus"){
-		if(edit_chess){
+		if(mode==edit_piece||mode==edit_rule){
 			if(chess_type<(int)chess_board->pieces.size()){
 				chess_type++;
 			}
-		}else{
+		}else if(mode==edit_board){
 			if(type<chess_board->cube_type_num)type++;
 		}
 
 	}else if(sig->get_data()=="minus"){
-		if(edit_chess){
+		if(mode==edit_piece||mode==edit_rule){
 			if(chess_type>0)chess_type--;
-		}else{
+		}else if(mode==edit_board){
 			if(type>1)type--;
 		}
 	}else if(sig->get_data()=="switch_player"){
 		destruct_mode^=1;
+	}else if(sig->get_data()=="destruct"){
+			destruct_mode=true;
+	}else if(sig->get_data()=="build"){
+			destruct_mode=false;
+	}else if(sig->get_data()=="remove_rule"){
+			if(selected_piece&&selected_rule){
+				selected_piece->remove_basic_rule(selected_rule);
+				selected_rule=0;
+			}
 	}
-
 	//
 	//std::cerr<<"SceneEdit::handle_signal 2"<<std::endl;
 	//std::cout<<sig->get_data()<<std::endl;
@@ -197,20 +232,23 @@ void SceneEdit::handle_input(){
 	if(input->keyboard->get('V')){
 		destruct_mode^=1;
 	}
-	if (input->mouse->left_clicked()) {
-		if(!destruct_mode){
-			if(edit_chess){
-					chess_board->set_type(chess_board->selected_on.x,
-							chess_board->selected_on.z,chess_type);
+
+	if(mode==edit_piece){
+		if (input->mouse->left_clicked()) {
+			if(!destruct_mode){
+				chess_board->set_type(chess_board->selected_on.x,
+						chess_board->selected_on.z,chess_type);
 			}else{
-					chess_board->set_type(chess_board->selected_on.x,
-										chess_board->selected_on.y,
-										chess_board->selected_on.z,type);
-			}
-		}else{
-			if(edit_chess){
 				chess_board->set_type(chess_board->selected_on.x,
 						chess_board->selected_on.z,-chess_type);
+			}
+		}
+	}else if(mode==edit_board){
+		if (input->mouse->left_clicked()) {
+			if(!destruct_mode){
+				chess_board->set_type(chess_board->selected_on.x,
+									chess_board->selected_on.y,
+									chess_board->selected_on.z,type);
 			}else{
 				chess_board->set_type(chess_board->selected_cube.x,
 									chess_board->selected_cube.y,
@@ -218,25 +256,37 @@ void SceneEdit::handle_input(){
 			}
 		}
 
+	}else if(mode==edit_rule){
+		if (input->mouse->left_clicked()) {
+			if(chess_board->selected_on.x>=0&&chess_board->selected_on.z>=0){
+				set_selected_piece(chess_board->get_piece(chess_board->selected_piece.x,
+						chess_board->selected_piece.y));
+			}
+		}
+
+
 	}
 
-	if(input->keyboard->get('Q')){
-		edit_chess^=1;
+	if(input->keyboard->get('P')){
+		mode=edit_piece;
+	}
+	if(input->keyboard->get('B')){
+		mode=edit_board;
 	}
 	if(input->keyboard->get(Input::KeyCode::Plus)){
-		if(edit_chess){
+		if(mode==edit_piece||mode==edit_rule){
 			if(chess_type<(int)chess_board->pieces.size()){
 				chess_type++;
 			}
-		}else{
+		}else if(mode==edit_board){
 			if(type<chess_board->cube_type_num)type++;
 		}
 
 	}
 	if(input->keyboard->get(Input::KeyCode::Minus)){
-		if(edit_chess){
+		if(mode==edit_piece||mode==edit_rule){
 			if(chess_type>0)chess_type--;
-		}else{
+		}else if(mode==edit_board){
 			if(type>1)type--;
 		}
 	}
@@ -244,10 +294,36 @@ void SceneEdit::handle_input(){
 }
 void SceneEdit::scene_update(){
 	camera->update();
+	edit_chess_UI->hide=true;
+	edit_board_UI->hide=true;
+	edit_rule_UI->hide=true;
+	if(mode==edit_piece){
+		edit_chess_UI->hide=false;
+	}else if(mode==edit_board){
+		edit_board_UI->hide=false;
+	}else if(mode==edit_rule){
+		edit_rule_UI->hide=false;
+		edit_rule_UI->update_UIObject();
+
+		if(selected_piece){
+			selected_piece->update_rule_UI(rule_UI);
+			if(selected_rule){
+				selected_rule->update_UI();
+			}
+		}
+	}
+	edit_chess_UI->update_UIObject();
+	edit_board_UI->update_UIObject();
 
 	UI->update_UIObject();
 	chess_board->find_select_cube();
 	chess_board->winner=chess_board->check_winner(chess_board->chess_board);
+}
+void SceneEdit::set_selected_piece(Piece *piece){
+	piece_at.x=chess_board->selected_on.x;
+	piece_at.y=chess_board->selected_on.z;
+	selected_piece=piece;
+	selected_rule=0;
 }
 void SceneEdit::scene_update_end(){
 	handle_input();
@@ -257,9 +333,27 @@ void SceneEdit::scene_update_end(){
 		chess_board=ChessBoardCreator::create(sig->get_data());
 		init_board();
 	}
+	while(Input::Signal*sig=input->get_signal("edit_rule")){
+		//std::cout<<"edit_rule:"<<sig->get_data()<<std::endl;
+		unsigned rule_num=Tim::String::str_to_int(sig->get_data());
+		std::cout<<"edit_rule:"<<rule_num<<std::endl;
+		if(selected_piece){
+			if(rule_num<selected_piece->basic_rules.size()){
+				selected_rule=selected_piece->basic_rules.at(rule_num);
+			}
+		}
+	}
+	while(Input::Signal*sig=input->get_signal("add_rule")){
+		if(selected_piece){
+			selected_piece->add_rule(sig->get_data());
+		}
+	}
 }
 void SceneEdit::scene_draw(){
 	UI->draw_UIObject(draw);
+	edit_chess_UI->draw_UIObject(draw);
+	edit_board_UI->draw_UIObject(draw);
+	edit_rule_UI->draw_UIObject(draw);
 
 	Display::DrawObject* galaxy=Display::AllDrawObjects::get_cur_object()->get("default/galaxy");
 	Display::DrawDataObj* data=new Display::DrawDataObj(&back_ground_pos,false,false);
@@ -268,28 +362,61 @@ void SceneEdit::scene_draw(){
 
 
 	draw->push(new Display::RenderString(Tim::String::to_string(chess_board->selected_piece.x)+","+
-	Tim::String::to_string(chess_board->selected_piece.y),0.02,math::vec2<float>(0.6,0.9)));
+	Tim::String::to_string(chess_board->selected_piece.y),0.02,math::vec2<float>(0.7,0.98)));
 
-	if(edit_chess){
+	if(mode==edit_piece){
 		static math::Position pos=math::Position(glm::vec3(), glm::vec3());
 		pos.set_pos(glm::vec3((chess_board->selected_on.x+0.5f)*chess_board->cube_size,
 				(chess_board->selected_on.y+0.5f)*chess_board->cube_size,
 				(chess_board->selected_on.z+0.5f)*chess_board->cube_size));
 		if(chess_type>0)chess_board->pieces.at(chess_type-1)->draw(&pos,!destruct_mode);
-		draw->push(new Display::RenderString("Edit Chess",0.02,math::vec2<float>(0.8,0.98)));
-		draw->push(new Display::RenderString("Piece type="+Tim::String::to_string(chess_type),
-				0.02,math::vec2<float>(0.8,0.93)));
-		draw->push(new Display::RenderString("if type==0,remove chess",0.02,math::vec2<float>(0.7,0.88)));
-	}else{
+		draw->push(new Display::RenderString("Edit Piece",0.02,math::vec2<float>(0.8,0.98)));
+		//draw->push(new Display::RenderString("Piece type="+Tim::String::to_string(chess_type),
+				//0.02,math::vec2<float>(0.8,0.93)));
+		if(chess_type!=0){
+			draw->push(new Display::RenderString("Piece="+chess_board->pieces.at(abs(chess_type)-1)->get_name(),
+							0.02,math::vec2<float>(0.8,0.93)));
+		}else{
+			draw->push(new Display::RenderString("remove Piece",0.02,math::vec2<float>(0.8,0.93)));
+		}
+	}else if(mode==edit_board){
 		draw->push(new Display::RenderString("Edit Board",0.02,math::vec2<float>(0.8,0.98)));
 		draw->push(new Display::RenderString("Board type="+Tim::String::to_string(type),
 				0.02,math::vec2<float>(0.8,0.93)));
 
-		Display::DrawData2D* data = new Display::DrawData2D(1.0,math::vec2<float>(0.85,0.85),0.1);
+		Display::DrawData2D* data = new Display::DrawData2D(1.0,math::vec2<float>(0.85,0.88),0.08);
 		data->layer=type-1;
 		Display::Texture* texture=Display::AllTextures::get_cur_tex(chess_board->tex_path);
-		//light_control
 		draw->push(new Display::DrawTexture(texture, data));
+	}if(mode==edit_rule){
+		draw->push(new Display::RenderString("Edit Rule",0.02,math::vec2<float>(0.8,0.98)));
+
+		if(selected_piece){
+			draw->push(new Display::RenderString("Piece="+selected_piece->get_name(),0.02,
+					math::vec2<float>(0.8,0.93)));
+			rule_UI->draw_UIObject(draw);
+			if(selected_rule){
+				selected_rule->draw_UI();
+
+				Tim::vector<CM::Step> next_step;
+				selected_rule->next_step(chess_board->chess_board,piece_at.x,
+						piece_at.y,next_step);
+				for(unsigned i=0;i<next_step.size();i++){
+					next_step[i].draw_next_step();
+				}
+			}
+			Display::CubeLight* cl;
+			cl=new Display::CubeLight();
+			cl->size=1.01f*chess_board->cube_size;
+			cl->color=glm::vec3(0.5,0.5,0.5);
+			cl->pos=glm::vec3((piece_at.x+0.5f)*chess_board->cube_size,
+							  (2.5f)*chess_board->cube_size,
+							  (piece_at.y+0.5f)*chess_board->cube_size);
+			light_control->push_temp_light(cl);
+		}
+
+		//*/
+
 	}
 
 

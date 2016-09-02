@@ -7,6 +7,7 @@ Horse::Horse() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_horse");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_horse");
 	weight=30;
+	name="Horse";
 }
 Horse::~Horse() {
 

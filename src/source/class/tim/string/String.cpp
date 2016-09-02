@@ -22,6 +22,11 @@ std::string String::to_string(int num){
 	sprintf(cnum,"%d",num);
 	return std::string(cnum);
 }
+std::string String::to_string(unsigned num){
+	char cnum[100];
+	sprintf(cnum,"%u",num);
+	return std::string(cnum);
+}
 std::string String::to_string(double num){
 	char cnum[100];
 	sprintf(cnum,"%.2lf",num);

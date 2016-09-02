@@ -16,7 +16,7 @@ public:
 		return "AutoPageControl";
 	}
 
-	void create_pages(std::vector<std::string> &names);
+	void create_pages(std::vector<std::string> &names,std::vector<std::string> *signals=0);
 	void update_pages();
 	void set_path(std::string load_path);
 protected:

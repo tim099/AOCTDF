@@ -42,11 +42,25 @@ protected:
 	void camera_control();
 
 	void init_board();
+
+	void set_selected_piece(Piece *piece);
+
+	enum Mode{
+		edit_piece,edit_board,edit_rule
+	};
 	math::Position back_ground_pos;
 	UI::UI *UI;
+	UI::UI *edit_chess_UI;
+	UI::UI *edit_board_UI;
+	UI::UI *edit_rule_UI;
+	UI::UI *rule_UI;
 	ChessBoard *chess_board;
+	Piece *selected_piece;
+	glm::ivec2 piece_at;
+	BasicRule* selected_rule;
 	Display::Camera* camera;
 	Audio::AudioPlayer *back_music;
+
 	//CM::AI *ai;
 
 	Display::LightControl* light_control;
@@ -56,7 +70,8 @@ protected:
 	int chess_type;
 	glm::ivec2 s;
 	//int prev_sx,prev_sy;
-	bool edit_chess;
+	Mode mode;
+	//bool edit_chess;
 };
 }
 } /* namespace CM */

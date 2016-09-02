@@ -7,6 +7,7 @@ Soildier::Soildier() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_soldier");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_soldier");
 	weight=7;
+	name="Soildier";
 }
 Soildier::~Soildier() {
 

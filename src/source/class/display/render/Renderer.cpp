@@ -40,6 +40,7 @@ Renderer::Renderer(Draw *_d_obj, Window *_window) {
 	creat_shaders();
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	this->register_cur();
 	//wglSwapIntervalEXT(1);
 	//std::vector<std::string> files=Tim::File::get_all_files("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
@@ -58,7 +59,13 @@ Renderer::~Renderer() {
 	}
 	glDeleteVertexArrays(1, &VertexArrayID);
 }
-
+void Renderer::reload_water_shader(){
+	delete shaderWater;
+	shaderWater=new Shader();
+	shaderWater->LoadShader("files/shader/water/water.vert",
+				"files/shader/water/water.geo",
+				"files/shader/water/water.frag");
+}
 void Renderer::set_window(Window *_window) {
 	window = _window;
 }

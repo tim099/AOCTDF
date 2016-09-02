@@ -105,6 +105,8 @@ public:
 				total_move_num--;
 			}
 			i+=2;
+		}else if(next_step[i]==-2){
+
 		}
 	}
 	int score;

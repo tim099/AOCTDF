@@ -20,6 +20,7 @@ protected:
 	virtual void Parse_UIString(std::ostream &os);
 	virtual void draw_UIString(Display::Draw* draw);
 	std::string tex_path;
+	double width;
 };
 
 } /* namespace UI */

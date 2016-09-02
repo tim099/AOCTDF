@@ -15,6 +15,7 @@ EnterString::EnterString() {
 	input_mode=true;
 	cur_input_str=this;
 	tex_path="UI/UI/button2";
+	width=0.2;
 }
 EnterString::~EnterString() {
 
@@ -58,7 +59,7 @@ void EnterString::update(){
 				str->push_back((char)c);
 				*str+=tmp;
 				cur_insert_at++;
-				size = math::vec2<float>(1,2)*Display::RenderString::string_size(str,font_size);
+				size=math::vec2<float>(1,2)*Display::RenderString::string_size(str,font_size);
 			}
 		}
 		keyboard->clear_keys();
@@ -75,6 +76,7 @@ void EnterString::update(){
 			insert_at=-1;
 		}
 	}
+	size.x=width;
 }
 void EnterString::draw_UIString(Display::Draw* draw){
 	Display::Texture*tex2D=Display::AllTextures::get_cur_tex(tex_path);
@@ -90,13 +92,15 @@ void EnterString::draw_UIString(Display::Draw* draw){
 		}
 	}else{
 		data->ex_datas.push_back(
-				new Display::drawDataEX::ColorAlter(glm::vec3(-0.2,-0.2,-0.2)));
+				new Display::drawDataEX::ColorAlter(glm::vec3(-0.3,-0.3,-0.3)));
 	}
 	draw->push(new Display::DrawTexture(tex2D, data));
 }
 void EnterString::Parse_UIString(std::istream &is,std::string &line){
 	if (line == "Texture:") {
 		Tim::String::get_line(is, tex_path, true, true);
+	}else if(line == "Width:"){
+		is>>width;
 	}
 }
 void EnterString::Parse_UIString(std::ostream &os){

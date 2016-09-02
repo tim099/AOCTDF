@@ -9,6 +9,7 @@ public:
 	String();
 	virtual ~String();
 	static std::string to_string(int num);
+	static std::string to_string(unsigned num);
 	static std::string to_string(double num);
 	static int str_to_int(std::string str);
 

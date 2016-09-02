@@ -61,6 +61,7 @@ void PictureButton::Parse_UIScript(std::istream &is, std::string &line) {
 		Tim::String::get_line(is, line, true, true);
 		float str_size = auto_Size;
 		if (line == "String_size:") {
+			//std::cout<<"string size:"<<*str<<std::endl;
 			is >> str_size;
 		}
 		set_string(str, str_size);

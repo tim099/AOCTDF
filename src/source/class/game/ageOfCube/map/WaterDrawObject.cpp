@@ -6,7 +6,7 @@ WaterDrawObject::WaterDrawObject() {
 }
 void WaterDrawObject::init(){
 	init_drawObject("","","",false);
-	mat=math::vec4<float>(0.3,0.9,0.13,0.15);
+	mat=math::vec4<float>(0.3,10.9,0.13,0.15);
 
 	alpha_drawobject=true;
 }

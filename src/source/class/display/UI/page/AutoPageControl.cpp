@@ -34,7 +34,7 @@ void AutoPageControl::Parse_button_template(std::istream &is,std::string &line){
 		}
 	}
 }
-void AutoPageControl::create_pages(std::vector<std::string> &names){
+void AutoPageControl::create_pages(std::vector<std::string> &names,std::vector<std::string> *signals){
 	clear_child();
 	if(names.empty())return;
 	int page_num=(names.size()/button_per_page);
@@ -50,7 +50,11 @@ void AutoPageControl::create_pages(std::vector<std::string> &names){
 		for(int j=0;j<button_per_page;j++){
 			cur_but=(PictureButton *)button_template->copy_UIObject();
 			cur_but->set_string(new std::string(names.at(cur_name)),0);
-			cur_but->set_signal(new Input::Signal(names.at(cur_name),sent_to));
+			if(signals&&(int)signals->size()>cur_name){
+				cur_but->set_signal(new Input::Signal(signals->at(cur_name),sent_to));
+			}else{
+				cur_but->set_signal(new Input::Signal(names.at(cur_name),sent_to));
+			}
 			cur_group->push_child(cur_but);
 			cur_name++;
 			if(cur_name>=(int)names.size())break;

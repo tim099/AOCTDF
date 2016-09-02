@@ -8,6 +8,7 @@ Stone::Stone() {
 	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("renju/black");
 	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("renju/white");
 	weight=1;
+	name="stone";
 }
 Stone::~Stone() {
 

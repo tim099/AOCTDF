@@ -4,7 +4,7 @@
 #include "class/display/texture/texture3D/Texture2DArr/Texture2DArr.h"
 #include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
 #include "class/display/texture/AllTextures.h"
-
+#include "class/tim/globalObject/GlobalObject.h"
 
 namespace Display{
 class Shader;
@@ -15,13 +15,14 @@ class Camera;
 class Window;
 class Mouse;
 class Draw;
-class Renderer{
+class Renderer : public Tim::GlobalObject<Renderer>{
 
 public:
 	Renderer(Draw *d_obj,Window *window);
 	virtual ~Renderer();
 	bool Rendering()const;
 	void render();
+	void reload_water_shader();
 	void set_window(Window *window);
 
 	void switch_shader(std::string name);
