@@ -23,6 +23,10 @@ AreaOfEffect::AreaOfEffect() {
 	timer=0;
 	type=0;
 	explode_timer=0;
+	this->special_collide_off=true;
+	this->be_collide_off=true;
+	stop_when_collide=false;
+	physical = false;
 }
 
 AreaOfEffect::AreaOfEffect(AreaOfEffect *aoe){
@@ -30,6 +34,10 @@ AreaOfEffect::AreaOfEffect(AreaOfEffect *aoe){
 	timer=aoe->timer;
 	type=aoe->type;
 	explode_timer=0;
+	this->special_collide_off=true;
+	this->be_collide_off=true;
+	stop_when_collide=false;
+	physical = false;
 }
 
 AreaOfEffect::~AreaOfEffect() {

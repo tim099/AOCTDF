@@ -15,6 +15,7 @@ RigidBody::RigidBody() {
 	be_collided=false;
 	stable = false;
 	mass=1.0;
+	physical = true;
 }
 RigidBody::~RigidBody() {
 	//std::cout<<"RigidBody::~RigidBody()="<<this<<std::endl;
@@ -93,8 +94,11 @@ void RigidBody::bounce_off_from(RigidBody* b){
 }
 
 void RigidBody::collide_action(RigidBody* b){
-	if(!stable)bounce_off_from(b);
-	if(!b->stable)b->bounce_off_from(this);
+	if(physical && b->physical){
+		if(!stable)bounce_off_from(b);
+		if(!b->stable)b->bounce_off_from(this);
+	}
+
 }
 void RigidBody::be_collide_action(RigidBody* b){
 
