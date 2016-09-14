@@ -36,6 +36,7 @@ public:
 	bool special_collide_off;
 	bool stop_when_collide;
 	bool stable; //wont move when collided
+	bool physical;
 
 	math::vec3<double> rotate;
 	math::vec3<double> vel;
