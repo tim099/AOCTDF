@@ -14,25 +14,37 @@ Stone::~Stone() {
 
 }
 void Stone::next_step(CM::Board<short int> *chess_board,
-		int x,int y,Tim::vector<CM::Step> &next_step,int player){
+		int x,int y,Tim::vector<CM::Step> &next_steps,int player){
 	if(bound_check(x,y)){//in chess board
+		std::vector<int> next;
+		next.reserve(120);
+		basic_next_step(chess_board,x,y,next,player);
+		CM::Step next_step;
+		int i=0;
+		while(i<(int)next.size()){
+			next_step.parse_step(chess_board,x,y,next,i);
+			next_steps.push_back(next_step);
+		}
 		return;
 	}
 	CM::Step cur_step;
 	cur_step.add_move(0,0,player,1);
-	for(int i=0;i<Renju::board_size;i++){
-		for(int j=0;j<Renju::board_size;j++){
+	for(int i=0;i<Renju::board_width;i++){
+		for(int j=0;j<Renju::board_width;j++){
 			if(chess_board->get(i,j)==0){
 				cur_step.moves[0].x=i;
 				cur_step.moves[0].y=j;
-				next_step.push_back(cur_step);
+				next_steps.push_back(cur_step);
 			}
 		}
 	}
-	if(next_step.size()==0){
+	if(next_steps.size()==0){
 		CM::Step null_step;
 		null_step.add_move(9,4,player,1);
-		next_step.push_back(null_step);
+		next_steps.push_back(null_step);
 	}
+
+
+
 }
 } /* namespace CM */

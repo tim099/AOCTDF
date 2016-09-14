@@ -30,9 +30,19 @@ Socket::Socket(SOCKET _socket_handle){
 	socket_handle=_socket_handle;
 }
 Socket::~Socket() {
-	closesocket(socket_handle);
+	sock_close();
 	//WSACleanup();
 }
+void Socket::sock_close(){
+	if(socket_handle){
+		closesocket(socket_handle);
+		socket_handle=0;
+	}
+}
+void Socket::sock_shutdown(int how){
+	shutdown(socket_handle,how);
+}
+
 std::string Socket::get_external_address(){
 	HINTERNET hInternet, hFile;
 	DWORD rSize;
@@ -95,16 +105,22 @@ void Socket::sent_data(std::string str){
 void Socket::sent_data(char* data,unsigned len){
 	send(socket_handle,data,len,0);
 }
+void Socket::unblock_mode(){
+	unsigned long int val=1;
+	ioctlsocket(1,socket_handle,&val);
+}
 std::string Socket::receive_data(){
 	char message[buffer_len];
 	memset(message,0,buffer_len);
-	recv(socket_handle, message, sizeof(message),0);
+	recv(socket_handle, message, sizeof(message),0);//int n=
 	return std::string(message);
 }
-void Socket::connect_server(){
+bool Socket::connect_server(){
 	if(connect(socket_handle,(SOCKADDR*)&addr,sizeof(addr))){//connect fail
 		std::cerr<<"Socket::connect_server failed with error:"<<WSAGetLastError()<<std::endl;
+		return false;
 	}
+	return true;
 }
 }
 } /* namespace socket */

@@ -15,7 +15,7 @@ Piece::Piece() {
 	weight=1;
 	draw_piece1=0;
 	draw_piece2=0;
-	//type=1;
+	type=1;
 	rule=0;
 	name="default";
 	rule_mutex=new Tim::Mutex();
@@ -61,6 +61,7 @@ void Piece::load_script(std::string dir_path,std::string path){
 	}
 	std::istream is(&file);
 	std::string line;
+	bool no_lua_rule=false;
 	while(Tim::String::get_line(is, line, true, true)&&line!="#END"){
 		if(line=="draw_piece1:"){
 			Tim::String::get_line(is, line, true, true);
@@ -71,6 +72,8 @@ void Piece::load_script(std::string dir_path,std::string path){
 		}else if(line=="weight:"){//.lua file
 			Tim::String::get_line(is, line, true, true);
 			sscanf(line.c_str(),"%d",&weight);
+		}else if(line=="#no_lua_rule"){
+			no_lua_rule=true;
 		}else if(line!=""){
 			std::cerr<<"Piece::load_script unknown script:"<<line<<std::endl;
 		}
@@ -79,10 +82,15 @@ void Piece::load_script(std::string dir_path,std::string path){
 		delete rule;
 		rule=0;
 	}
-	rule=new Tim::Lua();
-	rule->loadfile((dir_path+path+".lua"));
-	rule->rigister_function("get_board",ChessBoard::get_board);
-	rule->p_call(0,0,0);
+	if(!no_lua_rule){
+		rule=new Tim::Lua();
+		rule->loadfile((dir_path+path+".lua"));
+		rule->rigister_function("get_board",ChessBoard::get_board);
+		rule->p_call(0,0,0);
+	}else{
+		std::cout<<"Piece::load_script no lua rule:"<<name<<std::endl;
+	}
+
 	//load_basic_rule(dir_path+path+".rule");
 
 }
@@ -134,6 +142,8 @@ void Piece::save_basic_rule(std::string path){
 }
 void Piece::next_step(CM::Board<short int> *chess_board,
 		int x,int y,std::vector<int> &next_step,int player){
+	if(!rule)return;
+
 	rule_mutex->wait_for_this();
 	//ChessBoard::get_cur_object()->set_current(chess_board);
 	rule->pushlightuserdata(chess_board);

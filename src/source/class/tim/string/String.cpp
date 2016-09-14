@@ -88,6 +88,29 @@ void String::split(std::string str,std::string delimiter,std::vector<std::string
 		out.push_back(str.substr(pos,str.size()-pos));
 	}
 }
+void String::split_into_two(std::string str,std::string delimiter,std::string &a,std::string &b){
+	unsigned pos=0;
+	bool start=false;
+	bool flag=false;
+	for(unsigned i=0;i<str.size();i++){
+		if(start){//start
+			if(within(str[i],delimiter)){//find delimiter, out put end!!
+				start=false;
+				a=(str.substr(pos,i-pos));
+				flag=true;
+			}
+		}else{//not start yet
+			if(!within(str[i],delimiter)){//char to output
+				start=true;
+				pos=i;
+				if(flag)break;
+			}
+		}
+	}
+	if(start){
+		b=(str.substr(pos,str.size()-pos));
+	}
+}
 void String::get_between(std::istream &is,std::string& strline,std::string delimiter){
 	strline="";
 	char c=0;

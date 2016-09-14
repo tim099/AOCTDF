@@ -19,18 +19,19 @@ AI::AI() {
 	traning_mode=false;
 	total_compute=0;
 	total_test=0;
+	do_pruning=true;
 	steps_pool=new Tim::ObjPool<Tim::ObjPool<Tim::vector<CM::Step> > >;
 }
 AI::~AI() {
 	delete steps_pool;
 }
 void AI::search_start(Tim::ThreadPool *pool,
-		CM::ChessBoard* chess_board,int player,int depth,int pruning){
+		CM::ChessBoard* chess_board,int player,int depth){
 	if(searching||search_done){
 		return;
 	}
 	searching=true;
-	CM::TaskAI* task=new CM::TaskAI(this,pool,chess_board,player,depth,pruning);
+	CM::TaskAI* task=new CM::TaskAI(this,pool,chess_board,player,depth);
 	pool->push_task(task);
 	//task->join();
 	//find_best_step(pool,chess_board,player,depth,pruning);
@@ -51,15 +52,14 @@ void AI::test(CM::Board<short int> *chess_board,
 	}
 	steps_pool->free(next_step);
 }
-CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,int player,
-		int depth,int pruning){
+CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* _chess_board,int player,int depth){
 	total_compute=0;
 	board=_chess_board;
 	//std::cout<<"AI::find_best_step start"<<std::endl;
 	start_time=glfwGetTime();
 
 	CM::Board<short int> *cb=board->chess_board->clone();
-	CM::Step best=find_best_step(pool,cb,player,depth,pruning,true);
+	CM::Step best=find_best_step(pool,cb,player,depth,true);
 	delete cb;
 
 
@@ -85,8 +85,8 @@ int AI::evaluate_score(CM::Board<short int> *chess_board,
 		int player,int depth,int pruning,bool max,
 		Tim::ObjPool<Tim::vector<CM::Step> >* steps_pool){
 	CM::Step *cur;
-	int best_score,cur_score;
-	best_score=max?-MAX:MAX;
+	int best_score=max?-MAX:MAX;
+	int cur_score;
 
 	Tim::vector<CM::Step>* next_step=steps_pool->create();
 	board->find_next_step(chess_board,player,*next_step);
@@ -111,8 +111,8 @@ int AI::evaluate_score(CM::Board<short int> *chess_board,
 		}
 		if ((max && cur_score > best_score) || (!max && cur_score < best_score)) {
 			best_score = cur_score;
-			if ((max && pruning < best_score) || (!max && pruning > best_score)) {
-				//std::cout<<"pruning"<<std::endl;
+			if (do_pruning&&((max && pruning < best_score) || (!max && pruning > best_score))) {
+				//std::cout<<"node_max="<<max<<"pruning="<<pruning<<"best_score="<<best_score<<std::endl;
 				end=true;
 			}
 		}
@@ -172,12 +172,11 @@ void AI::get_node_scores(Tim::vector<CM::Step> &next_step,
 
 }
 CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_board,
-		int player,int depth,int pruning,bool max){
+		int player,int depth,bool max){
 	//std::cout<<"AI::find_best_step depth="<<depth<<std::endl;
-
 	CM::Step *cur;
 	CM::Step best;
-	int max_num=0;
+
 	best.score=max?-MAX:MAX;
 	Tim::vector<CM::Step> next_step;
 
@@ -191,13 +190,13 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_bo
 	std::vector<CM::Board<short int>*>prev_boards;
 
 	CM::Board<short int>* tmp_board=new CM::Board<short int>(chess_board);
-	for(int i=(board->steps.size()-1);(i>=0&&(board->steps.size()-i)<8);i--){
+	for(int i=(board->steps.size()-1);i>=0&&(board->steps.size()-i)<8;i--){
 		CM::Step step=board->steps.at(i);
 		step.undo(tmp_board);
 		prev_boards.push_back(new CM::Board<short int>(tmp_board));
 	}
 	delete tmp_board;
-	bool repeat;
+
 	std::vector<Tim::ObjPool<Tim::vector<CM::Step> >* >tmp_pools;
 
 	float SD;//standard deviation
@@ -205,6 +204,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_bo
 	std::vector<int>node_scores;
 	get_node_scores(next_step,chess_board,node_scores,SD,avg_node_score);
 
+	bool repeat;
 	CM::StepNode *next_node,*cur_node=board->get_cur_node();;
 	for(unsigned i=0;i<next_step.size();i++){
 		cur=&next_step[i];
@@ -228,6 +228,7 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_bo
 				}else{
 					Tim::ObjPool<Tim::vector<CM::Step> >*tmp_pool=steps_pool->create();
 					tmp_pools.push_back(tmp_pool);
+					//std::cout<<"best.score="<<best.score<<std::endl;
 					task=new CM::TaskComputeScore(this,cur,next_node,chess_board
 							,-player,depth-1,best.score,!max,tmp_pool);
 					tasks.push_back(task);
@@ -239,8 +240,6 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_bo
 				}else{
 					cur->score=-(MAX+1000);
 				}
-				//best=*cur;
-				//std::cout<<"AI::find_best_step winner!=0"<<std::endl;
 			}
 		}else{
 			if(max){
@@ -259,22 +258,21 @@ CM::Step AI::find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_bo
 		steps_pool->free(tmp_pools.at(i));
 	}
 	bool find=false;
+	int max_num=1;
 	for(unsigned i=0;i<next_step.size();i++){
 		cur=&next_step[i];
 
 		cur->score+=((node_scores.at(i)-avg_node_score)/(SD+1.0));
 		if(!find||(max&&cur->score>=best.score)||(!max&&cur->score<=best.score)){
 
-			if(cur->score==best.score){
+			if(find&&cur->score==best.score){
 				max_num++;
-				srand(time(NULL));
 				if(rand()%max_num==0){
-					find=true;
 					best=*cur;
 				}
 			}else{
 				find=true;
-				max_num=0;
+				max_num=1;
 				best=*cur;
 			}
 		}

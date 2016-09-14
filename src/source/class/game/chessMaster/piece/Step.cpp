@@ -2,6 +2,7 @@
 #include "class/game/chessMaster/chessboard/ChessBoard.h"
 #include "class/display/draw/Draw.h"
 #include "class/display/light/LightControl.h"
+#include "class/tim/string/String.h"
 #include <glm/vec3.hpp>
 #include <iostream>
 namespace CM {
@@ -32,6 +33,33 @@ void Step::load(FILE * file){
 	for(unsigned i=0;i<move_num;i++){
 		fscanf(file,"%d,%d,%d,%d\n",&x,&y,&z,&w);
 		moves[i].x=x;moves[i].y=y;moves[i].z=z;moves[i].w=w;
+	}
+}
+std::string Step::to_string(){
+	std::string str;
+	str+=Tim::String::to_string(score)+",";
+	str+=Tim::String::to_string(move_num)+",";
+	math::vec4<short int> *move;
+	for(unsigned i=0;i<move_num;i++){
+		move=&moves[i];
+		str+=Tim::String::to_string(move->x)+",";
+		str+=Tim::String::to_string(move->y)+",";
+		str+=Tim::String::to_string(move->z)+",";
+		str+=Tim::String::to_string(move->w)+",";
+	}
+	return str;
+}
+void Step::load_string(std::string str){
+	std::vector<std::string> strs;
+	Tim::String::split(str,",",strs);
+	int j=0;
+	score=Tim::String::str_to_int(strs.at(j++));
+	move_num=Tim::String::str_to_int(strs.at(j++));
+	for(unsigned i=0;i<move_num;i++){
+		moves[i].x=Tim::String::str_to_int(strs.at(j++));
+		moves[i].y=Tim::String::str_to_int(strs.at(j++));
+		moves[i].z=Tim::String::str_to_int(strs.at(j++));
+		moves[i].w=Tim::String::str_to_int(strs.at(j++));
 	}
 }
 bool Step::operator>(const Step& step){

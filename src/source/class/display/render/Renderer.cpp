@@ -133,13 +133,12 @@ void Renderer::render() {
 	data_2d=new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0);
 	//data_2d->push_ex_data(new Display::drawDataEX::SobelData(0.3,0.5));
 	FBO3D->color_textures.at(0)->draw_texture(shader2D,data_2d);
-
 	/*
-	shader2D->Enable(SobelMode | AddOnMode);
+	shader2D->Enable(Shader::SobelMode | Shader::AddOnMode);
 	shader2D->sent_Uniform("sobel_dv", glm::vec2(250, 120));
-	FBO->depth_textures.at(0)->draw_texture(shader2D,
+	FBO3D->depth_textures.at(0)->draw_texture(shader2D,
 			new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0));
-	shader2D->Disable(SobelMode | AddOnMode);
+	shader2D->Disable(Shader::SobelMode | Shader::AddOnMode);
 	*/
 	//draw 2D
 	data_2d=new DrawData2D(1.0, glm::vec2(0, 1.0), 1.0);

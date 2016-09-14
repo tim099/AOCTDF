@@ -15,8 +15,8 @@
 int main(){
 	game::GamePlayer player;
 
-	//player.play(new ChessMaster());
-	player.play(new AOC::AgeOfCubes());
+	player.play(new ChessMaster());
+	//player.play(new AOC::AgeOfCubes());
 
     return 0;
 }

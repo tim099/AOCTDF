@@ -2,6 +2,7 @@
 #include "class/display/model/Model.h"
 #include <cstring>
 #include <string>
+#include <iostream>
 namespace Display{
 #define WHITESPACE " \t\n\r"
 Obj::Obj() {
@@ -13,8 +14,8 @@ Obj::~Obj() {
 Obj* Obj::load_obj(const char* path){
 
 	FILE* file = fopen(path,"r");
-	if( file == NULL ){
-	    printf("Impossible to open the obj file %s !\n",path);
+	if( file==NULL ){
+	    std::cerr<<"Obj::load_obj:"<<path<<" fail!!"<<std::endl;
 	    return 0;
 	}
 	Obj* obj=new Obj();

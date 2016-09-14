@@ -28,10 +28,10 @@ public:
 	virtual ~AI();
 	//search_start execute in thread and stored result in best_step
 	void search_start(Tim::ThreadPool *pool,
-			CM::ChessBoard* chess_board,int player,int depth,int pruning);
+			CM::ChessBoard* chess_board,int player,int depth);
 
 	CM::Step find_best_step(Tim::ThreadPool* pool,CM::ChessBoard* chess_board,
-			int player,int depth,int pruning);
+			int player,int depth);
 	inline bool is_searching()const{
 		return searching;
 	}
@@ -41,6 +41,7 @@ public:
 	unsigned total_compute;
 	float start_time;
 	bool searching;
+	bool do_pruning;
 protected:
 
 	int evaluate_score(CM::Board<short int>* chess_board,
@@ -60,7 +61,7 @@ protected:
 			CM::Board<short int> *chess_board,std::vector<int>&node_scores,
 			float &SD,float &avg_node_score);
 	CM::Step find_best_step(Tim::ThreadPool* pool,CM::Board<short int> *chess_board,
-			int player,int depth,int pruning,bool max);
+			int player,int depth,bool max);
 	double get_node_score(int wins,int simulations);
 	Tim::ObjPool<Tim::ObjPool<Tim::vector<CM::Step> > >*steps_pool;
 	CM::ChessBoard* board;

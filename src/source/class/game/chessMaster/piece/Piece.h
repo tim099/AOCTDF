@@ -46,6 +46,7 @@ public:
 	void update_rule_UI(UI::UI *rule_UI);
 	//unsigned char type;
 	int weight;
+	int type;
 	std::vector<BasicRule*> basic_rules;
 protected:
 	virtual void next_step(CM::Board<short int> *chess_board,
@@ -57,6 +58,7 @@ protected:
 
 
 	//std::string dir_path,path;
+
 	Tim::Mutex* rule_mutex;
 	Display::DrawObject *draw_piece1;//player1's piece EX:black king
 	Display::DrawObject *draw_piece2;//player2's piece EX:white king

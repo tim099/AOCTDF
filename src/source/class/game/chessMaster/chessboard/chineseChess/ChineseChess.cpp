@@ -12,7 +12,7 @@ namespace CM {
 
 ChineseChess::ChineseChess() {
 	dir_path="files/game/chessMaster/game/chineseChess/";
-	game_name="ChineseChess";
+	game_name="chineseChess";
 	init_drawobject();
 
 	//rule_path=dir_path+"chessBoard/rule.lua";
@@ -36,13 +36,13 @@ ChineseChess::~ChineseChess() {
 
 }
 void ChineseChess::create_pieces(){
-	pieces.push_back(new General());
-	pieces.push_back(new Advisor());
-	pieces.push_back(new Elephant());
-	pieces.push_back(new Horse());
-	pieces.push_back(new Chariot());
-	pieces.push_back(new Cannon());
-	pieces.push_back(new Soildier());
+	push_piece(new General());
+	push_piece(new Advisor());
+	push_piece(new Elephant());
+	push_piece(new Horse());
+	push_piece(new Chariot());
+	push_piece(new Cannon());
+	push_piece(new Soildier());
 	init_pieces();
 }
 } /* namespace CM */

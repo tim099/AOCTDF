@@ -28,7 +28,7 @@ protected:
 
 	std::string get_sent_data();
 	void push_receive_data(std::string str);
-
+	Socket *socket;
 	Tim::Mutex sent_mutex;
 	Tim::Mutex receive_mutex;
 	std::queue<std::string> sent_q;

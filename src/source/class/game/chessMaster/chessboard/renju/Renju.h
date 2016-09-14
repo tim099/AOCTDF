@@ -8,7 +8,7 @@ namespace CM {
 class Renju: public ChessBoard {
 	static const int MAX=10000000;
 public:
-	static const int board_size=9;
+	static const int board_width=9;
 	static const int win_length=5;
 	//static const int arr_size=win_lenth+1;
 	Renju();
@@ -78,39 +78,39 @@ public:
 			len_num[3][i]=0;
 		}
 		int space,back_space;
-		for(int i=0;i<board_size;i++){
+		for(int i=0;i<board_width;i++){
 			len=0;space=0;back_space=0;
-			for(int j=0;j<board_size;j++){
+			for(int j=0;j<board_width;j++){
 				type=chess_board->get(i,j);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 
 			len=0;space=0;back_space=0;
-			for(int j=0;j<board_size;j++){
+			for(int j=0;j<board_width;j++){
 				type=chess_board->get(j,i);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=0;i<=(board_size-win_length);i++){
+		for(int i=0;i<=(board_width-win_length);i++){
 			len=0;space=0;back_space=0;
-			for(int j=0;j<board_size-i;j++){
-				type=chess_board->get(i+j,board_size-j-1);
+			for(int j=0;j<board_width-i;j++){
+				type=chess_board->get(i+j,board_width-j-1);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 
 			len=0;space=0;back_space=0;
-			for(int j=0;j<board_size-i;j++){
+			for(int j=0;j<board_width-i;j++){
 				type=chess_board->get(i+j,j);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);
 		}
 
-		for(int i=(win_length-1);i<board_size-1;i++){
+		for(int i=(win_length-1);i<board_width-1;i++){
 			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
 				type=chess_board->get(i-j,j);
@@ -120,7 +120,7 @@ public:
 
 			len=0;space=0;back_space=0;
 			for(int j=0;j<=i;j++){
-				type=chess_board->get(i-j,board_size-j-1);
+				type=chess_board->get(i-j,board_width-j-1);
 				operate(type,len,space,back_space,total_score,len_num);
 			}
 			if(len!=0)get_pattern(len,space,back_space,len_num);

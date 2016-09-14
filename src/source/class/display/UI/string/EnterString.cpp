@@ -31,6 +31,12 @@ void EnterString::update(){
 	if(Input::Input::get_cur_object()->mouse->left_clicked()){
 		if (get_state() == state_select) {
 			enable_input();
+			Input::Mouse *mou=Input::Input::get_cur_object()->mouse;
+			double dx=(mou->get_tex_space_pos().x-get_pos().x);
+
+			cur_insert_at=((dx/Display::RenderString::font_size(font_size).x)+0.5);
+			if(cur_insert_at<0)cur_insert_at=0;
+			if(cur_insert_at>=(int)str->size())cur_insert_at=str->size();
 		}else{
 			disable_input();
 		}

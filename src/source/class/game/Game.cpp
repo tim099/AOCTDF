@@ -4,6 +4,7 @@
 #include "class/game/SceneInitTask.h"
 #include "class/tim/string/String.h"
 #include "class/display/light/shadow/ShadowData.h"
+#include "class/network/Socket.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -24,13 +25,12 @@ void Game::init(){
 	draw=0;
 	UIObj_Creator=0;
 	renderer = 0;
-	//render_task = 0;
 
 	input=0;
 	game_receiver=0;
 	controller_system=0;
 	s_loading=0;
-	//render_thread = 0;
+
 	thread_pool = 0;
 }
 Game::~Game() {
@@ -46,6 +46,7 @@ Tim::ThreadPool* Game::create_thread_pool(){
 }
 void Game::initialize(){
 	init();
+	game::network::Socket::socket_init();
 	config.load(folder_path+"config.txt");
 	window=create_window();
 
@@ -99,6 +100,7 @@ void Game::terminate(){
 	delete draw;
 
 	delete window;
+	game::network::Socket::socket_exit();
 	config.save(folder_path+"config.txt");
 	//std::cout<<"terminate end"<<std::endl;
 }
@@ -178,10 +180,14 @@ void Game::handle_game_signal(){
 			}else if(strs.at(1)=="enable"){
 				if(strs.at(2)=="pssm"){
 					config.enable_pssm=true;
+				}else if(strs.at(2)=="realwater"){
+					config.real_water=true;
 				}
 			}else if(strs.at(1)=="disable"){
 				if(strs.at(2)=="pssm"){
 					config.enable_pssm=false;
+				}else if(strs.at(2)=="realwater"){
+					config.real_water=false;
 				}
 			}
 			restart=true;

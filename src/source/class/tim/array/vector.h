@@ -24,7 +24,7 @@ public:
 		return arr[i];
 	}
 	inline Type* at(unsigned i){
-		std::cerr<<"tim::vector at"<<std::endl;
+		//std::cerr<<"tim::vector at"<<std::endl;
 		if(i>=capacity){
 			return 0;
 		}

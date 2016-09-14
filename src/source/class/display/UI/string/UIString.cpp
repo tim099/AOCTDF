@@ -117,12 +117,12 @@ void UIString::update() {
 		keyboard->clear_keys();
 		keyboard->clear_chars();
 
-		if(blink>60){
+		if(blink>40){
 			blink=0;
 		}else{
 			blink++;
 		}
-		if(blink<40){
+		if(blink<30){
 			insert_at=cur_insert_at;
 		}else{
 			insert_at=-1;

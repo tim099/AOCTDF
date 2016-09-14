@@ -31,13 +31,15 @@ public:
 
 	void set_address(std::string address="127.0.0.1",int port=1234);
 
-
+	void unblock_mode();
 	void socket_bind();
 	void socket_listen(int backlog=SOMAXCONN);
 
 	void sent_data(std::string str);
 	void sent_data(char* data,unsigned len);
-	void connect_server();
+	bool connect_server();
+	void sock_shutdown(int how);
+	void sock_close();
 	Socket* accept_connect(SOCKADDR_IN *clinetAddr);
 
 	static std::string get_local_address();

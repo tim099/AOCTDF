@@ -163,7 +163,10 @@ int ChessBoard::get_chess_num_delta(lua_State *L){
 
 	return 1;
 }
-
+void ChessBoard::update(){
+	find_select_cube();
+	winner=check_winner(chess_board);
+}
 bool ChessBoard::bound_check(int x,int y){
 	if(x<board_start.x||y<board_start.y||x>=board_size.x+board_start.x||y>=board_size.y+board_start.y){
 		return false;
@@ -301,7 +304,7 @@ void ChessBoard::load_pieces(std::string path){
 			Tim::String::get_line(is, line, true, true);
 			piece=new Piece();
 			piece->load_script(dir_path+"chessBoard/piece/",line);
-			pieces.push_back(piece);
+			push_piece(piece);
 		}
 	}
 

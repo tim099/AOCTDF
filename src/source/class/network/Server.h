@@ -17,21 +17,35 @@ public:
 	void start();
 	void end();
 	void sent_data(std::string str);
-
+	bool client_connected();
+	bool get_new_connection(){
+		if(new_connection){
+			new_connection=false;
+			return true;
+		}
+		return false;
+	}
 	std::string receive_data();
 
 	bool server_start;
 
+	std::string local_addr;
+	std::string server_addr;
 protected:
 	void server_active();
 
-	std::string get_sent_data();
 	void push_receive_data(std::string str);
 
-	Tim::Mutex sent_mutex;
 	Tim::Mutex receive_mutex;
+	Tim::Mutex connect_mutex;
+	Tim::Mutex socket_mutex;
 	std::queue<std::string> sent_q;
 	std::queue<std::string> receive_q;
+	bool new_connection;
+
+
+	Socket *sConnect;
+	Socket *socket;
 	bool server_end;
 };
 }

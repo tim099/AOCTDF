@@ -15,7 +15,7 @@ public:
 
 	unsigned shadow_quality;
 	bool enable_pssm;
-
+	bool real_water;
 	math::vec2<int> window_size;
 	bool full_screen;
 };

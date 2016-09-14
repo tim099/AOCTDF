@@ -18,9 +18,11 @@ MoveStraight::~MoveStraight() {
 void MoveStraight::get_next_step(CM::Board<short int> *chess_board,
 			int x,int y,std::vector<int> &next_step,int player){
 
+	ChessBoard* board=ChessBoard::get_cur_object();
+	if(!board->bound_check(x,y))return;
+
 	int i=x+dx;
 	int j=y+dy*player;
-	ChessBoard* board=ChessBoard::get_cur_object();
 	while(board->bound_check(i,j)){
 		short int type=chess_board->get(i,j);
 

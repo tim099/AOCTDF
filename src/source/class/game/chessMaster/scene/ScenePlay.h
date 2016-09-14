@@ -29,10 +29,9 @@ public:
 	virtual void scene_update_end();
 	std::string local_path;
 protected:
-
+	void init_board();
 	virtual void scene_update();
 	virtual void scene_draw();
-
 	virtual void scene_initialize();
 	virtual	void scene_terminate();
 	virtual void handle_signal(Input::Signal *sig);
@@ -40,13 +39,17 @@ protected:
 	void handle_input();
 	void camera_control();
 	void draw_step();
+	void draw_prev_step();
+	void draw_AI_difficulty();
+	void draw_board_data();
 	void restart();
 	void AI_move(int player);
-
+	void AI_update();
 	void next_turn(CM::Step step);
 
 	math::Position back_ground_pos;
 	UI::UI *UI;
+	UI::UI *promotedUI;
 	ChessBoard *chess_board;
 	Display::Camera* camera;
 	Display::Camera* p1camera,*p2camera;
@@ -55,14 +58,15 @@ protected:
 
 	Display::LightControl* lightControl;
 	Tim::vector<CM::Step> next_step;
-
+	CM::Step *selected_step;
 	int simulation_times;
 	bool selected;
+	bool promoting;
 	bool player_move;
-	glm::ivec2 s;
-	int prev_sx,prev_sy;
+	math::vec2<int> prev_s,s;
 	int difficulty;
 	int AI_mode;
+	bool lock_camera;
 };
 }
 } /* namespace CM */

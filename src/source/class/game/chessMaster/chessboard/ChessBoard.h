@@ -62,21 +62,35 @@ public:
 
 	inline void find_next_step(CM::Board<short int> *chess_board,
 			int x,int y,int player,Tim::vector<CM::Step> &next_steps){
-		pieces[chess_board->get(x,y)*player-1]->next_step(chess_board,x,y,next_steps,player);
+		pieces[abs(chess_board->get(x,y))-1]->next_step(chess_board,x,y,next_steps,player);
 	}
-	void find_next_step(CM::Board<short int> *chess_board,
+	virtual void find_next_step(CM::Board<short int> *chess_board,
 			int player,Tim::vector<CM::Step> &next_steps){
 		next_steps.clear();
 		int sx=chess_board->sizex;
 		int sy=chess_board->sizey;
+
 		for(int x=0;x<sx;x++){
 			for(int y=0;y<sy;y++){
-				if(chess_board->get(x,y)*player>0){//player's chess
-					pieces[chess_board->get(x,y)*player-1]->
+				if(pick_chess(chess_board,x,y,player)){//player's chess
+					pieces[abs(chess_board->get(x,y))-1]->
 					next_step(chess_board,x,y,next_steps,player);
 				}
 			}
 		}
+	}
+	inline bool pick_chess(CM::Board<short int> *chess_board,int &x,int &y,int &player){
+		short int type;
+		bool flag=false;
+		type=chess_board->get(x,y);
+		if(type*player>0)flag=true;
+		for(unsigned i=0;i<both_selectable_piece.size();i++){
+			if(type==both_selectable_piece.at(i)){
+				flag=true;
+				break;
+			}
+		}
+		return flag;
 	}
 	static int get_board(lua_State *L);
 	//return the chess number difference between players
@@ -103,7 +117,7 @@ public:
 	inline CM::StepNode *get_cur_node(){
 		return cur_node;
 	}
-
+	void update();
 
 	//cube being selected by mouse
 	glm::ivec3 selected_cube;
@@ -143,7 +157,10 @@ protected:
 
 	void find_selected_on(glm::vec3 pos);
 	void find_selected_cube(glm::vec3 pos);
-
+	inline void push_piece(Piece* piece){
+		pieces.push_back(piece);
+		piece->type=pieces.size();
+	}
 
 	int pieces_weight[max_pieces_num];
 
@@ -161,6 +178,7 @@ protected:
 	std::string rule_path;
 	bool updated;
 
+	std::vector<short int>both_selectable_piece;
 	Tim::Array2D<short int> *cur_board;
 };
 

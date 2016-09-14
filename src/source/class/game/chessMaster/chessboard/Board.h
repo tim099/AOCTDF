@@ -2,7 +2,10 @@
 #define SOURCE_CLASS_GAME_CHESSMASTER_CHESSBOARD_BOARD_H_
 
 #include "class/tim/array/Array2D.h"
+#include "class/game/chessMaster/chessboard/boardData/BoradData.h"
 #include <iostream>
+#include <vector>
+
 namespace CM {
 template <class Type>
 class Board: public Tim::Array2D<Type> {
@@ -26,15 +29,22 @@ public:
 		for(int i=0;i<piece_type_num;i++){
 			piece_num[i]=board->piece_num[i];
 		}
+		for(unsigned i=0;i<board->datas.size();i++){
+			datas.push_back(board->datas.at(i)->clone());
+		}
 	}
 	virtual Board* clone(){
 		return new Board(this);
 	}
 	virtual ~Board(){
 		delete[] piece_num;
+		for(unsigned i=0;i<datas.size();i++){
+			delete datas.at(i);
+		}
 	}
 	Type *piece_num;
 	int piece_type_num;
+	std::vector<BoradData*>datas;
 };
 
 } /* namespace CM */

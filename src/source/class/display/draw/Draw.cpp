@@ -13,6 +13,7 @@
 #include "class/display/window/ViewPort.h"
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/display/font/DrawTextureStr.h"
+#include "class/game/Config.h"
 #include <iostream>
 namespace Display{
 Draw::Draw() {
@@ -24,7 +25,7 @@ Draw::Draw() {
 	lightControl=0;
 	camera=0;
 	Enable3D=true;
-	real_water=false;
+	real_water=game::Config::get_cur_object()->real_water;
 	wave_height=0.2f;
 	wave_width=0.8f;
 	water_height=40.0f;

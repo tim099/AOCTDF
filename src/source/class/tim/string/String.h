@@ -26,7 +26,7 @@ public:
 	 * delimiters can compose by several char(each char is a delimiter
 	 */
 	static void split(std::string str,std::string delimiter,std::vector<std::string> &out);
-
+	static void split_into_two(std::string str,std::string delimiter,std::string &a,std::string &b);
 };
 }
 #endif /* STRING_H_ */

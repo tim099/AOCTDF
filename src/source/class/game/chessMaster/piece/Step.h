@@ -3,7 +3,7 @@
 #include "class/game/chessMaster/chessboard/Board.h"
 #include <vector>
 #include <cstdio>
-
+#include <string>
 #include "class/tim/math/vec4.h"
 #include <algorithm>
 namespace CM {
@@ -24,6 +24,8 @@ public:
 	void save(FILE * file);
 	void load(FILE * file);
 
+	std::string to_string();
+	void load_string(std::string str);
 	inline Step& operator=(const Step& step){
 		//init(step);
 		score=step.score;
@@ -52,20 +54,21 @@ public:
 	}
 	inline void move(CM::Board<short int> *chess_board){
 		for(unsigned i=0;i<move_num;i++){
-			moves[i].w=chess_board->get(moves[i].x,moves[i].y);
-			chess_board->get(moves[i].x,moves[i].y)=moves[i].z;
+			if(moves[i].x>=0){
+				moves[i].w=chess_board->get(moves[i].x,moves[i].y);
+				chess_board->get(moves[i].x,moves[i].y)=moves[i].z;
 
-			if(moves[i].z>0){
-				chess_board->piece_num[moves[i].z-1]++;
-			}else if(moves[i].z<0){
-				chess_board->piece_num[-moves[i].z-1]--;
+				if(moves[i].z>0){
+					chess_board->piece_num[moves[i].z-1]++;
+				}else if(moves[i].z<0){
+					chess_board->piece_num[-moves[i].z-1]--;
+				}
+				if(moves[i].w>0){
+					chess_board->piece_num[moves[i].w-1]--;
+				}else if(moves[i].w<0){
+					chess_board->piece_num[-moves[i].w-1]++;
+				}
 			}
-			if(moves[i].w>0){
-				chess_board->piece_num[moves[i].w-1]--;
-			}else if(moves[i].w<0){
-				chess_board->piece_num[-moves[i].w-1]++;
-			}
-
 		}
 	}
 	inline void undo(CM::Board<short int> *chess_board){

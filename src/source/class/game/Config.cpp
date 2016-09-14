@@ -9,6 +9,7 @@ Config::Config() {
 	window_size=math::vec2<int>(1366,733);
 	full_screen=false;
 	enable_pssm=false;
+	real_water=false;
 	shadow_quality=Display::ShadowNormalQuality;
 	register_cur();
 }
@@ -27,7 +28,7 @@ void Config::save(std::string path){
 	os <<"shadow_quality:"<< std::endl;
 	os <<"	"<<shadow_quality<< std::endl;
 	if(enable_pssm)os <<"#enable_pssm"<< std::endl;
-
+	if(real_water)os <<"#real_water"<< std::endl;
 	file.close();
 }
 void Config::load(std::string path){
@@ -58,6 +59,8 @@ void Config::load(std::string path){
 			full_screen=true;
 		}else if(line=="#enable_pssm"){
 			enable_pssm=true;
+		}else if(line=="#real_water"){
+			real_water=true;
 		}
 	}
 

@@ -7,7 +7,7 @@ namespace CM {
 
 Othello::Othello() {
 	dir_path="files/game/chessMaster/game/othello/";
-	game_name="Othello";
+	game_name="othello";
 	init_drawobject();
 
 	create_pieces();
@@ -46,7 +46,7 @@ int Othello::evaluate_score(CM::Board<short int> *chess_board,int player){
 	return score;
 }
 void Othello::create_pieces(){
-	pieces.push_back(new OthelloStone());
-	pieces.push_back(new OthelloSkipStone());
+	push_piece(new OthelloStone());
+	push_piece(new OthelloSkipStone());
 }
 } /* namespace CM */

@@ -37,14 +37,12 @@ void SceneStart::scene_initialize(){
 					glm::vec3(0.3, 0.3, 0.3),false));
 	draw->set_lightControl(lightControl);
 
-	UI = new UI::UI();
-	UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
+	//UI = new UI::UI();
+	//UI->Load_script("files/AgeOfCube/scenes/editMap/UI/editMapUI.txt");
 	music_player = Audio::AudioPlayer("default_music/prepare_your_swords.wav");
 	music_player.set_loop(true);
 
 
-
-	//loading2();
 	resume();
 	//std::vector<std::string> files=Tim::File::get_all_dirs("files/texture/");
 	//for(unsigned i=0;i<files.size();i++)std::cout<<files.at(i)<<std::endl;
