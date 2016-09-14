@@ -13,6 +13,7 @@
 #include "class/display/draw/Draw.h"
 #include "class/game/ageOfCube/player/PlayerController.h"
 #include "class/game/ageOfCube/player/Player.h"
+#include "class/game/ageOfCube/map/condition/SlowCondition.h"
 #include <cmath>
 
 namespace AOC {
@@ -51,7 +52,8 @@ void  AreaOfEffect::explode(){
 
 	for(unsigned i=0;i<collied_units.size();i++){
 		collied_units.at(i)->hp_alter(-damage);
-		std::cout<<"id"<<collied_units.at(i)->get_id()<<"  damage : "<<damage<<std::endl;
+		collied_units.at(i)->add_condition(new SlowCondition(1000, 1, collied_units.at(i)));
+		//std::cout<<"id"<<collied_units.at(i)->get_id()<<"  damage : "<<damage<<std::endl;
 		if(collied_units.at(i)->get_is_dead()){
 			Player* player=PlayerController::get_cur_object()->search_player(player_id);
 			player->score_alter(target->get_max_hp());

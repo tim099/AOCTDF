@@ -5,13 +5,16 @@
  *      Author: LukeWu
  */
 
+#include <iostream>
 #include "class/game/ageOfCube/map/condition/SlowCondition.h"
+
 
 namespace AOC {
 
-SlowCondition::SlowCondition(int _total_time, int _peroiod, Minion *_owner)
+SlowCondition::SlowCondition(int _total_time, int _peroiod, Unit *_owner)
 	:Condition( _total_time, _peroiod, _owner)
 {
+	owner2 = dynamic_cast<Minion *>(owner);
 }
 
 SlowCondition::~SlowCondition() {
@@ -19,11 +22,11 @@ SlowCondition::~SlowCondition() {
 }
 
 void SlowCondition::takeEffect(){
-	owner->set_vel(owner->get_vel() * 0.5);
+	//std::cout<<"take effect"<<std::endl;
+	owner2->set_vel(owner2->get_vel() * 0.5);
 }
 
 void SlowCondition::endEffect(){
-	owner->set_vel(owner->get_vel() * 2);
 }
 
 } /* namespace AOC */

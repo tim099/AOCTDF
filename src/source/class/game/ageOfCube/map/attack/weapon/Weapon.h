@@ -4,6 +4,7 @@
 #include <string>
 #include "class/tim/math/vec3.h"
 namespace AOC {
+
 class Unit;
 class Weapon {
 public:

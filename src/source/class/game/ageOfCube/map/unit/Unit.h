@@ -7,8 +7,10 @@
 #include "class/game/ageOfCube/map/attack/weapon/Weapon.h"
 #include "class/game/ageOfCube/player/resource/ResourceModifier.h"
 #include "class/tim/map/MapContainer.h"
+#include "class/game/ageOfCube/map/condition/Condition.h"
 
 namespace AOC {
+
 
 class Unit : public entity::Entity{//
 	//friend Weapon;
@@ -62,6 +64,9 @@ public:
 	inline unsigned get_player()const{return player;}
 	inline void set_player(unsigned _player){player=_player;}
 
+	void add_condition(Condition *con){condition_list.push_back(con);}
+	void clear_condition(){condition_list.clear();}
+
 	virtual math::vec3<double> get_rotate()=0;
 	virtual math::vec3<double> get_pos()=0;
 	virtual math::vec3<int> get_pos_int()=0;
@@ -88,6 +93,7 @@ protected:
 	}
 	std::vector<Weapon*> weapons;
 	Tim::MapContainer<std::string,ResourceModifier> upgrades;
+	std::vector<Condition *> condition_list;
 	int max_hp;
 	int hp;
 	int armor;

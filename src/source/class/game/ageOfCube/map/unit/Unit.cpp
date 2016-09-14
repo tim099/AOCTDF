@@ -110,6 +110,19 @@ void Unit::update(){
 
 	if(is_dead)return;
 
+	if(condition_list.size() > 0){
+		for(int i=0; i<condition_list.size(); i++){
+			if(condition_list.at(i)->end){
+				condition_list.at(i)->endEffect();
+				delete condition_list.at(i);
+				condition_list.erase(condition_list.begin()+i);
+			}
+			else{
+				condition_list.at(i)->update();
+			}
+		}
+	}
+
 	unit_update();
 	for(unsigned i=0;i<weapons.size();i++){
 		weapons.at(i)->update();
