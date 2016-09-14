@@ -63,13 +63,13 @@ void RigidBody::bounce_off_from(RigidBody* b){
 
 	vel-=2.0*math::vec3<double>::normalize(pos-o_pos)*
 			((vel-o_v).dot(math::vec3<double>::normalize(pos-o_pos)));
-	///*
+	/*
 	static const int range=100;
 	vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
 							0.01*((rand()%range)-range/2)/(double)range,
 							0.01*((rand()%range)-range/2)/(double)range)*vel.get_length();
 
-	//*/
+	*/
 	bool stuck=true;
 	for(int i=0;i<4;i++){
 		pos=0.5*(prev_pos+pos);
