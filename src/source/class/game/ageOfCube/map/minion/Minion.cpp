@@ -76,48 +76,18 @@ void Minion::draw_hp(){
 	int max_hp_bar=50;
 	double width=0.5,height=0.1;
 
-	double cur_hp=get_hp();
+	double cur_hp=get_max_hp();
 	int i=1;
 	for(;i<=7&&cur_hp>max_hp_bar;i++){
 		cur_hp*=0.5;
 	}
-	//double hp_percent=((double)cur_hp/(double)max_hp_bar);
+
 	double hp_percent=((double)get_hp()/(double)get_max_hp());
-	/*
-	if(i>1&&hp_percent>0.5){
-		//hp_percent-=0.5;
-		//hp_percent*=2.0;
-	}
-	*/
+
 	Display::Draw::get_cur_object()->draw_bill_board("misc/hp"+Tim::String::to_string(i),
 			rigid_body.pos+math::vec3<double>(0,1.5*rigid_body.radius+0.1,0),
 			math::vec2<double>(width*hp_percent,height));
-	//====
-	/*
-	if(get_hp()==get_max_hp())return;
-	Display::AllDrawObjects* all_dobj=Display::AllDrawObjects::get_cur_object();
-	double hp_percent=((double)get_hp()/(double)get_max_hp());
-	//std::cout<<"hp_percent="<<hp_percent<<std::endl;
-	math::Position* pos;
-	Display::DrawDataObj* data;
-	if(get_hp()>0){
-		pos=new math::Position();
-		pos->set_parent(&dp_pos);
-		pos->set_pos(glm::vec3(0.5*(1.0-hp_percent),1.2,0));
-		pos->set_scale(glm::vec3(hp_percent,0.15,0.15));
-		data=new Display::DrawDataObj(pos,true,true);
-		all_dobj->get("misc/hp_light")->push_temp_drawdata(data);
-	}
-	if(get_hp()<get_max_hp()){
-		pos=new math::Position();
-		pos->set_parent(&dp_pos);
-		pos->set_pos(glm::vec3(-0.5*hp_percent,1.2,0));
 
-		pos->set_scale(glm::vec3((1.0-hp_percent),0.15,0.15));
-		data=new Display::DrawDataObj(pos,true,true);
-		all_dobj->get("misc/hp_dark")->push_temp_drawdata(data);
-	}
-	*/
 }
 void Minion::draw(){
 	if(is_dead){
@@ -194,7 +164,16 @@ void Minion::moving(){
 		}else{
 			if(finder)delete finder;
 			finder=0;
+			attack_main_tower();
 		}
+	}
+}
+void Minion::attack_main_tower(){
+	Unit* target;
+	target=UnitController::get_cur_object()->search_unit("MainTower",rigid_body.pos);
+	if(target){
+		target->hp_alter(-500);
+		set_hp(0);
 	}
 }
 void Minion::move(){

@@ -24,16 +24,16 @@ Ball::Ball(Ball* ball) {
 	set_attack_cycle(300);
 	set_max_hp(ball->get_hp());
 
-	Weapon* weapon=WeaponCreator::get_cur_object()->create("MissileLauncher");
-	weapon->set_attack_range(8.0);
-	weapon->set_attack_damage(10);
-	weapon->set_attack_size(0.36);
+	//Weapon* weapon=WeaponCreator::get_cur_object()->create("MissileLauncher");
+	//weapon->set_attack_range(8.0);
+	//weapon->set_attack_damage(10);
+	//weapon->set_attack_size(0.36);
 
-	push_weapon(weapon);
+	//push_weapon(weapon);
 }
 void Ball::unit_create(){
-	weapons.at(0)->set_attack_size(1.5*rigid_body.radius);
-	weapons.at(0)->set_pos(math::vec3<double>(0,0.55*(get_size().y),0));
+	//weapons.at(0)->set_attack_size(1.5*rigid_body.radius);
+	//weapons.at(0)->set_pos(math::vec3<double>(0,0.55*(get_size().y),0));
 }
 Ball::~Ball() {
 

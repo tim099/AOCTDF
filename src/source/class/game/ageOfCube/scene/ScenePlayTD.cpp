@@ -30,8 +30,8 @@ void ScenePlayTD::scene_initialize() {
 
 
 	glm::vec3 pos(50,30,50);
-	camera = new Display::Camera(pos,
-			pos+glm::vec3(-50,-35,50), glm::vec3(0, 1, 0), 60.0, 0.1f,
+	camera = new Display::Camera(pos+glm::vec3(-50,40,50),
+			pos, glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	camera->shadow_far=200.0;
 	lightControl = new Display::LightControl(120);

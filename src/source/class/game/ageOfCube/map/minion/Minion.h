@@ -53,6 +53,7 @@ protected:
 	virtual void miniod_collide(entity::Entity* entity){};
 	virtual void miniod_be_collide(entity::Entity* entity){miniod_collide(entity);};
 
+	void attack_main_tower();
 	void AI_update();
 	void draw_hp();
 

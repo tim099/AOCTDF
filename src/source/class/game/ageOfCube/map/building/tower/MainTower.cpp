@@ -33,13 +33,13 @@ MainTower::MainTower(MainTower* tower){
 
 	Weapon* weapon=WeaponCreator::get_cur_object()->create("BombLauncher");
 	weapon->set_attack_range(30.0);
-	weapon->set_attack_damage(60);
+	weapon->set_attack_damage(10);
 	weapon->set_attack_size(0.4);
 	push_weapon(weapon);
 
 	weapon=WeaponCreator::get_cur_object()->create("BombLauncher");
 	weapon->set_attack_range(30.0);
-	weapon->set_attack_damage(60);
+	weapon->set_attack_damage(10);
 	weapon->set_attack_size(0.4);
 	push_weapon(weapon);
 }
