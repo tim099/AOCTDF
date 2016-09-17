@@ -22,6 +22,9 @@ Unit::~Unit() {
 	for(unsigned i=0;i<weapons.size();i++){
 		delete weapons.at(i);
 	}
+	for(unsigned i=0;i<condition_list.size();i++){
+		delete condition_list.at(i);
+	}
 }
 double Unit::get_atk_ajusted(){
 	int amount=upgrades.get("fire")->get_amount();
@@ -109,6 +112,19 @@ void Unit::update(){
 	}
 
 	if(is_dead)return;
+
+
+	for(unsigned i=0;i<condition_list.size();){
+		if(condition_list.at(i)->end){
+			condition_list.at(i)->endEffect();
+			delete condition_list.at(i);
+			condition_list.erase(condition_list.begin()+i);
+		}else{
+			condition_list.at(i)->update();
+			i++;
+		}
+	}
+
 
 	unit_update();
 	for(unsigned i=0;i<weapons.size();i++){

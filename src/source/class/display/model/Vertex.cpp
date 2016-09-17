@@ -17,6 +17,16 @@ void Vertex::fill_vec2(GLfloat* vt,glm::vec2 v,int num){
 		vt[2*i]=v.x;vt[2*i+1]=v.y;
 	}
 }
+void Vertex::gen_atlas_uv(GLfloat* uv_buffer,int x_seg,int y_seg,int num){
+	int x, y;
+	x = num%x_seg;
+	y = (num/x_seg)%y_seg;
+	double seg_sizex=1.0/x_seg;
+	double seg_sizey=1.0/y_seg;
+	Vertex::gen_quad_uv(uv_buffer,
+			glm::vec2(x*seg_sizex,1.0-(y+1)*seg_sizey),
+			glm::vec2((x+1)*seg_sizex,1.0-y*seg_sizey));
+}
 void Vertex::gen_vn(GLfloat* vt,GLfloat* vn){
 	glm::vec3 p1(vt[0],vt[1],vt[2]),p2(vt[3],vt[4],vt[5]),p3(vt[6],vt[7],vt[8]);
 	glm::vec3 n=glm::normalize(glm::cross(p1-p2,p1-p3));

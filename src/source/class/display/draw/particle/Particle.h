@@ -19,6 +19,9 @@ class Particle {
 			tex=0;
 			camdis=0;
 		}
+		void gen_cam_dis(Camera *camera){
+			camdis=(math::vec3<double>(camera->pos.x,camera->pos.y,camera->pos.z)-pos).get_length();
+		}
 		int tex;
 		math::vec3<double> pos;
 		math::vec3<double> vel;
@@ -27,7 +30,7 @@ class Particle {
 	};
 	struct particleCmp{
 		bool operator()(const particle* p1, const particle* p2) const{
-			if(p1->camdis<p2->camdis)return true;
+			if(p1->camdis>p2->camdis)return true;
 
 			return false;
 		}
@@ -39,6 +42,11 @@ public:
 	void update();
 	bool end();
 	void draw(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u,Camera *camera);
+	void set_atlas(int _x_seg,int _y_seg){
+		atlas=true;
+		x_seg=_x_seg;
+		y_seg=_y_seg;
+	}
 protected:
 	void sent_uniform(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u);
 	void particles_update();
@@ -46,7 +54,9 @@ protected:
 	math::vec2<double> size;
 	std::string texture;
 	std::vector<particle*> particles;
-	GLuint vn_buffer;
+
+	bool atlas;
+	int x_seg,y_seg;
 	int create_timer;
 	int timer;
 };

@@ -33,9 +33,6 @@ void ParticleRenderer::draw(Shader *shader,Camera *camera){
 	if(particles.empty())return;
 	GLuint tex_vt=Texture::gen_texture_vertex(glm::vec2(1,1));
 	GLuint tex_uv=Texture::gen_texture_uv();
-	Buffer::bind_vtbuffer(tex_vt);
-	Buffer::bind_uvbuffer(tex_uv);
-	Buffer::bind_vnbuffer(tex_vt);
 
 	Buffer::unbind_lybuffer();
 
@@ -45,6 +42,9 @@ void ParticleRenderer::draw(Shader *shader,Camera *camera){
 	camera->gen_bill_board_lru(l,r,u);
 
 	for(unsigned i=0;i<particles.size();i++){
+		Buffer::bind_vtbuffer(tex_vt);
+		Buffer::bind_uvbuffer(tex_uv);
+		Buffer::bind_vnbuffer(tex_vt);
 		particles.at(i)->draw(shader,l,r,u,camera);
 	}
 	shader->Disable(Shader::BillBoard);

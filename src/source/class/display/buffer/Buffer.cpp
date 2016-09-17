@@ -40,31 +40,36 @@ void Buffer::unbind_buffer(){
 	glDisableVertexAttribArray(index);
 }
 void Buffer::unbind_vtbuffer(){
-	glDisableVertexAttribArray(0);//vertexbuffer
+	glDisableVertexAttribArray(vt);//vertexbuffer
 }
 void Buffer::unbind_uvbuffer(){
-	glDisableVertexAttribArray(1);//uv
+	glDisableVertexAttribArray(uv);//uv
 }
 void Buffer::unbind_vnbuffer(){
-	glDisableVertexAttribArray(2);//vn
+	glDisableVertexAttribArray(vn);//vn
 }
 void Buffer::unbind_lybuffer(){
-	glDisableVertexAttribArray(3);//ly
+	glDisableVertexAttribArray(ly);//ly
 }
 void Buffer::bind_vtbuffer(GLuint vertexbuffer){
 	glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,0,NULL);
+	glEnableVertexAttribArray(vt);
+	glVertexAttribPointer(vt,3,GL_FLOAT,GL_FALSE,0,NULL);
 }
 void Buffer::bind_uvbuffer(GLuint uvbuffer){
 	glBindBuffer(GL_ARRAY_BUFFER,uvbuffer);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,0,NULL);//vernum,v_num,type
+	glEnableVertexAttribArray(uv);
+	glVertexAttribPointer(uv,2,GL_FLOAT,GL_FALSE,0,NULL);//vernum,v_num,type
 }
 void Buffer::bind_vnbuffer(GLuint vnbuffer){
 	glBindBuffer(GL_ARRAY_BUFFER,vnbuffer);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2,3,GL_FLOAT,GL_FALSE,0,NULL);
+	glEnableVertexAttribArray(vn);
+	glVertexAttribPointer(vn,3,GL_FLOAT,GL_FALSE,0,NULL);
+}
+void Buffer::bind_buffer(int index,int size,GLuint buffer){
+	glBindBuffer(GL_ARRAY_BUFFER,buffer);
+	glEnableVertexAttribArray(index);
+	glVertexAttribPointer(index,size,GL_FLOAT,GL_FALSE,0,NULL);//vernum,v_num,type
 }
 void Buffer::disable_all_buffer(){
 	glDisableVertexAttribArray(0);//vertexbuffer

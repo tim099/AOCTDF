@@ -63,13 +63,13 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 		std::cerr<<"Draw::draw3D fail,light control or camera no set yet!!"<<std::endl;
 		return;
 	}
-
 	lightControl->gen_shadow(shaderShadowMapping,camera,this);
 
 	shader->active_shader();
 	FBO->bind_buffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
+	FBO->depth_textures.at(0)->sent_uniform(shader,33,"depthTexture");
 	AllTextures::get_cur_tex("default/skybox")->sent_uniform(shader,30,"skybox");
 	camera->sent_uniform(shader->programID,FBO->aspect());
 	lightControl->sent_uniform(shader,camera->pos);

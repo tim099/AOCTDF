@@ -17,6 +17,7 @@ public:
 	static const int Back_culling=1<<5;
 	static const int BillBoard=1<<6;
 	static const int Particle=1<<7;
+	static const int Atlas=1<<8;
 
 	static const int SobelMode=1<<10;
 	static const int AddOnMode=1<<11;

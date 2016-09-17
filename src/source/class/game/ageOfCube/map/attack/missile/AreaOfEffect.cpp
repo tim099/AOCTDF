@@ -13,7 +13,11 @@
 #include "class/display/draw/Draw.h"
 #include "class/game/ageOfCube/player/PlayerController.h"
 #include "class/game/ageOfCube/player/Player.h"
+
 #include "class/display/draw/Draw.h"
+
+#include "class/game/ageOfCube/map/condition/SlowCondition.h"
+#include "class/display/draw/particle/Particle.h"
 #include <cmath>
 
 namespace AOC {
@@ -51,6 +55,7 @@ void  AreaOfEffect::explode(){
 
 	for(unsigned i=0;i<collied_units.size();i++){
 		collied_units.at(i)->hp_alter(-damage);
+		collied_units.at(i)->add_condition(new SlowCondition(1000, 1, collied_units.at(i)));
 		//std::cout<<"id"<<collied_units.at(i)->get_id()<<"  damage : "<<damage<<std::endl;
 		if(collied_units.at(i)->get_is_dead()){
 			Player* player=PlayerController::get_cur_object()->search_player(player_id);
@@ -68,11 +73,17 @@ void AreaOfEffect::draw_attack(){
 	if(explode_timer==1){
 		if(!exploded_render){
 			exploded_render=true;
-			//std::cout<<"AreaOfEffect::draw_attack()"<<std::endl;
-			Display::Draw::get_cur_object()->draw_particle("misc/explode",pos,
-				math::vec2<double>(0.5*radius,0.5*radius),20);
+			Display::Particle *p=new Display::Particle("misc/explode_atlas",pos,
+					math::vec2<double>(0.5*radius,0.5*radius),20);
+			p->set_atlas(8,8);
+			Display::Draw::get_cur_object()->push(p);
 		}
-
+	}
+	if(explode_timer){
+		Display::PointLight *light=new Display::PointLight(
+				glm::vec3(pos.x,pos.y,pos.z),
+				glm::vec3(fabs(4.0-explode_timer)*8.0,1.0,1.0),false);
+		Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	}
 }
 

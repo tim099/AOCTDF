@@ -7,12 +7,11 @@
 #include "class/game/ageOfCube/map/ai/search/finder/FindPath.h"
 #include "class/tim/pointer/SmartPointer.h"
 #include "class/game/ageOfCube/map/minion/MinionAI.h"
+
 namespace Display{
 	class DrawObject;
 }
 namespace AOC {
-
-class Condition;
 
 class Minion: public Unit{
 	static const float gravity=-0.003f;

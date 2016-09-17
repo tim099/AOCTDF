@@ -17,15 +17,6 @@ Missile::Missile() {
 	be_collide_off=true;
 	//special_collide_off=true;
 }
-/*
-Missile::Missile(Missile* missile){
-	radius=missile->radius;
-	timer=missile->timer;
-	type=missile->type;
-	explode_timer=0;
-	be_collide_off=true;
-}
-*/
 Missile::~Missile() {
 
 }

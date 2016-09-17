@@ -4,6 +4,10 @@
 namespace Display{
 class Buffer {
 public:
+	static const int vt=0;
+	static const int uv=1;
+	static const int vn=2;
+	static const int ly=3;
 	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type
 			,GLboolean normalized=GL_FALSE
 			,GLsizei stride=0);
@@ -14,6 +18,7 @@ public:
 	static void bind_vtbuffer(GLuint vertexbuffer);
 	static void bind_uvbuffer(GLuint uvbuffer);
 	static void bind_vnbuffer(GLuint vnbuffer);
+	static void bind_buffer(int index,int size,GLuint buffer);
 
 	static void unbind_vtbuffer();
 	static void unbind_uvbuffer();
