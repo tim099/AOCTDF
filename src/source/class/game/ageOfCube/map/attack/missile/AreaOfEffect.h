@@ -26,6 +26,7 @@ protected:
 	virtual void draw_attack();
 	virtual void attack_update();
 	int explode_timer;
+	bool exploded_render;
 	int timer;
 	int type;
 };

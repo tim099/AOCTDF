@@ -1,6 +1,6 @@
 #ifndef SOURCE_CLASS_DISPLAY_DRAW_BILLBOARD_BILLBOARDRENDERER_H_
 #define SOURCE_CLASS_DISPLAY_DRAW_BILLBOARD_BILLBOARDRENDERER_H_
-#include "class/display/draw/drawObject/DynamicDrawObject.h"
+
 #include "class/display/draw/billboard/BillBoard.h"
 #include "class/display/camera/Camera.h"
 namespace Display {

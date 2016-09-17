@@ -100,7 +100,7 @@ void BallSpawnTower::spawn(){
 	ball->set_pos(math::vec3<double>(pos.get_pos().x+relative_pos.x,
 			pos.get_pos().y+relative_pos.y,
 			pos.get_pos().z+relative_pos.z));
-	ball->set_vel((200.0/loop_time)*0.02*size*
+	ball->set_vel((200.0/loop_time)*0.05*size*
 			math::vec3<double>::normalize(
 			math::vec3<double>(relative_pos.x,0,relative_pos.z)));
 

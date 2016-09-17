@@ -1,6 +1,6 @@
 #include "class/display/draw/billboard/BillBoard.h"
-#include "class/display/shader/Shader.h"
 
+#include "class/display/shader/Shader.h"
 #include "class/display/texture/AllTextures.h"
 #include <glm/gtx/vector_angle.hpp>
 #include <iostream>
@@ -18,7 +18,13 @@ void BillBoard::sent_uniform(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u)
 	Texture* tex=AllTextures::get_cur_tex(texture);
 	tex->sent_uniform(shader,0,"Texture");
 	shader->sent_Uniform("TextureArr",2);
-
+	if(tex->format==GL_RGBA){
+		shader->Enable(Shader::AlphaTexture);
+		glEnable(GL_BLEND);
+	}else{
+		shader->Disable(Shader::AlphaTexture);
+		glDisable(GL_BLEND);
+	}
 	glm::mat4 m=glm::mat4
 			(r.x,r.y,r.z,0,
 			 u.x,u.y,u.z,0,
@@ -29,6 +35,10 @@ void BillBoard::sent_uniform(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u)
 	glUniformMatrix4fv(glGetUniformLocation(shader->programID,"M"),1,GL_FALSE,
 				&(m[0][0]));
 }
-
+void BillBoard::draw(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u){
+	sent_uniform(shader,l,r,u);
+	glDrawArrays(GL_TRIANGLES,0,2*3);
+	//glDrawArraysInstanced(GL_TRIANGLE_STRIP,0,2*3,1);
+}
 
 } /* namespace Display */

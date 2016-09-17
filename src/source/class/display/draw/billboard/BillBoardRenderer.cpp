@@ -1,7 +1,7 @@
 #include "class/display/draw/billboard/BillBoardRenderer.h"
 #include "class/display/texture/Texture.h"
 #include "class/display/shader/Shader.h"
-
+#include "class/display/buffer/Buffer.h"
 namespace Display {
 
 BillBoardRenderer::BillBoardRenderer() {
@@ -28,19 +28,17 @@ void BillBoardRenderer::draw(Shader *shader,Camera *camera){
 	Buffer::bind_vnbuffer(tex_vt);
 
 	Buffer::unbind_lybuffer();
-	shader->Disable(Shader::LayerTexture);
 	shader->Enable(Shader::BillBoard);
 
 	glm::vec3 l,r,u;
 	camera->gen_bill_board_lru(l,r,u);
 
 	for(unsigned i=0;i<billboards.size();i++){
-		//std::cout<<"BillBoardRenderer::draw"<<std::endl;
-		billboards.at(i)->sent_uniform(shader,l,r,u);
-		glDrawArrays(GL_TRIANGLES,0,2*3);
+		billboards.at(i)->draw(shader,l,r,u);
 	}
 	shader->Disable(Shader::BillBoard);
 
+	glDisable(GL_BLEND);
     glDeleteBuffers(1,&tex_vt);
     glDeleteBuffers(1,&tex_uv);
 	//model_buffer->unbind_buffer(shader);

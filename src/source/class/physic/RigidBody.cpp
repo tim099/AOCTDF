@@ -64,13 +64,10 @@ void RigidBody::bounce_off_from(RigidBody* b){
 
 	vel-=2.0*math::vec3<double>::normalize(pos-o_pos)*
 			((vel-o_v).dot(math::vec3<double>::normalize(pos-o_pos)));
-	/*
-	static const int range=100;
-	vel+=math::vec3<double>(0.01*((rand()%range)-range/2)/(double)range,
-							0.01*((rand()%range)-range/2)/(double)range,
-							0.01*((rand()%range)-range/2)/(double)range)*vel.get_length();
+	b->vel-=2.0*math::vec3<double>::normalize(b->pos-o_pos)*
+			((b->vel-o_v).dot(math::vec3<double>::normalize(b->pos-o_pos)));
 
-	*/
+
 	bool stuck=true;
 	for(int i=0;i<4;i++){
 		pos=0.5*(prev_pos+pos);
@@ -81,7 +78,6 @@ void RigidBody::bounce_off_from(RigidBody* b){
 	}
 	if(stuck){
 		pos=prev_pos;
-		///*
 		if(RigidBodyController::get_cur_object()->check_collision(this)){//handle stuck
 			math::vec3<double> vec=math::vec3<double>::normalize(
 					((pos-o_pos)+radius*math::vec3<double>(0.000,0.001,0.000)));
@@ -89,14 +85,12 @@ void RigidBody::bounce_off_from(RigidBody* b){
 			b->pos=o_pos-(1.01*b->radius)*vec;
 
 		}
-		//*/
 	}
 }
 
 void RigidBody::collide_action(RigidBody* b){
 	if(physical && b->physical){
-		if(!stable)bounce_off_from(b);
-		if(!b->stable)b->bounce_off_from(this);
+		if(!stable&&!b->stable)bounce_off_from(b);
 	}
 
 }

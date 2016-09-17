@@ -13,6 +13,7 @@
 #include "class/display/draw/Draw.h"
 #include "class/game/ageOfCube/player/PlayerController.h"
 #include "class/game/ageOfCube/player/Player.h"
+#include "class/display/draw/Draw.h"
 #include <cmath>
 
 namespace AOC {
@@ -27,6 +28,7 @@ AreaOfEffect::AreaOfEffect() {
 	this->be_collide_off=true;
 	stop_when_collide=false;
 	physical = false;
+	exploded_render=false;
 }
 
 AreaOfEffect::AreaOfEffect(AreaOfEffect *aoe){
@@ -38,20 +40,18 @@ AreaOfEffect::AreaOfEffect(AreaOfEffect *aoe){
 	this->be_collide_off=true;
 	stop_when_collide=false;
 	physical = false;
+	exploded_render=false;
 }
 
 AreaOfEffect::~AreaOfEffect() {
-	// TODO Auto-generated destructor stub
+
 }
-
 void  AreaOfEffect::explode(){
-	//std::cout<<"Missile::explode()"<<std::endl;
-
-	std::cout<<"AOE::explode()  radius="<<radius<<std::endl;
+	//std::cout<<"AOE::explode()  radius="<<radius<<std::endl;
 
 	for(unsigned i=0;i<collied_units.size();i++){
 		collied_units.at(i)->hp_alter(-damage);
-		std::cout<<"id"<<collied_units.at(i)->get_id()<<"  damage : "<<damage<<std::endl;
+		//std::cout<<"id"<<collied_units.at(i)->get_id()<<"  damage : "<<damage<<std::endl;
 		if(collied_units.at(i)->get_is_dead()){
 			Player* player=PlayerController::get_cur_object()->search_player(player_id);
 			player->score_alter(target->get_max_hp());
@@ -65,7 +65,15 @@ void  AreaOfEffect::explode(){
 }
 
 void AreaOfEffect::draw_attack(){
+	if(explode_timer==1){
+		if(!exploded_render){
+			exploded_render=true;
+			//std::cout<<"AreaOfEffect::draw_attack()"<<std::endl;
+			Display::Draw::get_cur_object()->draw_particle("misc/explode",pos,
+				math::vec2<double>(0.5*radius,0.5*radius),20);
+		}
 
+	}
 }
 
 void AreaOfEffect::attack_update(){

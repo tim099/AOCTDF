@@ -147,6 +147,7 @@ void DrawObject::draw_object(Shader *shader) {
 
 	shader->Disable(Shader::NormalMapping);
 	shader->Disable(Shader::AlphaTexture);
+	shader->Disable(Shader::LayerTexture);
 	if (alpha_drawobject){
 		glDisable(GL_BLEND);
 	}

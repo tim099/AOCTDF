@@ -35,13 +35,15 @@ void AudioController::play_by_dis(std::string name,math::vec3<double> pos,double
 }
 void AudioController::update(){
 	AudioPlayer* player;
-	for(unsigned i=0;i<auto_players.size();i++){
+	for(unsigned i=0;i<auto_players.size();){
 		player=auto_players.at(i);
 		if(!player->playing()){
 			//std::cout<<"AudioController::update() free player"<<std::endl;
 			player_pool->free(player);
 			auto_players.at(i)=auto_players.back();
 			auto_players.pop_back();
+		}else{
+			i++;
 		}
 	}
 	//std::cout<<"AudioController::update()"<<std::endl;

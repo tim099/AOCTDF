@@ -13,6 +13,8 @@
 #include "class/display/window/ViewPort.h"
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/display/font/DrawTextureStr.h"
+#include "class/display/draw/billboard/BillBoardRenderer.h"
+#include "class/display/draw/particle/ParticleRenderer.h"
 #include "class/game/Config.h"
 #include <iostream>
 namespace Display{
@@ -22,6 +24,7 @@ Draw::Draw() {
 	//strRenderer=new StringRenderer("files/texture/font/font.bmp");
 	strRenderer=new StringRenderer("files/texture/font/font1.png");
 	billBoardRenderer=new BillBoardRenderer();
+	particleRenderer=new ParticleRenderer();
 	lightControl=0;
 	camera=0;
 	Enable3D=true;
@@ -35,6 +38,7 @@ Draw::~Draw() {
 	delete d_texsMutex;
 	delete strRenderer;
 	delete billBoardRenderer;
+	delete particleRenderer;
 	while(!d_texs.empty()){
 		delete d_texs.back();
 		d_texs.pop_back();
@@ -73,15 +77,19 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
     	d_objs.at(i)->draw_object(shader);//draw all obj
     }
 
-    drawBillBoard(shader,camera);
+    draw_billBoard(shader,camera);
+    draw_particle(shader,camera);
     draw_water(shader,shaderWater,FBO,waterReflectFBO,waterRefractFBO);
 
     Input::Mouse::get_cur_mouse()->get_world_space_pos(FBO,
 			glm::inverse(camera->view_matrix(FBO->aspect())));
 
 }
-void Draw::drawBillBoard(Shader *shader,Camera *camera){
+void Draw::draw_billBoard(Shader *shader,Camera *camera){
 	billBoardRenderer->draw(shader,camera);
+}
+void Draw::draw_particle(Shader *shader,Camera *camera){
+	particleRenderer->draw(shader,camera);
 }
 void Draw::draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 		FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO){
@@ -228,9 +236,16 @@ void Draw::push(RenderString* renderStr){
 void Draw::push(BillBoard* billboard){
 	billBoardRenderer->push(billboard);
 }
+void Draw::push(Particle* particle){
+	particleRenderer->push(particle);
+}
 void Draw::draw_bill_board(std::string texture,math::vec3<double> pos,math::vec2<double> size){
-	Display::BillBoard *bill_board=new Display::BillBoard(texture,pos,size);
+	BillBoard *bill_board=new BillBoard(texture,pos,size);
 	push(bill_board);
+}
+void Draw::draw_particle(std::string texture,math::vec3<double> pos,math::vec2<double> size,int timer){
+	Particle* particle=new Particle(texture,pos,size,timer);
+	push(particle);
 }
 DrawData* Draw::push_as_tex(RenderString* renderStr){
 	//std::cout<<"push as tex"<<renderStr->str<<std::endl;
@@ -255,6 +270,10 @@ void Draw::update(){
     for(unsigned i=0;i<water_d_objs.size();i++){
     	water_d_objs.at(i)->update();
     }
+
+}
+void Draw::logical_update(){
+	particleRenderer->update();
 }
 void Draw::clear_tmp_data(){
     for(unsigned i=0;i<d_objs.size();i++){
@@ -264,7 +283,7 @@ void Draw::clear_tmp_data(){
     	water_d_objs.at(i)->clear_temp_drawdata();
     }
     billBoardRenderer->clear_temp_drawdata();
-
+    particleRenderer->clear_temp_drawdata();
 
     while(!d_texs.empty()){
     	delete d_texs.back();

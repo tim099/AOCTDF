@@ -3,6 +3,7 @@
 #include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
 #include "class/game/ageOfCube/map/ai/search/Astar.h"
 #include "class/physic/RigidBodyController.h"
+#include "class/display/draw/Draw.h"
 namespace AOC {
 
 Field::Field() {
@@ -61,7 +62,7 @@ void Field::update(){
 	player_controller->update();
 	attack_controller->update();
 	rigid_body_controller->update();
-
+	Display::Draw::get_cur_object()->logical_update();
 
 }
 void Field::pause_update(){

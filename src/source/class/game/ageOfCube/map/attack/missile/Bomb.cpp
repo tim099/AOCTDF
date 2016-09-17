@@ -23,12 +23,11 @@ Bomb::Bomb(Bomb* cube){
 Display::DrawObject *Bomb::get_missile_drawobj(){
 	return Display::AllDrawObjects::get_cur_object()->get("attack/cube_missile_1");
 }
-
 void Bomb::explode(){
 	if(!target)return;
 
 	Attack* attack=AttackCreator::get_cur_object()->create("AOE");
-	attack->radius=10.0;
+	attack->radius=5.0;
 
 	attack->pos=pos;
 	attack->set_target(target);

@@ -7,8 +7,9 @@
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/display/font/RenderString.h"
+#include "class/tim/math/vec3.h"
 
-#include "class/display/draw/billboard/BillBoardRenderer.h"
+
 namespace Display{
 class DrawData;
 class StringRenderer;
@@ -16,6 +17,10 @@ class Camera;
 class FrameBuffer;
 class Shader;
 class LightControl;
+class BillBoardRenderer;
+class BillBoard;
+class ParticleRenderer;
+class Particle;
 class Draw : public Tim::GlobalObject<Draw> {
 public:
 	Draw();
@@ -30,11 +35,12 @@ public:
 	 * draw all 2D object(texture,font...etc)
 	 */
 	void draw2D(Shader2D *shader2D,FrameBuffer *FBO);
-	//render shadow map
-	void draw_shadow(Shader *shader);
-	//update all object
-	void update();
-	//update all draw object
+
+	void draw_shadow(Shader *shader);//render shadow map
+
+	void update();//update all draw object
+
+	void logical_update();
 
 	void remove(DrawObject* obj);
 
@@ -42,8 +48,9 @@ public:
 	void push(DrawTexture* tex);
 	void push(RenderString* renderStr);
 	void push(BillBoard* billboard);
+	void push(Particle* particle);
 	void draw_bill_board(std::string texture,math::vec3<double> pos,math::vec2<double> size);
-
+	void draw_particle(std::string texture,math::vec3<double> pos,math::vec2<double> size,int timer=10);
 	DrawData* push_as_tex(RenderString* renderStr);
 
 	void set_lightControl(LightControl* lightControl);
@@ -61,8 +68,8 @@ public:
 protected:
 	void draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 			FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO);
-	void drawBillBoard(Shader *shader,Camera *camera);
-
+	void draw_billBoard(Shader *shader,Camera *camera);
+	void draw_particle(Shader *shader,Camera *camera);
 	std::vector<DrawObject*> d_objs;
 	std::vector<DrawObject*> water_d_objs;
 	std::vector<DrawTexture*> d_texs;
@@ -70,6 +77,7 @@ protected:
 
 	StringRenderer* strRenderer;
 	BillBoardRenderer* billBoardRenderer;
+	ParticleRenderer* particleRenderer;
 	Tim::Mutex* d_objsMutex;
 	Tim::Mutex* d_texsMutex;
 };

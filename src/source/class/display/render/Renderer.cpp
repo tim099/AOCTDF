@@ -94,11 +94,12 @@ void Renderer::creat_shaders() {
 			"files/shader/normalMapping/NormalMapping.frag");
 	shaders.push_back(shader);
 
-	shader = new Shader("LightScatter");
-	shader->LoadShader("files/shader/lightScatter/LightScatter.vert",
-			"files/shader/lightScatter/LightScatter.geo",
-			"files/shader/lightScatter/LightScatter.frag");
-	shaders.push_back(shader);
+	//shader = new Shader("LightScatter");
+	//shader->LoadShader("files/shader/lightScatter/LightScatter.vert",
+			//"files/shader/lightScatter/LightScatter.geo",
+			//"files/shader/lightScatter/LightScatter.frag");
+	//shaders.push_back(shader);
+
 	switch_shader("NormalMapping");
 }
 void Renderer::switch_shader(std::string name) {
