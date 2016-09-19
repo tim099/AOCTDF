@@ -16,6 +16,7 @@
 #include "class/display/draw/billboard/BillBoardRenderer.h"
 #include "class/display/draw/particle/ParticleRenderer.h"
 #include "class/game/Config.h"
+
 #include <iostream>
 namespace Display{
 Draw::Draw() {
@@ -32,6 +33,7 @@ Draw::Draw() {
 	wave_height=0.2f;
 	wave_width=0.8f;
 	water_height=40.0f;
+	time=0.0;
 }
 Draw::~Draw() {
 	delete d_objsMutex;
@@ -103,9 +105,6 @@ void Draw::draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 	    shader->Enable(Shader::Clipping);
 	    glm::vec4 clip_plane(0,1.0,0,-water_height+0.01);
 	    shader->sent_Uniform("clipping_plane",clip_plane);
-	    //glCullFace(GL_FRONT);
-	    //glEnable(GL_CLIP_PLANE0);
-	    //glClipPlane(GL_CLIP_PLANE0,h);
 
 		reflect_cam.pos.y-=2.0*(reflect_cam.pos.y-water_height);
 		reflect_cam.look_at.y-=2.0*(reflect_cam.look_at.y-water_height);
@@ -117,8 +116,6 @@ void Draw::draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 	    	d_objs.at(i)->draw_object(shader);//draw all obj
 	    }
 	    shader->Disable(Shader::Clipping);
-	    //glDisable(GL_CLIP_PLANE0);
-	    //glCullFace(GL_BACK);
 
 	    waterRefractFBO->bind_buffer();
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
@@ -147,8 +144,12 @@ void Draw::draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 	shaderWater->active_shader();
 
 
-	float time=glfwGetTime();
-
+	//float time=glfwGetTime();
+	if(time>100000.0){
+		time=0.0;
+	}else{
+		time+=0.02;
+	}
 	shaderWater->sent_Uniform("waveTime",time);
 	shaderWater->sent_Uniform("waveHeight",wave_height);
 	shaderWater->sent_Uniform("waveWidth",wave_width);

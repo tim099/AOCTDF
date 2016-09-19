@@ -63,7 +63,7 @@ void  AreaOfEffect::explode(){
 		}
 	}
 	Audio::AudioController::get_cur_object()->
-			play_by_dis("default_sound_effect/Bomb.wav",pos,100);
+			play_by_dis("default_sound_effect/Bomb.wav",pos,1000);
 
 	explode_timer++;
 	//die=true;
@@ -74,7 +74,7 @@ void AreaOfEffect::draw_attack(){
 		if(!exploded_render){
 			exploded_render=true;
 			Display::Particle *p=new Display::Particle("misc/explode_atlas",pos,
-					math::vec2<double>(0.5*radius,0.5*radius),20);
+					math::vec2<double>(0.5*radius,0.5*radius),64);
 			p->set_atlas(8,8);
 			Display::Draw::get_cur_object()->push(p);
 		}
@@ -82,7 +82,7 @@ void AreaOfEffect::draw_attack(){
 	if(explode_timer){
 		Display::PointLight *light=new Display::PointLight(
 				glm::vec3(pos.x,pos.y,pos.z),
-				glm::vec3(fabs(4.0-explode_timer)*8.0,1.0,1.0),false);
+				glm::vec3(7.0,5.0,5.0)*(float)(12.0f-explode_timer),false);
 		Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	}
 }
@@ -91,7 +91,7 @@ void AreaOfEffect::attack_update(){
 	//std::cout<<"Missile::attack_update()"<<std::endl;
 	if(explode_timer){
 		explode_timer++;
-		if(explode_timer>2)die=true;
+		if(explode_timer>12)die=true;
 		return;
 	}
 	timer++;

@@ -69,7 +69,7 @@ void Ball::killed(){
 			cur_player->modify_resource("cube",1*(get_max_hp()/50));
 			break;
 	}
-	Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav",0.3);
+	//Audio::AudioController::get_cur_object()->play("default_sound_effect/Pickup_Coin2.wav",0.3);
 }
 void Ball::minion_update(){
 	rigid_body.mass=rigid_body.radius*rigid_body.radius*rigid_body.radius;

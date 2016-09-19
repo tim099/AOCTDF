@@ -84,6 +84,7 @@ void SceneEdit::scene_initialize() {
 	edit_board_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_boardUI.txt");
 	edit_rule_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_ruleUI.txt");
 	rule_UI=new UI::UI(CM::folder_path+local_path+"UI/pieceUI.txt");
+
 	back_music=new Audio::AudioPlayer();
 	back_music->set_source("default_music/prepare_your_swords.wav");
 	back_music->set_volume(0.2);
@@ -91,6 +92,7 @@ void SceneEdit::scene_initialize() {
 	input->push_receiver(new Input::Receiver("edit_chess"));
 	input->push_receiver(new Input::Receiver("edit_rule"));
 	input->push_receiver(new Input::Receiver("add_rule"));
+	input->push_receiver(new Input::Receiver("rule"));
 	resume();
 	std::cout<<"SceneEdit::scene_initialize() 2"<<std::endl;
 }
@@ -99,6 +101,7 @@ void SceneEdit::scene_terminate() {
 	input->remove_receiver("edit_chess");
 	input->remove_receiver("edit_rule");
 	input->remove_receiver("add_rule");
+	input->remove_receiver("rule");
 	if(back_music)delete back_music;
 	//std::cout<<"SceneEdit::scene_terminate() 2"<<std::endl;
 	delete chess_board;
@@ -136,6 +139,23 @@ void SceneEdit::handle_signal(Input::Signal *sig){
 		chess_board->load_board(chess_board->dir_path+"chessBoard/board.txt");
 	}else if(sig->get_data()=="save_board"){
 		chess_board->save_board(chess_board->dir_path+"chessBoard/board.txt");
+	}else if(sig->get_data()=="reload_UI"){
+		if(UI)delete UI;
+		UI = new UI::UI(CM::folder_path+local_path+"UI/UI.txt");
+
+		if(edit_chess_UI)delete edit_chess_UI;
+		edit_chess_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_chessUI.txt");
+
+		if(edit_board_UI)delete edit_board_UI;
+		edit_board_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_boardUI.txt");
+
+		if(edit_rule_UI)delete edit_rule_UI;
+		edit_rule_UI=new UI::UI(CM::folder_path+local_path+"UI/edit_ruleUI.txt");
+
+		if(rule_UI)delete rule_UI;
+		rule_UI=new UI::UI(CM::folder_path+local_path+"UI/pieceUI.txt");
+
+
 	}else if(sig->get_data()=="plus"){
 		if(mode==edit_piece||mode==edit_rule){
 			if(chess_type<(int)chess_board->pieces.size()){
@@ -336,7 +356,7 @@ void SceneEdit::scene_update_end(){
 	while(Input::Signal*sig=input->get_signal("edit_rule")){
 		//std::cout<<"edit_rule:"<<sig->get_data()<<std::endl;
 		unsigned rule_num=Tim::String::str_to_int(sig->get_data());
-		std::cout<<"edit_rule:"<<rule_num<<std::endl;
+		//std::cout<<"edit_rule:"<<rule_num<<std::endl;
 		if(selected_piece){
 			if(rule_num<selected_piece->basic_rules.size()){
 				selected_rule=selected_piece->basic_rules.at(rule_num);

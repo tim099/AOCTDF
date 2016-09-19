@@ -65,6 +65,7 @@ public:
 	float wave_height,wave_width;
 	float water_height;
 	bool real_water;
+	float time;
 protected:
 	void draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 			FrameBuffer *waterReflectFBO,FrameBuffer *waterRefractFBO);

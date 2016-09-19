@@ -69,7 +69,7 @@ void SceneStart::pause(){
 	}
 }
 void SceneStart::resume(){
-	//std::cout<<"SceneStart::resume() 1"<<std::endl;
+	std::cout<<"SceneStart::resume() 1"<<std::endl;
 	music_player.play();
 	draw->Enable3D=true;
 	draw->set_camera(camera);
@@ -94,13 +94,13 @@ void SceneStart::resume(){
 	std::string map_name = "title";
 	glm::ivec3 map_size(200,50,200);
 	if(Tim::File::check_if_file_exist(map_folder_path+map_name)){
-		//std::cout<<"find map"<<std::endl;
+		std::cout<<"find map"<<std::endl;
 		field->load(map_folder_path+map_name);
 	}else{
 		//std::cout<<"not find map"<<std::endl;
 		field->map->gen_map(map_size,time(NULL));
 	}
-	//std::cout<<"SceneStart::resume() END"<<std::endl;
+	std::cout<<"SceneStart::resume() END"<<std::endl;
 }
 void SceneStart::handle_signal(Input::Signal* sig){
 	//std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;

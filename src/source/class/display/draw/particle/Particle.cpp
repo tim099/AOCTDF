@@ -31,34 +31,33 @@ void Particle::update(){
 }
 void Particle::particles_update(){
 	create_timer++;
-	if(create_timer>1){
-		create_timer=0;
-		for(int i=0;i<5;i++){
-			double rx=0.01*(rand()%201-100);
-			double ry=0.01*(rand()%201-100);
-			double rz=0.01*(rand()%201-100);
-			math::vec3<double> v(rx,ry,rz);
-			v.normalize();
-			particle *p=new particle(pos,v*0.5,10);
-			p->tex=i;
-			particles.push_back(p);
-		}
 
-
-	}
 	particle* p;
 	for(unsigned i=0;i<particles.size();){
 		p=particles.at(i);
 		p->life--;
 		p->pos+=p->vel;
 		p->vel*=0.9;
-		p->tex+=6;
+		p->tex+=1;
 		if(p->life<=0){
 			delete particles.at(i);
 			particles.at(i)=particles.back();
 			particles.pop_back();
 		}else{
 			i++;
+		}
+	}
+	if(create_timer>0){
+		create_timer=0;
+		for(int i=0;i<8;i++){
+			double rx=0.01*(rand()%201-100);
+			double ry=0.01*(rand()%201-100);
+			double rz=0.01*(rand()%201-100);
+			math::vec3<double> v(rx,ry,rz);
+			v.normalize();
+			particle *p=new particle(pos,v*0.5,63);
+			p->tex=i;
+			particles.push_back(p);
 		}
 	}
 }
