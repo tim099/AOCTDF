@@ -33,6 +33,7 @@ protected:
 
 	void create_new_map();
 	void create_map();
+	void create_empty_map();
 	void load_map(std::string mode);
 	void delete_map();
 

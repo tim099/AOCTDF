@@ -189,6 +189,25 @@ void Map::gen_map_shape(){
 		}
 	}
 }
+
+void Map::gen_empty_map_shape(){
+	double height = 10;
+	for (int i = 0; i < map_size.x; i++) {
+		for (int k = 0; k < map_size.z; k++) {
+			height=get_height(i,k);
+			for (int j = 0; j < map_size.y; j++) {
+				if (j <height) {
+					//map->get(i, j, k).set(Cube::startcube);
+					map->get(i,j,k)=Cube::cube_start;
+				}
+				else{
+					map->get(i,j,k)=Cube::cubeNull;
+				}
+			}
+		}
+	}
+}
+
 void Map::gen_map_cube_type(){
 	double stone_height;
 	double height;
@@ -269,6 +288,29 @@ void Map::gen_map(glm::ivec3 _map_size,unsigned _seed,int _ground_height){
 	init_path();
 	dp_map->update_whole_map();
 }
+
+void Map::gen_empty_map(glm::ivec3 _map_size,int _ground_height){
+	map_size=_map_size;
+	ground_height=_ground_height;
+	if(ground_height>map_size.y){
+		ground_height=map_size.y;
+	}
+	seed=0;
+	if(map_size.x>MX||map_size.y>MY||map_size.z>MZ){
+		std::cerr<<"Map::gen_map error Map size too large"<<std::endl;
+		return;
+	}
+	//map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
+	init();
+
+	noise.init(seed);
+	//srand(seed);
+	gen_empty_map_shape();
+	times++;
+	init_path();
+	dp_map->update_whole_map();
+}
+
 glm::ivec3 Map::get_size()const{
 	return map_size;
 }

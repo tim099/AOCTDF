@@ -11,6 +11,8 @@
 #include <string>
 #include "class/display/UI/UI.h"
 #include "class/display/UI/string/UIString.h"
+#include "class/display/UI/UI3D/HealthCube3D.h"
+#include "class/display/camera/Camera.h"
 
 namespace AOC{
 	class Player;
@@ -32,6 +34,8 @@ public:
 	void init_playerUI();
 	void set_resource_amount(int value);
 	void set_score(int score);
+protected:
+	virtual void start_draw(Display::Draw* draw);
 private:
 	UIString *health_string;
 	UIString *resource_amount_string;

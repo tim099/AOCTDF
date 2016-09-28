@@ -106,7 +106,10 @@ void SceneStart::handle_signal(Input::Signal* sig){
 	//std::cout<<"SceneStart got signal:"<<sig->get_data()<<std::endl;
 	if(sig->get_data()=="CreateNewMap"){
 		create_new_map();
-	}else if(sig->get_data()=="CreateMap"){
+	}else if(sig->get_data()=="CreateEmptyMap"){
+		create_empty_map();
+	}
+	else if(sig->get_data()=="CreateMap"){
 		create_map();
 	}else if(sig->get_data()=="edit_map"){
 		load_map("edit");
@@ -174,6 +177,31 @@ void SceneStart::create_map(){
 	//sig->ex_data=new SceneStart();
 	sig->sent();
 
+}
+void SceneStart::create_empty_map(){
+	UI::UIString *map_name=(UI::UIString*)UI->get_child("MapName");
+	UI::UIString *map_size_str=(UI::UIString*)UI->get_child("MapSize");
+	std::vector<std::string> size;
+	Tim::String::split(map_size_str->get_string(),"*",size);
+	std::cout<<"Map Name="<<map_name->get_string()<<std::endl;
+	unsigned map_size[3];
+	std::cout<<"map size=";
+	if(size.size()!=3){
+		std::cerr<<"SceneStart::create_map() fail!! Invalid Map Size:"
+				<<map_size_str->get_string()<<std::endl;
+		std::cerr<<"Please Enter Map Size"<<std::endl;
+		return ;
+	}
+	for(int i=0;i<3;i++){
+		map_size[i]=Tim::String::str_to_int(size.at(i).c_str());
+		//sscanf(size.at(i).c_str(),"%u",&map_size[i]);
+		std::cout<<map_size[i]<<",";
+	}std::cout<<std::endl;
+	Input::Signal *sig=new Input::Signal("push_scene","Game");
+	sig->ex_data=new AOC::SceneEditMap(map_folder_path+std::string(map_name->get_string()),
+			glm::ivec3(map_size[0],map_size[1],map_size[2]), true);
+	//sig->ex_data=new SceneStart();
+	sig->sent();
 }
 void SceneStart::handle_input(){
 	///*

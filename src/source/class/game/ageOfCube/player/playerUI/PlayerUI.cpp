@@ -50,4 +50,7 @@ void PlayerUI::set_score(int score){
 	score_string->set_string(Tim::String::to_string(score));
 }
 
+void PlayerUI::start_draw(Display::Draw* draw){
+}
+
 } /* namespace AOC */
