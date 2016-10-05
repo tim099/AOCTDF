@@ -60,6 +60,7 @@ void Client::client_active(){
 		    std::string receive_dat=socket->receive_data();
 			push_receive_data(receive_dat);
 		}
+		sent_data("#end");
 	}
 
 

@@ -10,6 +10,7 @@ public:
 	ParticleRenderer();
 	virtual ~ParticleRenderer();
 	void update();
+	void clear();
 	void clear_temp_drawdata();
 	void draw(Shader *shader,Camera *camera);
 	void push(Particle* particle){

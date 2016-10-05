@@ -40,6 +40,10 @@ Signal* Input::get_signal(std::string name){
 	return 0;
 }
 void Input::remove_receiver(std::string name){
+	if(!receiver_map.find(name)){
+		std::cerr<<"remove_receiver fail,Receiver name:"<<name<<" not exist in Input."<<std::endl;
+		return;
+	}
 	receiver_map.remove(name);
 }
 void Input::clear_receiver(){

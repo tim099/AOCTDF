@@ -113,7 +113,6 @@ void Unit::update(){
 
 	if(is_dead)return;
 
-
 	for(unsigned i=0;i<condition_list.size();){
 		if(condition_list.at(i)->end){
 			condition_list.at(i)->endEffect();

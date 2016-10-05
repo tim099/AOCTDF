@@ -2,13 +2,15 @@
 #define DRAW_H_
 #include <vector>
 #include <queue>
-#include "class/display/draw/drawObject/DrawObject.h"
+
 #include "class/display/draw/texture/DrawTexture.h"
-#include "class/tim/thread/mutex/Mutex.h"
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/display/font/RenderString.h"
 #include "class/tim/math/vec3.h"
 
+namespace Tim{
+	class Mutex;
+}
 
 namespace Display{
 class DrawData;
@@ -21,6 +23,8 @@ class BillBoardRenderer;
 class BillBoard;
 class ParticleRenderer;
 class Particle;
+class DrawObject;
+
 class Draw : public Tim::GlobalObject<Draw> {
 public:
 	Draw();
@@ -31,16 +35,18 @@ public:
 			Shader2D *shader2D,FrameBuffer *FBO,FrameBuffer *waterReflectFBO,
 			FrameBuffer * waterRefractFBO);
 
+
 	/*
 	 * draw all 2D object(texture,font...etc)
 	 */
 	void draw2D(Shader2D *shader2D,FrameBuffer *FBO);
 
-	void draw_shadow(Shader *shader);//render shadow map
+	void draw_shadow(Shader *shader,FrameBuffer *FBO);//render shadow map
 
 	void update();//update all draw object
 
 	void logical_update();
+	void logical_clear();
 
 	void remove(DrawObject* obj);
 
@@ -79,6 +85,7 @@ protected:
 	StringRenderer* strRenderer;
 	BillBoardRenderer* billBoardRenderer;
 	ParticleRenderer* particleRenderer;
+	Texture* sky_box;
 	Tim::Mutex* d_objsMutex;
 	Tim::Mutex* d_texsMutex;
 };

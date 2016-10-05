@@ -18,11 +18,6 @@ public:
 	Texture* get(std::string tex_name);
 	std::string folder_path;
 protected:
-	void Parse_texture(std::istream &is);
-	void Parse_texture2DArr(std::istream &is);
-	void Parse_textureCubeMap(std::istream &is);
-
-
 	virtual inline std::string Script_name()const{
 		return "#LOAD_TEXTUREMAP_SCRIPT";
 	}

@@ -1,4 +1,5 @@
 #include "class/display/buffer/Buffer.h"
+#include <glm/glm.hpp>
 #include <iostream>
 namespace Display{
 Buffer::Buffer(GLfloat* data,int datasize,GLuint _index,GLint _size,GLenum _type,GLboolean _normalized
@@ -51,6 +52,15 @@ void Buffer::unbind_vnbuffer(){
 void Buffer::unbind_lybuffer(){
 	glDisableVertexAttribArray(ly);//ly
 }
+void Buffer::unbind_buffer(int type){
+	glDisableVertexAttribArray(type);
+}
+void Buffer::unbind_buffer_mat4(int index){
+	for (int i=0;i<4;i++){
+		glDisableVertexAttribArray(index+i);
+	    glVertexAttribDivisor(index+i,0);
+	}
+}
 void Buffer::bind_vtbuffer(GLuint vertexbuffer){
 	glBindBuffer(GL_ARRAY_BUFFER,vertexbuffer);
 	glEnableVertexAttribArray(vt);
@@ -70,6 +80,14 @@ void Buffer::bind_buffer(int index,int size,GLuint buffer){
 	glBindBuffer(GL_ARRAY_BUFFER,buffer);
 	glEnableVertexAttribArray(index);
 	glVertexAttribPointer(index,size,GL_FLOAT,GL_FALSE,0,NULL);//vernum,v_num,type
+}
+void Buffer::bind_buffer_mat4(int index,int size,GLuint buffer){
+	glBindBuffer(GL_ARRAY_BUFFER,buffer);
+	for (int i=0;i<4;i++){
+	    glVertexAttribPointer(index+i,4,GL_FLOAT,GL_FALSE,sizeof(glm::mat4),(void *)(sizeof(glm::vec4)*i));
+	    glEnableVertexAttribArray(index+i);
+	    glVertexAttribDivisor(index+i,1);
+	}
 }
 void Buffer::disable_all_buffer(){
 	glDisableVertexAttribArray(0);//vertexbuffer

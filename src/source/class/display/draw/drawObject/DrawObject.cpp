@@ -1,19 +1,24 @@
+#include "class/display/draw/drawObject/DrawObject.h"
+
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "class/display/draw/drawObject/DrawObject.h"
 #include "class/display/buffer/Buffer.h"
 #include "class/display/shader/Shader.h"
 #include "class/display/texture/Texture.h"
 #include "class/display/texture/AllTextures.h"
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
 #include "class/display/draw/drawObject/drawData/drawDateEX/SkyMap.h"
+#include "class/display/camera/Camera.h"
+#include "class/display/model/modelBuffer/ModelBuffer.h"
+#include <cstring>
 
 #include "class/display/draw/Draw.h"
 #include <iostream>
 namespace Display{
 DrawObject::DrawObject(std::string _obj_str, std::string _tex_str,
-		std::string _normalTex_str, bool _layer_texture) {
+std::string _normalTex_str, bool _layer_texture) {
 	init_drawObject(_obj_str, _tex_str, _normalTex_str, _layer_texture);
+	mat = math::vec4<float>(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
 }
 DrawObject::DrawObject(){
 	model_buffer = 0;
@@ -22,12 +27,17 @@ DrawObject::DrawObject(){
 	draw_shadow = false;
 	layer_texture = 0;
 	alpha_drawobject=false;
+	sky_map=false;
+	mat = math::vec4<float>(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
 	//sky_map=false;
 }
 void DrawObject::init_drawObject(std::string _obj_str, std::string _tex_str,
 		std::string _normalTex_str, bool _layer_texture) {
 	if (_tex_str != "") {
 		texture = AllTextures::get_cur_tex(_tex_str);
+		if(!texture){
+			std::cerr<<"DrawObject::init_drawObject texture:"<<_tex_str<<"not found"<<std::endl;
+		}
 	} else {
 		texture = 0;
 	}
@@ -50,12 +60,48 @@ void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 	NormalMap = _NormalMap;
 	draw_shadow = true;
 	layer_texture = _layer_texture;
-	mat = math::vec4<float>(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
+
 
 }
 DrawObject::~DrawObject() {
 	//std::cout << "delete draw object" << std::endl;
 	clear_temp_drawdata();
+}
+void DrawObject::load(std::istream &is){
+	std::string line;
+	while(Tim::String::get_line(is, line, true, true)){
+			if(line=="#load_end"){
+				init_drawObject(modelbuffer_name,texture_name,normalmap_name);
+				break;
+			}else if(line=="Name:"){
+				Tim::String::get_line(is, name, true, true);
+			}else if(line=="ModelBuffer:"){
+				Tim::String::get_line(is, modelbuffer_name, true, true);
+			}else if(line=="Texture:"){
+				Tim::String::get_line(is, texture_name, true, true);
+			}else if(line=="NormalMap:"){
+				Tim::String::get_line(is, normalmap_name, true, true);
+			}else if(line=="Material:"){
+				is>>mat.x;
+				is>>mat.y;
+				is>>mat.z;
+				is>>mat.w;
+			}else if(line=="DrawShadow:"){
+				Tim::String::get_line(is, line, true, true);
+				if(line=="false"){
+					draw_shadow=false;
+				}else{
+					draw_shadow=true;
+				}
+			}else if(line=="SkyMap:"){
+				Tim::String::get_line(is, line, true, true);
+				if(line=="true"){
+					sky_map=true;
+				}else{
+					sky_map=false;
+				}
+			}
+	}
 }
 void DrawObject::update() {
 
@@ -100,6 +146,31 @@ void DrawObject::draw_vec(Shader *shader, std::vector<DrawDataObj*> &data_v) {
 		data->draw_end(shader);
 	}
 }
+void DrawObject::draw_vec_fast(Shader *shader, std::vector<DrawDataObj*> &data_v){
+
+	int Mat_size=sizeof(glm::mat4);
+	GLuint m_buffer=Buffer::gen_buffer(0,Mat_size*(data_v.size()));
+	glBindBuffer(GL_ARRAY_BUFFER,m_buffer);
+
+	Buffer::bind_buffer_mat4(Buffer::m,data_v.size(),m_buffer);
+	glm::mat4 *matrices=(glm::mat4*)glMapBuffer(GL_ARRAY_BUFFER,GL_WRITE_ONLY);
+	DrawDataObj* data;
+	sent_model_veiw_uniform(shader->programID, data_v.at(0)->pos->get_pos_mat());
+	if(matrices){
+		for (unsigned i=0;i<data_v.size();i++) {
+			data=data_v.at(i);
+			matrices[i]=data->pos->get_pos_mat();
+		}
+		glUnmapBuffer(GL_ARRAY_BUFFER);
+		shader->Enable(Shader::ModelMatArr);
+		model_buffer->draw_instanced(shader->programID,data_v.size());
+		shader->Disable(Shader::ModelMatArr);
+	}else{
+		std::cerr<<"DrawObject::draw_vec_fast"<<std::endl;
+	}
+	Buffer::unbind_buffer_mat4(Buffer::m);
+	glDeleteBuffers(1,&m_buffer);
+}
 void DrawObject::draw_shadow_map(Shader *shader) {
 	if (!draw_shadow)return;
 	if(temp_datas.empty())return;
@@ -142,9 +213,14 @@ void DrawObject::draw_object(Shader *shader) {
 			shader->sent_Uniform("NormalTexture",1);//clear data
 		}
 	}
+	if(sky_map){
+		shader->Enable(Display::Shader::SkyMap);
+	}
 	draw_vec(shader, temp_datas);
-	model_buffer->unbind_buffer(shader);
+	//draw_vec_fast(shader, temp_datas);
 
+	model_buffer->unbind_buffer(shader);
+	shader->Disable(Display::Shader::SkyMap);
 	shader->Disable(Shader::NormalMapping);
 	shader->Disable(Shader::AlphaTexture);
 	shader->Disable(Shader::LayerTexture);

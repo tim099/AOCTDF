@@ -1,4 +1,5 @@
 #include "class/display/draw/drawObject/DynamicDrawObject.h"
+#include "class/display/model/modelBuffer/ModelBuffer.h"
 namespace Display{
 DynamicDrawObject::DynamicDrawObject() {
 	model_updated=false;

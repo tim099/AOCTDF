@@ -4,6 +4,7 @@
 #include "class/game/ageOfCube/map/unit/Unit.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/Draw.h"
+#include "class/display/draw/particle/Particle.h"
 #include <cmath>
 namespace AOC {
 void Missile::attack_pre_init(){
@@ -15,6 +16,7 @@ Missile::Missile() {
 	type=0;
 	explode_timer=0;
 	be_collide_off=true;
+	exploded_render=false;
 	//special_collide_off=true;
 }
 Missile::~Missile() {
@@ -51,9 +53,16 @@ Display::DrawObject *Missile::get_missile_drawobj(){
 }
 void Missile::draw_attack(){
 	if(explode_timer){
+		if(!exploded_render){
+			exploded_render=true;
+			Display::Particle *p=new Display::Particle("misc/explode_atlas",pos,
+					math::vec2<double>(6.5*radius,6.5*radius),15);
+			p->set_atlas(8,8,6);
+			Display::Draw::get_cur_object()->push(p);
+		}
 		Display::PointLight *light=new Display::PointLight(
 				glm::vec3(pos.x,pos.y,pos.z),
-				glm::vec3(fabs(4.0-explode_timer)*8.0,1.0,1.0),false);
+				glm::vec3(10.0,6.0,6.0)*(float)(4.0-explode_timer),false);
 		Display::Draw::get_cur_object()->lightControl->push_temp_light(light);
 	}else{
 		Display::DrawObject *missile_Drawobj=get_missile_drawobj();

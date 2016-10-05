@@ -45,60 +45,14 @@ void DrawObjectMap::Parse_Header(std::istream &is, std::string &line) {
 }
 void DrawObjectMap::Parse_Script(std::istream &is,std::string &line){
 	if(line=="DrawObject:"){
-		Parse_DrawObject(is);
+		DrawObject* d_obj=new DrawObject();
+		d_obj->load(is);
+
+		push(d_obj->get_name(),d_obj);
+		Display::Draw::get_cur_object()->push(d_obj);
 	}
 }
 void DrawObjectMap::Parse_DrawObject(std::istream &is){
-	std::string line;
-	std::string name;
-	std::string texture,normalmap;
-	std::string modelbuffer;
-	bool have_mat=false;
-	bool draw_shadow=true;
-	//bool sky_map=false;
-	math::vec4<float> mat;
-	Display::Draw* cur_draw=Display::Draw::get_cur_object();
 
-	if(!cur_draw){
-		std::cerr<<"DrawObjectMap::Parse_DrawObject cur Draw is not exist!!"<<std::endl;
-		return;
-	}
-	while(Tim::String::get_line(is, line, true, true)){
-		if(line=="#load_end"){
-			DrawObject* d_obj=new DrawObject(modelbuffer,texture,normalmap);
-			if(have_mat)d_obj->mat=mat;
-			d_obj->draw_shadow=draw_shadow;
-			//d_obj->sky_map=sky_map;
-			push(name,d_obj);
-
-			cur_draw->push(d_obj);
-			//create
-			break;
-		}else if(line=="Name:"){
-			Tim::String::get_line(is, name, true, true);
-		}else if(line=="ModelBuffer:"){
-			Tim::String::get_line(is, modelbuffer, true, true);
-		}else if(line=="Texture:"){
-			Tim::String::get_line(is, texture, true, true);
-		}else if(line=="NormalMap:"){
-			Tim::String::get_line(is, normalmap, true, true);
-		}else if(line=="Material:"){
-			have_mat=true;
-			is>>mat.x;
-			is>>mat.y;
-			is>>mat.z;
-			is>>mat.w;
-		}else if(line=="DrawShadow:"){
-			Tim::String::get_line(is, line, true, true);
-			if(line=="false"){
-				draw_shadow=false;
-			}
-		}else if(line=="SkyMap:"){
-			Tim::String::get_line(is, line, true, true);
-			if(line=="true"){
-				//sky_map=true;
-			}
-		}
-	}
 }
 }

@@ -25,6 +25,7 @@ public:
 	}
 	virtual void explode();
 protected:
+	virtual void draw_attack();
 	virtual Display::DrawObject *get_missile_drawobj();
 };
 

@@ -15,14 +15,27 @@
 #include "class/display/font/DrawTextureStr.h"
 #include "class/display/draw/billboard/BillBoardRenderer.h"
 #include "class/display/draw/particle/ParticleRenderer.h"
+#include "class/display/texture/texture3D/cubemap/TextureCubeMap.h"
+#include "class/display/draw/drawObject/DrawObject.h"
+#include "class/tim/thread/mutex/Mutex.h"
 #include "class/game/Config.h"
-
+#include <cmath>
 #include <iostream>
 namespace Display{
 Draw::Draw() {
 	d_objsMutex=new Tim::Mutex();
 	d_texsMutex=new Tim::Mutex();
 	//strRenderer=new StringRenderer("files/texture/font/font.bmp");
+	std::vector<std::string> paths;
+	paths.push_back("files/texture/sky/sky0.bmp");
+	paths.push_back("files/texture/sky/sky1.bmp");
+	paths.push_back("files/texture/sky/sky2.bmp");
+	paths.push_back("files/texture/sky/sky3.bmp");
+	paths.push_back("files/texture/sky/sky4.bmp");
+	paths.push_back("files/texture/sky/sky5.bmp");
+	sky_box=new TextureCubeMap(paths,
+			glm::ivec2(256,256),
+			GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_MipMap);
 	strRenderer=new StringRenderer("files/texture/font/font1.png");
 	billBoardRenderer=new BillBoardRenderer();
 	particleRenderer=new ParticleRenderer();
@@ -41,6 +54,7 @@ Draw::~Draw() {
 	delete strRenderer;
 	delete billBoardRenderer;
 	delete particleRenderer;
+	delete sky_box;
 	while(!d_texs.empty()){
 		delete d_texs.back();
 		d_texs.pop_back();
@@ -72,7 +86,8 @@ void Draw::draw3D(Shader *shader,Shader *shaderWater,Shader *shaderShadowMapping
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear buffer
 	//sent uniform
 	FBO->depth_textures.at(0)->sent_uniform(shader,33,"depthTexture");
-	AllTextures::get_cur_tex("default/skybox")->sent_uniform(shader,30,"skybox");
+	//Texture* sky_box=AllTextures::get_cur_tex("default/skybox")->sent_uniform(shader,30,"skybox");
+	sky_box->sent_uniform(shader,30,"skybox");
 	camera->sent_uniform(shader->programID,FBO->aspect());
 	lightControl->sent_uniform(shader,camera->pos);
     for(unsigned i=0;i<d_objs.size();i++){//100
@@ -145,7 +160,7 @@ void Draw::draw_water(Shader *shader,Shader *shaderWater,FrameBuffer *FBO,
 
 
 	//float time=glfwGetTime();
-	if(time>100000.0){
+	if(time>1000.0){
 		time=0.0;
 	}else{
 		time+=0.02;
@@ -189,7 +204,7 @@ void Draw::draw2D(Shader2D *shader2D,FrameBuffer *FBO){
     }
     strRenderer->draw(shader2D);
 }
-void Draw::draw_shadow(Shader *shader){
+void Draw::draw_shadow(Shader *shader,FrameBuffer *FBO){
     for(unsigned i=0;i<d_objs.size();i++){
     	d_objs.at(i)->draw_shadow_map(shader);//draw all obj
     }
@@ -222,7 +237,6 @@ void Draw::push(DrawObject* obj){
 	}else{
 		d_objs.push_back(obj);
 	}
-
 	d_objsMutex->release();
 }
 void Draw::push(DrawTexture* tex){
@@ -275,6 +289,9 @@ void Draw::update(){
 }
 void Draw::logical_update(){
 	particleRenderer->update();
+}
+void Draw::logical_clear(){
+	particleRenderer->clear();
 }
 void Draw::clear_tmp_data(){
     for(unsigned i=0;i<d_objs.size();i++){

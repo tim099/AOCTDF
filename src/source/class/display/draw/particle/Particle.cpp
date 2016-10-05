@@ -14,7 +14,7 @@ Particle::Particle(std::string _texture,math::vec3<double> _pos,math::vec2<doubl
 	timer=_timer;
 	create_timer=0;
 	atlas=false;
-	x_seg=0,y_seg=0;
+	x_seg=0,y_seg=0;play_speed=0;
 }
 Particle::~Particle() {
 	for(unsigned i=0;i<particles.size();i++){
@@ -38,7 +38,7 @@ void Particle::particles_update(){
 		p->life--;
 		p->pos+=p->vel;
 		p->vel*=0.9;
-		p->tex+=1;
+		p->tex+=play_speed;
 		if(p->life<=0){
 			delete particles.at(i);
 			particles.at(i)=particles.back();
@@ -55,7 +55,7 @@ void Particle::particles_update(){
 			double rz=0.01*(rand()%201-100);
 			math::vec3<double> v(rx,ry,rz);
 			v.normalize();
-			particle *p=new particle(pos,v*0.5,63);
+			particle *p=new particle(pos,v*0.1*size.x,63);
 			p->tex=i;
 			particles.push_back(p);
 		}
@@ -101,10 +101,8 @@ void Particle::draw(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u,Camera *c
 		delete vndata;
 		Buffer::bind_vnbuffer(vn_buffer);
 
-		GLuint uv_buffer;
+		GLuint ly_buffer;
 		if(atlas){
-			///*
-
 			shader->Enable(Shader::Atlas);
 			shader->sent_Uniform("atlas_sx",x_seg);
 			shader->sent_Uniform("atlas_sy",y_seg);
@@ -113,40 +111,22 @@ void Particle::draw(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u,Camera *c
 				p=particles.at(i);
 				lydata[i]=p->tex;
 			}
-			uv_buffer=Buffer::gen_buffer(lydata,sizeof(GLfloat)*(particles.size()));
-			Buffer::bind_buffer(Buffer::ly,1,uv_buffer);
+			ly_buffer=Buffer::gen_buffer(lydata,sizeof(GLfloat)*(particles.size()));
+			Buffer::bind_buffer(Buffer::ly,1,ly_buffer);
 			delete lydata;
 
 			glVertexAttribDivisor(Buffer::ly,1);
-			//*/
-			/*
-			GLfloat *uvdata=new GLfloat[12*particles.size()];
-			for(unsigned i=0;i<particles.size();i++){
-				Vertex::gen_atlas_uv(uvdata+12*i,x_seg,y_seg,particles.at(i)->tex);
-			}
-			uv_buffer=Buffer::gen_buffer(uvdata,sizeof(GLfloat)*(12*particles.size()));
-			Buffer::bind_uvbuffer(uv_buffer);
-			delete uvdata;
-			*/
 		}
 
-		///*
 		glVertexAttribDivisor(Buffer::vn,1);
 		glDrawArraysInstanced(GL_TRIANGLES,0,2*3,particles.size());
 		glVertexAttribDivisor(Buffer::vn,0);
-		//*/
-		/*
-		for(unsigned i=0;i<particles.size();i++){
-			glVertexAttribDivisor(2,1);
-			glDrawArrays(GL_TRIANGLES,0,2*3);
-			glVertexAttribDivisor(2,0);
-		}
-		*/
+
 		glDeleteBuffers(1,&vn_buffer);
 		if(atlas){
-			Buffer::unbind_lybuffer();
+			Buffer::unbind_buffer(Buffer::ly);
 			glVertexAttribDivisor(Buffer::ly,0);
-			glDeleteBuffers(1,&uv_buffer);
+			glDeleteBuffers(1,&ly_buffer);
 			shader->Disable(Shader::Atlas);
 		}
 	}

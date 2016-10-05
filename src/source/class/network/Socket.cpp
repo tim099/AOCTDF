@@ -69,7 +69,7 @@ std::string Socket::get_local_address(){
 	struct hostent* hos=gethostbyname(szHostName);
 	char *str_buff=inet_ntoa(*(struct in_addr*)*hos->h_addr_list);
 	std::string addr(str_buff);
-	delete str_buff;
+	//delete str_buff;
 	return addr;
 }
 void Socket::set_address(std::string _address,int port){

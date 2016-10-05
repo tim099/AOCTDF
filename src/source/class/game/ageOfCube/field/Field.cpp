@@ -21,6 +21,7 @@ Field::Field() {
 }
 Field::~Field() {
 	//std::cout<<"Field::~Field() 1"<<std::endl;
+	Display::Draw::get_cur_object()->logical_clear();
 	delete astar;
 	if(map)delete map;
 	if(player_controller)delete player_controller;

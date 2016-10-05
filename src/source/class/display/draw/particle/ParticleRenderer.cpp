@@ -9,9 +9,13 @@ ParticleRenderer::ParticleRenderer() {
 
 }
 ParticleRenderer::~ParticleRenderer() {
+	clear();
+}
+void ParticleRenderer::clear(){
     for(unsigned i=0;i<particles.size();i++){
     	delete particles.at(i);
     }
+    particles.clear();
 }
 void ParticleRenderer::update(){
 	for(unsigned i=0;i<particles.size();i++){

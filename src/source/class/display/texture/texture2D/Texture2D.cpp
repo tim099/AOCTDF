@@ -7,14 +7,70 @@
 #include "class/display/uniform/Uniform.h"
 #include "class/tim/file/File.h"
 #include "class/display/window/ViewPort.h"
+#include "class/tim/string/String.h"
 #include <iostream>
 namespace Display{
-Texture2D::Texture2D(GLuint _TexID,glm::ivec2 _size,GLenum _type,GLenum _format)
-: Texture(_TexID,GL_TEXTURE_2D,_type,_format){
-	size=_size;
+Texture2D::Texture2D(){
+
+}
+Texture2D::Texture2D(unsigned char *pixels,glm::ivec2 _size,GLint _internalformat,
+		GLenum _format,GLenum _type,int Parameteri){
+	init(pixels,_size,_internalformat,_format,_type,Parameteri);
+}
+Texture2D::Texture2D(Image<unsigned char>* image,GLint _internalformat,
+		GLenum _type,int Parameteri){
+	init(image->data,image->size,_internalformat,image->format,_type,Parameteri);
+}
+Texture2D::Texture2D(std::string imagepath,int Parameteri){
+	load(imagepath,Parameteri);
 }
 Texture2D::~Texture2D() {
 
+}
+void Texture2D::load(std::istream &is,std::string folder_path){
+	std::string line;
+	Tim::String::get_line(is, line, true, true);
+	if (line == "TextureName:") {
+		Tim::String::get_line(is,line, true, true);
+		name = Tim::String::cut(line, std::string("\""));
+	} else {
+		std::cerr << "Load_texture no Texture Name!!" << line << std::endl;
+		return;
+	}
+	Tim::String::get_line(is, line, true, true);
+	if (line == "TexturePath:") {
+		Tim::String::get_line(is, line, true, true);
+		path = line;
+	} else {
+		std::cerr << "Load_texture no TexturePath!!" << line << std::endl;
+		return;
+	}
+	load(folder_path + path);
+}
+void Texture2D::load(std::string imagepath,int Parameteri){
+	std::string type=Tim::File::get_type(imagepath);
+	Image<unsigned char>* image=new Image<unsigned char>();
+	image->loadImage(imagepath.c_str());
+	if (type == "bmp" || type == "BMP") {
+		init(image->data,image->size,GL_RGB,image->format,GL_UNSIGNED_BYTE,Parameteri);
+	} else if (type == "png" || type == "PNG") {
+		init(image->data,image->size,GL_RGBA,image->format,GL_UNSIGNED_BYTE,Parameteri);
+	} else {
+		std::cerr << "Texture2D::Texture2D unsupport image type:" << type << std::endl;
+	}
+	delete image;
+}
+void Texture2D::init(unsigned char *pixels,glm::ivec2 _size,GLint _internalformat,
+		GLenum _format,GLenum _type,int Parameteri){
+	glGenTextures(1,&TexID);
+	glBindTexture(GL_TEXTURE_2D,TexID);
+	size=_size;
+	Texture::init(TexID,GL_TEXTURE_2D,_type,_format,_internalformat);
+
+	glTexImage2D(GL_TEXTURE_2D,0,internalformat,size.x,size.y,0,format,type,pixels);
+	TexFilterParameteri(GL_TEXTURE_2D,Parameteri);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);//GL_CLAMP
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 }
 int Texture2D::get_texture_type(){
 	return Shader::Type_Texture;
@@ -22,26 +78,11 @@ int Texture2D::get_texture_type(){
 Texture2D* Texture2D::Tex2D(){
 	return this;
 }
-int Texture2D::layer()const{
+int Texture2D::get_layer()const{
 	return 0;
 }
 double Texture2D::get_aspect(){
 	return Tim::Math::aspect(size);
-}
-Texture2D* Texture2D::gen_texture2D(Image<unsigned char>* image,GLint internalformat,
-		GLenum type,int Parameteri){
-	return gen_texture2D(image->data,image->size,internalformat,image->format,type,Parameteri);
-}
-Texture2D* Texture2D::gen_texture2D(unsigned char *pixels,glm::ivec2 size,GLint internalformat,GLenum format,GLenum type,int Parameteri){
-	GLuint textureID;
-	glGenTextures(1,&textureID);
-	glBindTexture(GL_TEXTURE_2D,textureID);
-	glTexImage2D(GL_TEXTURE_2D,0,internalformat,size.x,size.y,0,format,type,pixels);
-	TexFilterParameteri(GL_TEXTURE_2D,Parameteri);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);//GL_CLAMP
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-	Texture2D *tex=new Texture2D(textureID,size,type,internalformat);
-	return tex;
 }
 void Texture2D::draw(Shader2D* shader2D,DrawData *data){
 	DrawData2D *dat=(DrawData2D*)data;
@@ -82,32 +123,6 @@ void Texture2D::draw(Shader2D* shader2D,DrawData *data){
 
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
-}
-Texture2D* Texture2D::loadImage(const char * imagepath,int Parameteri){
-	std::string type=Tim::File::get_type(imagepath);;
-	if (type == "bmp" || type == "BMP") {
-		return loadBMP(imagepath,Parameteri);
-	} else if (type == "png" || type == "PNG") {
-		return loadPNG(imagepath,Parameteri);
-	} else {
-		std::cerr << "unsupport image type:" << type << std::endl;
-	}
-	return 0;
-}
-Texture2D* Texture2D::loadPNG(const char * imagepath,int Parameteri){
-	Image<unsigned char>* img=new Image<unsigned char>();
-	img->loadPNG(imagepath);
-	Texture2D* texture=gen_texture2D(img,GL_RGBA,GL_UNSIGNED_BYTE,Parameteri);//BMP is BGR Format
-	delete img;
-	return texture;
-}
-Texture2D* Texture2D::loadBMP(const char * imagepath,int Parameteri){
-	//std::cout<<"Texture2D::loadBMP:"<<imagepath<<std::endl;
-	Image<unsigned char>* bmp_img=new Image<unsigned char>();
-	bmp_img->loadBMP(imagepath);
-	Texture2D* texture=gen_texture2D(bmp_img,GL_RGB,GL_UNSIGNED_BYTE,Parameteri);//BMP is BGR Format
-	delete bmp_img;
-	return texture;
 }
 Image<unsigned char>* Texture2D::convert_to_image(GLenum _format){
 	glBindTexture(GL_TEXTURE_2D,TexID);

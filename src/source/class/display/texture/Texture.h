@@ -2,8 +2,10 @@
 #define TEXTURE_H_
 #include <GL/glew.h>
 #include <glm/vec2.hpp>
+#include <string>
 #include "class/display/texture/image/Image.h"
 #include "class/display/texture/texture2D/DrawData2D.h"
+
 namespace Display{
 const int P_NONE=0;
 const int P_MipMap=1;
@@ -16,15 +18,20 @@ class Shader2D;
 class Shader;
 class Texture {
 public:
-	Texture(GLuint TexID,GLenum target,GLenum type,GLenum format);
+	Texture(GLuint TexID,GLenum target,GLenum type,GLenum format,GLint internalformat=0);
 	Texture();
 	virtual ~Texture();
-
+	virtual std::string get_type(){
+		return "Texture";
+	}
+	virtual Texture* clone()=0;
 	virtual int get_texture_type(){return 0;}
+
+	virtual void load(std::istream &is,std::string folder_path){}
 
 	virtual Texture2D* Tex2D();
 	virtual void draw_texture(Shader2D* shader2D,DrawData *data);
-	virtual int layer()const;
+	virtual int get_layer()const;
 	virtual void sent_uniform(Shader* shader,int num,const char *name);
 
 	virtual double get_aspect();
@@ -36,12 +43,16 @@ public:
 
 	void bind_texture();
 
+	std::string name;
+	std::string path;
 
 	GLuint TexID;
 	GLenum target;
+	GLint internalformat;
 	GLenum format;
 	GLenum type;
 protected:
+	void init(GLuint TexID,GLenum target,GLenum type,GLenum format,GLint internalformat=0);
 	virtual void draw(Shader2D* shader2D,DrawData *data);
 	static void TexFilterParameteri(GLenum target,int Parameteri);
 };

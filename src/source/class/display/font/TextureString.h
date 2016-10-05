@@ -7,6 +7,9 @@ class TextureString: public Texture {
 public:
 	TextureString();
 	virtual ~TextureString();
+	virtual Texture* clone(){
+		return new TextureString();
+	}
 protected:
 	virtual void draw(Shader2D* shader2D,DrawData *data);
 };

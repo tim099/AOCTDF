@@ -19,10 +19,20 @@ public:
 	virtual BasicRule* clone(){
 		return 0;
 	}
+	virtual bool get_remove_rule(){//enable remove rule!!
+		return true;
+	}
+	virtual bool get_edit_done(){
+		return true;
+	}
 	virtual void save(FILE* file){}
 	virtual void load(FILE* file){}
 	virtual void draw_UI(){}
+	virtual void update(){}
 	virtual void update_UI(){}
+	virtual void deselected(){}
+	virtual void draw_rule(CM::Board<short int> *chess_board,
+			int x,int y);
 	void next_step(CM::Board<short int> *chess_board,
 			int x,int y,Tim::vector<CM::Step> &next_step);
 	virtual void get_next_step(CM::Board<short int> *chess_board,

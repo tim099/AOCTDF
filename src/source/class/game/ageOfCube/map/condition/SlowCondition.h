@@ -9,10 +9,10 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_MAP_CONDITION_SLOWCONDITION_H_
 
 #include "class/game/ageOfCube/map/condition/Condition.h"
-#include "class/game/ageOfCube/map/minion/Minion.h"
+
 
 namespace AOC {
-
+class Minion;
 class SlowCondition: public Condition {
 public:
 	SlowCondition(int _total_time, int _peroiod, Unit *_owner);

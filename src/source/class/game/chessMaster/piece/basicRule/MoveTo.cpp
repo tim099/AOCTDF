@@ -30,17 +30,7 @@ void MoveTo::set_delta(int _dx,int _dy){
 	UI::EnterString *dystr=dynamic_cast<UI::EnterString*>(ui->get_child("dy"));
 	dystr->set_string(Tim::String::to_string(dy));
 }
-void MoveTo::update_UI(){
-	ui->update_UIObject();
-
-}
-void MoveTo::draw_UI(){
-	Display::Draw *draw=Display::Draw::get_cur_object();
-
-	UI::EnterString *dxstr=dynamic_cast<UI::EnterString*>(ui->get_child("dx"));
-	dx=Tim::String::str_to_int(dxstr->get_string());
-	UI::EnterString *dystr=dynamic_cast<UI::EnterString*>(ui->get_child("dy"));
-	dy=Tim::String::str_to_int(dystr->get_string());
+void MoveTo::update(){
 	Input::Input *input=Input::Input::get_cur_object();
 	while(Input::Signal*sig=input->get_signal("rule")){
 		if(sig->get_data()=="move"){
@@ -51,6 +41,18 @@ void MoveTo::draw_UI(){
 			type=type_move_and_attack;
 		}
 	}
+}
+void MoveTo::update_UI(){
+	ui->update_UIObject();
+
+}
+void MoveTo::draw_UI(){
+	UI::EnterString *dxstr=dynamic_cast<UI::EnterString*>(ui->get_child("dx"));
+	dx=Tim::String::str_to_int(dxstr->get_string());
+	UI::EnterString *dystr=dynamic_cast<UI::EnterString*>(ui->get_child("dy"));
+	dy=Tim::String::str_to_int(dystr->get_string());
+
+
 	UI::UIString *uistr=dynamic_cast<UI::UIString*>(ui->get_child("type"));
 	if(type==type_move){
 		uistr->set_string("move");
@@ -59,6 +61,7 @@ void MoveTo::draw_UI(){
 	}else if(type==type_move_and_attack){
 		uistr->set_string("move&attack");
 	}
+	Display::Draw *draw=Display::Draw::get_cur_object();
 	ui->draw_UIObject(draw);
 }
 void MoveTo::get_next_step(CM::Board<short int> *chess_board,

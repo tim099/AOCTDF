@@ -22,7 +22,6 @@ protected:
 	virtual void Parse_Script(std::istream &is,std::string &line);
 	virtual void Parse_Header(std::istream &is,std::string &line);
 
-	void Parse_ModelBuffer(std::istream &is);
 	Tim::MapContainer<std::string,ModelBuffer>mbuffer_map;
 
 	std::string name;

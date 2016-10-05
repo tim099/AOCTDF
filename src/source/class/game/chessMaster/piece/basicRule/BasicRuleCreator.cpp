@@ -1,11 +1,14 @@
 #include "class/game/chessMaster/piece/basicRule/BasicRuleCreator.h"
 #include "class/game/chessMaster/piece/basicRule/MoveStraight.h"
 #include "class/game/chessMaster/piece/basicRule/MoveTo.h"
+#include "class/game/chessMaster/piece/basicRule/IF.h"
 namespace CM {
 
 BasicRuleCreator::BasicRuleCreator() {
 	push(new MoveStraight());
 	push(new MoveTo());
+	push(new IF());
+
 }
 BasicRuleCreator::~BasicRuleCreator() {
 

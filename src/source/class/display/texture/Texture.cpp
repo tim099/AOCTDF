@@ -11,17 +11,22 @@
 #include <vector>
 #include <GL/glfw3.h>
 namespace Display{
-Texture::Texture(GLuint _TexID,GLenum _target,GLenum _type,GLenum _format) {
+Texture::Texture(GLuint _TexID,GLenum _target,GLenum _type,GLenum _format,GLint _internalformat) {
+	init(_TexID,_target,_type,_format,_internalformat);
+}
+void Texture::init(GLuint _TexID,GLenum _target,GLenum _type,GLenum _format,GLint _internalformat){
 	TexID=_TexID;
 	target=_target;
 	type=_type;
 	format=_format;
+	internalformat=_internalformat;
 }
 Texture::Texture() {
 	TexID=0;
 	target=0;
 	type=0;
 	format=0;
+	internalformat=0;
 }
 Texture::~Texture() {
 	//std::cout<<"texture delete"<<std::endl;
@@ -82,7 +87,7 @@ GLuint Texture::gen_texture_uv(){
 	Vertex::gen_quad_uv(uv_buffer_data);
 	return Buffer::gen_buffer(uv_buffer_data,sizeof(uv_buffer_data));
 }
-int Texture::layer()const{
+int Texture::get_layer()const{
 	return 0;
 }
 void Texture::draw_texture(Shader2D* shader2D,DrawData *data){

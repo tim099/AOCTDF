@@ -3,14 +3,28 @@
 #include "class/display/model/Model.h"
 #include "class/display/texture/Texture.h"
 #include "class/display/shader/Shader.h"
+#include "class/tim/string/String.h"
 #include <iostream>
 namespace Display{
+ModelBuffer::ModelBuffer(){
+	vtbuffer = 0;
+	uvbuffer = 0;
+	vnbuffer = 0;
+	lybuffer = 0;
+	size=0;
+	vertex_num=0;
+	Align_center=true;
+}
 ModelBuffer::ModelBuffer(Model *m) {
 	initialize(m);
 }
-ModelBuffer::ModelBuffer(std::string model_path, float size,
-		bool align_center) {
-	Model*m = Model::load_obj(model_path.c_str(), size, align_center);
+/*
+ModelBuffer::ModelBuffer(std::string model_path, float size,bool align_center) {
+	initialize(model_path,size,align_center);
+}
+*/
+void ModelBuffer::initialize(std::string model_path, float _size,bool align_center){
+	Model*m = Model::load_obj(model_path.c_str(), _size, align_center);
 	initialize(m);
 	delete m;
 }
@@ -28,6 +42,28 @@ ModelBuffer::~ModelBuffer() {
 	if (lybuffer)
 		delete lybuffer;
 	//std::cout << "delete model buffer" << std::endl;
+}
+void ModelBuffer::load(std::istream &is,std::string folder_path){
+	std::string line;
+	while(Tim::String::get_line(is, line, true, true)){
+		if(line=="#load_end"){
+			initialize(folder_path+path,size,Align_center);
+			break;
+		}else if(line=="Name:"){
+			Tim::String::get_line(is, name, true, true);
+		}else if(line=="Path:"){
+			Tim::String::get_line(is, path, true, true);
+		}else if(line=="Size:"){
+			is>>size;
+		}else if(line=="Align_center:"){
+			Tim::String::get_line(is, line, true, true);
+			if(line=="false"){
+				Align_center=false;
+			}else if(line=="true"){
+				Align_center=true;
+			}
+		}
+	}
 }
 void ModelBuffer::load_model(Model *m) {
 	if (!vtbuffer) {
@@ -88,5 +124,8 @@ void ModelBuffer::draw(GLuint programID, GLenum mode) {
 	//std::cout<<"ModelBuffer::draw end"<<std::endl;
 	//glDrawArrays(GL_LINES,0,vertex_num);
 	//glDrawArrays(GL_POINTS,0,vertex_num);
+}
+void ModelBuffer::draw_instanced(GLuint programID,int num,GLenum mode){
+	glDrawArraysInstanced(mode,0,vertex_num,num);
 }
 }

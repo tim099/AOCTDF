@@ -7,7 +7,7 @@
 #include "class/display/UI/page/AutoPageControl.h"
 #include "class/tim/string/String.h"
 #include "class/game/chessMaster/common.h"
-//#include "class/display/UI/UIObjectCreator.h"
+
 #include <fstream>
 namespace CM {
 
@@ -111,12 +111,11 @@ void Piece::add_rule(std::string rule_name){
 	basic_rules.push_back(rule);
 }
 void Piece::load_basic_rule(std::string path){
-	//std::cout<<"Piece::load_basic_rule:"<<path<<std::endl;
 	if(!Tim::File::check_if_file_exist(path)){// no file exist
-		//std::cout<<"Piece::load_basic_rule fail!!,create:"<<path<<std::endl;
 		save_basic_rule(path);
 	}
 	FILE * file = fopen(path.c_str(),"r");
+
 	unsigned rule_number;
 	char name[100];
 	fscanf(file,"rule_number=%u\n",&rule_number);

@@ -93,6 +93,11 @@ void SceneEdit::scene_initialize() {
 	input->push_receiver(new Input::Receiver("edit_rule"));
 	input->push_receiver(new Input::Receiver("add_rule"));
 	input->push_receiver(new Input::Receiver("rule"));
+
+	input->push_receiver(new Input::Receiver("if_edit_rule"));
+	input->push_receiver(new Input::Receiver("if_edit_condition"));
+	input->push_receiver(new Input::Receiver("if_add_condition"));
+	input->push_receiver(new Input::Receiver("rule_if"));
 	resume();
 	std::cout<<"SceneEdit::scene_initialize() 2"<<std::endl;
 }
@@ -102,6 +107,11 @@ void SceneEdit::scene_terminate() {
 	input->remove_receiver("edit_rule");
 	input->remove_receiver("add_rule");
 	input->remove_receiver("rule");
+
+	input->remove_receiver("if_edit_rule");
+	input->remove_receiver("if_edit_condition");
+	input->remove_receiver("if_add_condition");
+	input->remove_receiver("rule_if");
 	if(back_music)delete back_music;
 	//std::cout<<"SceneEdit::scene_terminate() 2"<<std::endl;
 	delete chess_board;
@@ -179,11 +189,19 @@ void SceneEdit::handle_signal(Input::Signal *sig){
 			destruct_mode=false;
 	}else if(sig->get_data()=="remove_rule"){
 			if(selected_piece&&selected_rule){
-				selected_piece->remove_basic_rule(selected_rule);
-				selected_rule=0;
+				if(selected_rule->get_remove_rule()){
+					selected_piece->remove_basic_rule(selected_rule);
+					selected_rule=0;
+				}
 			}
 	}else if(sig->get_data()=="rule_edit_done"){
-		selected_rule=0;
+		if(selected_rule){
+			if(selected_rule->get_edit_done()){
+				selected_rule->deselected();
+				selected_rule=0;
+			}
+		}
+
 	}
 	//
 	//std::cerr<<"SceneEdit::handle_signal 2"<<std::endl;
@@ -335,6 +353,8 @@ void SceneEdit::scene_update(){
 	edit_chess_UI->update_UIObject();
 	edit_board_UI->update_UIObject();
 
+
+
 	UI->update_UIObject();
 	chess_board->find_select_cube();
 	chess_board->winner=chess_board->check_winner(chess_board->chess_board);
@@ -343,10 +363,27 @@ void SceneEdit::set_selected_piece(Piece *piece){
 	piece_at.x=chess_board->selected_on.x;
 	piece_at.y=chess_board->selected_on.z;
 	selected_piece=piece;
-	selected_rule=0;
+
+	if(selected_rule){
+		while(!selected_rule->get_edit_done()){
+		}
+		selected_rule->deselected();
+		selected_rule=0;
+	}
+
+
 }
 void SceneEdit::scene_update_end(){
 	handle_input();
+
+	if(selected_rule){
+		selected_rule->update();
+	}
+	while(Input::Signal*sig=input->get_signal("add_rule")){
+		if(selected_piece){
+			selected_piece->add_rule(sig->get_data());
+		}
+	}
 	while(Input::Signal*sig=input->get_signal("edit_chess")){
 		std::cout<<"edit_chess:"<<sig->get_data()<<std::endl;
 		delete chess_board;
@@ -363,11 +400,7 @@ void SceneEdit::scene_update_end(){
 			}
 		}
 	}
-	while(Input::Signal*sig=input->get_signal("add_rule")){
-		if(selected_piece){
-			selected_piece->add_rule(sig->get_data());
-		}
-	}
+
 }
 void SceneEdit::scene_draw(){
 	UI->draw_UIObject(draw);
@@ -425,13 +458,16 @@ void SceneEdit::scene_draw(){
 			rule_UI->draw_UIObject(draw);
 			if(selected_rule){
 				selected_rule->draw_UI();
-
+				selected_rule->draw_rule(chess_board->chess_board,piece_at.x,
+						piece_at.y);
+				/*
 				Tim::vector<CM::Step> next_step;
 				selected_rule->next_step(chess_board->chess_board,piece_at.x,
 						piece_at.y,next_step);
 				for(unsigned i=0;i<next_step.size();i++){
 					next_step[i].draw_next_step();
 				}
+				*/
 			}
 			Display::CubeLight* cl;
 			cl=new Display::CubeLight();

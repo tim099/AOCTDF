@@ -10,12 +10,10 @@
 namespace AOC {
 
 StaticField::StaticField() {
-	// TODO Auto-generated constructor stub
 
 }
-
 StaticField::~StaticField() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void StaticField::draw(Display::Draw *draw,Display::Camera *camera,Tim::ThreadPool* threadpool){

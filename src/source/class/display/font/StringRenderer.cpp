@@ -10,7 +10,7 @@
 namespace Display{
 StringRenderer::StringRenderer(std::string fontTexturePath) {
 	targetaspect = 0.0f;
-	fontTexture = Texture2D::loadImage(fontTexturePath.c_str(), P_Linear);
+	fontTexture = new Texture2D(fontTexturePath.c_str(), P_Linear);
 	vtbuffer = new Buffer(0, 0, 0, 3, GL_FLOAT);
 	uvbuffer = new Buffer(0, 0, 1, 2, GL_FLOAT);
 }

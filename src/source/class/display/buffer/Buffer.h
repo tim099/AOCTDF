@@ -8,6 +8,7 @@ public:
 	static const int uv=1;
 	static const int vn=2;
 	static const int ly=3;
+	static const int m=4;
 	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type
 			,GLboolean normalized=GL_FALSE
 			,GLsizei stride=0);
@@ -18,12 +19,18 @@ public:
 	static void bind_vtbuffer(GLuint vertexbuffer);
 	static void bind_uvbuffer(GLuint uvbuffer);
 	static void bind_vnbuffer(GLuint vnbuffer);
-	static void bind_buffer(int index,int size,GLuint buffer);
 
+	static void bind_buffer(int index,int size,GLuint buffer);
+	static void bind_buffer_mat4(int index,int size,GLuint buffer);
+
+	static void unbind_buffer(int type);
+	static void unbind_buffer_mat4(int type);
 	static void unbind_vtbuffer();
 	static void unbind_uvbuffer();
 	static void unbind_vnbuffer();
 	static void unbind_lybuffer();
+
+
 	static void disable_all_buffer();
 	void update_buffer(GLfloat* data,int datasize);
 	void bind_buffer();

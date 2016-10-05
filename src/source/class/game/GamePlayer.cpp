@@ -1,5 +1,6 @@
 #include "class/game/GamePlayer.h"
 #include "class/game/Game.h"
+#include <iostream>
 namespace game {
 
 GamePlayer::GamePlayer() {
@@ -15,7 +16,6 @@ void GamePlayer::play(Game* game){
 		game->mainloop();
 		restart=game->restart;
 	}while(restart);
-
 	delete game;
 }
 } /* namespace game */

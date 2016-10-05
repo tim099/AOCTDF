@@ -78,30 +78,32 @@ void Game::initialize(){
 	initialize_game();
 }
 void Game::terminate(){
-	//std::cout<<"terminate start"<<std::endl;
+	//std::cout<<"Game::terminate() 1"<<std::endl;
 	//window->render_on();
 	while(!scenes.empty()){
 		pop_scene();
 	}
+	//std::cout<<"Game::terminate() 2"<<std::endl;
 	terminate_game();
 
-
+	//std::cout<<"Game::terminate() 3"<<std::endl;
 	s_loading->terminate();
 	delete s_loading;
-
+	//std::cout<<"Game::terminate() 4"<<std::endl;
 	thread_pool->Terminate();
-
+	//std::cout<<"Game::terminate() 5"<<std::endl;
 	delete controller_system;
-
+	//std::cout<<"Game::terminate() 6"<<std::endl;
 	delete input;
 
 	delete renderer;
 	delete UIObj_Creator;
 	delete draw;
-
+	//std::cout<<"Game::terminate() 7"<<std::endl;
 	delete window;
 	game::network::Socket::socket_exit();
 	config.save(folder_path+"config.txt");
+	//std::cout<<"Game::terminate() 8"<<std::endl;
 	//std::cout<<"terminate end"<<std::endl;
 }
 Scene* Game::get_cur_scene(){
@@ -198,7 +200,7 @@ void Game::update(){
 	//std::cout<<"Game::update() 1"<<std::endl;
 	input->update();
 	handle_game_signal();
-
+	//std::cout<<"Game::update() 2"<<std::endl;
 	//===========game update===============
 	game_update();
 	Scene* cur_scene=get_cur_scene();

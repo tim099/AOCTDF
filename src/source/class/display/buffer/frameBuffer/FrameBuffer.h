@@ -23,7 +23,7 @@ public:
 			,GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
 	Texture* gen_depth_texture(GLint internalformat,GLenum format
 			,GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
-	void gen_depth_buffer();
+	//void gen_depth_buffer();
 	static void check_frame_buffer();
 	Texture* push_depth_texture(Texture* tex);
 	Texture* push_color_texture(Texture* tex);

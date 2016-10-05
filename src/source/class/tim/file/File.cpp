@@ -23,10 +23,10 @@ bool File::delete_file(std::string file_path){
 	}
 	return false;
 }
-std::string File::get_type(const char* path) {
+std::string File::get_type(std::string path) {
 	char path_buf[100];
-	memcpy(path_buf, path, sizeof(char) * strlen(path));
-	path_buf[strlen(path)] = 0;
+	memcpy(path_buf, path.c_str(), sizeof(char) * path.size());
+	path_buf[path.size()] = 0;
 
 	char* pch = strtok(path_buf, ".");
 	pch = strtok(NULL, ".");

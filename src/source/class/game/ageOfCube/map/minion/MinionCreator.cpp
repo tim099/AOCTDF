@@ -17,7 +17,7 @@ void MinionCreator::push(AOC::Minion* obj){
 AOC::Minion* MinionCreator::create(std::string type_name){
 	if (!creator.get(type_name)) {
 		std::cerr << "Minion name:" << type_name
-				<< " not exist in this MinionCreatorCreator" << std::endl;
+				<< " not exist in this MinionCreator" << std::endl;
 		return 0;
 	}
 	return creator.get(type_name)->clone();

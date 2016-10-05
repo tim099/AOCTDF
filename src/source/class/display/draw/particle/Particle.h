@@ -42,10 +42,11 @@ public:
 	void update();
 	bool end();
 	void draw(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u,Camera *camera);
-	void set_atlas(int _x_seg,int _y_seg){
+	void set_atlas(int _x_seg,int _y_seg,int _play_speed){
 		atlas=true;
 		x_seg=_x_seg;
 		y_seg=_y_seg;
+		play_speed=_play_speed;
 	}
 protected:
 	void sent_uniform(Shader *shader,glm::vec3 l,glm::vec3 r,glm::vec3 u);
@@ -57,6 +58,7 @@ protected:
 
 	bool atlas;
 	int x_seg,y_seg;
+	int play_speed;
 	int create_timer;
 	int timer;
 };

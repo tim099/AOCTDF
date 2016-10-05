@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "class/game/ageOfCube/map/condition/SlowCondition.h"
-
+#include "class/game/ageOfCube/map/minion/Minion.h"
 
 namespace AOC {
 
@@ -15,15 +15,19 @@ SlowCondition::SlowCondition(int _total_time, int _peroiod, Unit *_owner)
 	:Condition( _total_time, _peroiod, _owner)
 {
 	owner2 = dynamic_cast<Minion *>(owner);
+	if(!owner2){
+		end = true;
+	}
 }
-
 SlowCondition::~SlowCondition() {
-	// TODO Auto-generated destructor stub
+
 }
 
 void SlowCondition::takeEffect(){
 	//std::cout<<"take effect"<<std::endl;
-	owner2->set_vel(owner2->get_vel() * 0.5);
+	if(owner2){
+		owner2->set_vel(owner2->get_vel() * 0.5);
+	}
 }
 
 void SlowCondition::endEffect(){

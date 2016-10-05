@@ -19,7 +19,7 @@ bool MapRigidBody::handle_stuck(physic::RigidBody* b){
 						(b->pos.z)/Map::CUBE_SIZE);
 
 	if(check_stuck(b)){//stuck
-
+		//std::cout<<"MapRigidBody::handle_stuck"<<std::endl;
 		std::set<math::vec3<int> >visited;
 		std::queue<math::vec3<int> >next;
 		next.push(pos);visited.insert(pos);
@@ -90,10 +90,12 @@ bool MapRigidBody::check_collision(physic::RigidBody* b,bool &c_x,bool &c_y,bool
 	collide_cube=0;
 	c_x=false,c_y=false,c_z=false;
 	float delx,dely,delz;
+	int type;
 	for(int i=s.x;i<=e.x;i++){
 		for(int j=s.y;j<=e.y;j++){
 			for(int k=s.z;k<=e.z;k++){
-				if(map->get_cube_type(i,j,k)!=Cube::cubeNull){
+				type=map->get_cube_type(i,j,k);
+				if(type!=Cube::cubeNull){//&&type!=Cube::water
 					delx=(0.5*Map::CUBE_SIZE+b->radius)-fabs(b->pos.x-(i+0.5)*Map::CUBE_SIZE);
 					dely=(0.5*Map::CUBE_SIZE+b->radius)-fabs(b->pos.y-(j+0.5)*Map::CUBE_SIZE);
 					delz=(0.5*Map::CUBE_SIZE+b->radius)-fabs(b->pos.z-(k+0.5)*Map::CUBE_SIZE);
@@ -196,10 +198,12 @@ bool MapRigidBody::check_stuck(physic::RigidBody* b){
 			ceil((b->pos.y+b->radius)/Map::CUBE_SIZE),
 			ceil((b->pos.z+b->radius)/Map::CUBE_SIZE));
 	float delx,dely,delz;
+	int type;
 	for(int i=s.x;i<=e.x;i++){
 		for(int j=s.y;j<=e.y;j++){
 			for(int k=s.z;k<=e.z;k++){
-				if(map->get_cube_type(i,j,k)!=Cube::cubeNull){
+				type=map->get_cube_type(i,j,k);
+				if(type!=Cube::cubeNull){//&&type!=Cube::water
 					delx=(0.5*Map::CUBE_SIZE+b->radius)-fabs(b->pos.x-(i+0.5)*Map::CUBE_SIZE);
 					dely=(0.5*Map::CUBE_SIZE+b->radius)-fabs(b->pos.y-(j+0.5)*Map::CUBE_SIZE);
 					delz=(0.5*Map::CUBE_SIZE+b->radius)-fabs(b->pos.z-(k+0.5)*Map::CUBE_SIZE);

@@ -24,11 +24,11 @@ ShadowData::ShadowData(unsigned _max_l_shadow,unsigned _max_pl_shadow,unsigned _
 	SFBO=new FrameBuffer(math::vec2<int>(shadow_quality,shadow_quality));
 	PSFBO=new FrameBuffer(math::vec2<int>(shadow_quality/8,shadow_quality/8));
 
-    SFBO->push_depth_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(SFBO->size.x,SFBO->size.y,max_l_shadow),
+    SFBO->push_depth_texture(new Texture2DArr(glm::ivec3(SFBO->size.x,SFBO->size.y,max_l_shadow),
     		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
     //SFBO->push_color_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(SFBO->size.x,SFBO->size.y,max_l_shadow),
     		//GL_RG32F,GL_RG,GL_FLOAT,P_Linear));
-    PSFBO->push_depth_texture(Texture2DArr::gen_texture2DArr(glm::ivec3(PSFBO->size.x,PSFBO->size.y,6*max_pl_shadow),
+    PSFBO->push_depth_texture(new Texture2DArr(glm::ivec3(PSFBO->size.x,PSFBO->size.y,6*max_pl_shadow),
     		GL_DEPTH_COMPONENT32F,GL_DEPTH_COMPONENT,GL_FLOAT,P_Linear));
 }
 ShadowData::~ShadowData() {
@@ -114,7 +114,7 @@ void ShadowData::gen_shadows_texture(Shader* shader,FrameBuffer* FBO,glm::mat4 *
 	shader->sent_Uniform("LVP_num",s_num);
 	shader->sent_Uniform("start_layer",start_layer);
 	Uniform::sentMat4Arr(shader->programID,LVP,s_num,std::string("LVP"));
-	d_obj->draw_shadow(shader);
+	d_obj->draw_shadow(shader,FBO);
 }
 void ShadowData::gen_pointLight_LVP(std::vector<PointLight*>&point_lights){
 	ps_num=0;

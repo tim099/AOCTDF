@@ -202,7 +202,7 @@ Piece* ChessBoard::get_piece(int x,int y){
 	return 0;
 }
 int ChessBoard::get_type(int x,int y,int z){
-	if(x<0||y<0||z<0||x>=board->sizex||y>=board->sizey||z>board->sizez){
+	if(x<0||y<0||z<0||x>=board->sizex||y>=board->sizey||z>=board->sizez){
 		return -1;
 	}
 	return board->get(x,y,z);
@@ -404,7 +404,6 @@ void ChessBoard::gen_model(){
 		for (int j = 0; j < board->sizey; j++) {
 			for (int k = 0; k < board->sizez; k++) {
 				int type = board->get(i, j, k);
-
 				if (type > 0) {
 					tex_layer = type-1;
 					cube_exist = 0;
@@ -412,18 +411,12 @@ void ChessBoard::gen_model(){
 							(j + 0.5) * cube_size,
 							(k + 0.5) * cube_size);
 
-					if (get_type(i, j + 1, k) > 0)
-						cube_exist |= up;
-					if (get_type(i, j - 1, k) > 0)
-						cube_exist |= down;
-					if (get_type(i + 1, j, k) >0)
-						cube_exist |= left;
-					if (get_type(i - 1, j, k) >0)
-						cube_exist |= right;
-					if (get_type(i, j, k + 1) >0)
-						cube_exist |= front;
-					if (get_type(i, j, k - 1) >0)
-						cube_exist |= back;
+					if (get_type(i, j + 1, k) > 0)cube_exist |= up;
+					if (get_type(i, j - 1, k) > 0)cube_exist |= down;
+					if (get_type(i + 1, j, k) >0)cube_exist |= left;
+					if (get_type(i - 1, j, k) >0)cube_exist |= right;
+					if (get_type(i, j, k + 1) >0)cube_exist |= front;
+					if (get_type(i, j, k - 1) >0)cube_exist |= back;
 
 
 					if (!(cube_exist & up)) {

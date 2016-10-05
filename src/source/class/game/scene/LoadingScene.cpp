@@ -10,7 +10,7 @@ LoadingScene::~LoadingScene() {
 	if(texture)delete texture;
 }
 void LoadingScene::scene_initialize(){
-	texture=Display::Texture2D::loadImage("files/texture/Loading.png");
+	texture=new Display::Texture2D("files/texture/Loading.png");
 }
 void LoadingScene::scene_terminate(){
 

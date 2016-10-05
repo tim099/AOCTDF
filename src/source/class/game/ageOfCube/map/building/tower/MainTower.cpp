@@ -66,7 +66,7 @@ void MainTower::building_update(){
 	}
 }
 void MainTower::killed(){
-	PlayerController::get_cur_object()->game_over(get_player());
+	//PlayerController::get_cur_object()->game_over(get_player());
 
 }
 void MainTower::draw_building(){

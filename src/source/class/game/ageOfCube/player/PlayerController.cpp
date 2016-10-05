@@ -27,7 +27,7 @@ PlayerController::~PlayerController() {
 	//delete receiver; //delete by input remove_reveiver
 }
 void PlayerController::game_over(unsigned player_id){
-	std::cout<<"player "<<player_id<<" game over"<<std::endl;
+	//std::cout<<"player "<<player_id<<" game over"<<std::endl;
 	players.at(player_id)->set_gameover(true);
 }
 void PlayerController::update(){

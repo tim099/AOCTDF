@@ -59,7 +59,7 @@ Texture* FrameBuffer::push_color_texture(Texture* tex){
 Texture* FrameBuffer::gen_color_texture(GLint internalformat,GLenum format
 		,GLenum type,int Parameteri){
 	glBindFramebuffer(GL_FRAMEBUFFER,FBOID);//bind the SFBO
-	Texture* tex=Texture2D::gen_texture2D(0,size,internalformat,format,type,Parameteri);
+	Texture* tex=new Texture2D(0,size,internalformat,format,type,Parameteri);
 	glFramebufferTexture(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0+color_textures.size(),tex->TexID,0);
 	color_textures.push_back(tex);
 	return tex;
@@ -74,7 +74,7 @@ Texture* FrameBuffer::push_depth_texture(Texture* tex){
 Texture* FrameBuffer::gen_depth_texture(GLint internalformat,GLenum format
 		,GLenum type,int Parameteri){
 	glBindFramebuffer(GL_FRAMEBUFFER,FBOID);//bind the SFBO
-	Texture* tex=Texture2D::gen_texture2D(0,size,internalformat,format,type,Parameteri);
+	Texture* tex=new Texture2D(0,size,internalformat,format,type,Parameteri);
 	glFramebufferTexture(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,tex->TexID,0);
 	depth_textures.push_back(tex);
 	depth_buffer=tex;
@@ -86,6 +86,7 @@ void FrameBuffer::bind_depth_texture(int i){
 	depth_buffer=tex;
 	glFramebufferTexture(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,tex->TexID,0);
 }
+/*
 void FrameBuffer::gen_depth_buffer(){
 	Texture* tex=new Texture(0,0,0,0);
 
@@ -95,6 +96,7 @@ void FrameBuffer::gen_depth_buffer(){
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER,tex->TexID);
 	depth_buffer=tex;
 }
+*/
 void FrameBuffer::check_frame_buffer(){
 	GLuint err=glCheckFramebufferStatus(GL_FRAMEBUFFER);
 	if (err!=GL_FRAMEBUFFER_COMPLETE){

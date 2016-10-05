@@ -11,17 +11,25 @@ class Model;
 class Shader;
 class ModelBuffer{
 public:
+	ModelBuffer();
 	ModelBuffer(Model *m);
-	ModelBuffer(std::string model_path,float size,bool align_center=true);
-	void initialize(Model *m);
+	//ModelBuffer(std::string model_path,float size,bool align_center=true);
+
 	virtual ~ModelBuffer();
+	void initialize(Model *m);
+	void initialize(std::string model_path, float size,bool align_center);
+
+	std::string get_name()const{
+		return name;
+	}
+	void load(std::istream &is,std::string folder_path);
 
 	void load_model(Model *m);
 
 	void bind_buffer(Shader *shader);
 	void unbind_buffer(Shader *shader);
 	void draw(GLuint programID,GLenum mode=GL_TRIANGLES);
-
+	void draw_instanced(GLuint programID,int num,GLenum mode=GL_TRIANGLES);
 	int vertex_num;
 	Buffer *vtbuffer;
 	Buffer *uvbuffer;
@@ -29,7 +37,9 @@ public:
 	Buffer *lybuffer;
 	//bool enable_lybuffer;
 private:
-
+	std::string path,name;
+	float size;
+	bool Align_center;
 };
 }
 #endif /* BUFFEROBJECT_H_ */

@@ -26,4 +26,12 @@ void BasicRule::next_step(CM::Board<short int> *chess_board,
 		next_steps.push_back(next_step);
 	}
 }
+void BasicRule::draw_rule(CM::Board<short int> *chess_board,
+		int x,int y){
+	Tim::vector<CM::Step> next_steps;
+	next_step(chess_board,x,y,next_steps);
+	for(unsigned i=0;i<next_steps.size();i++){
+		next_steps[i].draw_next_step();
+	}
+}
 } /* namespace CM */

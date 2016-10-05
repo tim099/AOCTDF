@@ -7,20 +7,29 @@ template <class DataType>class Image;
 
 class Texture2D : public Texture {
 public:
-	Texture2D(GLuint TexID,glm::ivec2 size,GLenum type,GLenum format);
+	Texture2D();
+	Texture2D(unsigned char *pixels,glm::ivec2 size,GLint internalformat,GLenum format
+			,GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
+	Texture2D(Image<unsigned char>* image,GLint internalformat,
+			GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
+	Texture2D(std::string imagepath,int Parameteri=P_MipMap);
 	virtual ~Texture2D();
 
-	virtual int get_texture_type();
-	static Texture2D* loadBMP(const char * imagepath,int Parameteri=P_MipMap);
-	static Texture2D* loadPNG(const char * imagepath,int Parameteri=P_MipMap);
-	static Texture2D* loadImage(const char * imagepath,int Parameteri=P_MipMap);
-
-	static Texture2D* gen_texture2D(unsigned char *pixels,glm::ivec2 size,GLint internalformat,GLenum format
+	virtual Texture* clone(){
+		return new Texture2D();
+	}
+	virtual std::string get_type(){
+		return "Texture";
+	}
+	virtual void load(std::istream &is,std::string folder_path);
+	void load(std::string imagepath,int Parameteri=P_MipMap);
+	void init(unsigned char *pixels,glm::ivec2 size,GLint internalformat,GLenum format
 			,GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
-	static Texture2D* gen_texture2D(Image<unsigned char>* image,GLint internalformat,
-			GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_MipMap);
+
+	virtual int get_texture_type();
+
 	virtual Texture2D* Tex2D();
-	virtual int layer()const;
+	virtual int get_layer()const;
 	virtual double get_aspect();
 	Image<unsigned char>* convert_to_image(GLenum format=GL_RGB);
 	glm::ivec2 size;

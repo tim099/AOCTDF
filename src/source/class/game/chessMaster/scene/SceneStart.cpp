@@ -55,7 +55,11 @@ void SceneStart::pause(){
 	back_music->pause();
 }
 void SceneStart::resume(){
-	//std::cout<<"SceneStart::resume()"<<std::endl;
+	std::cout<<"SceneStart::resume()"<<std::endl;
+	if(UI){
+		delete UI;
+		UI=0;
+	}
 	UI = new UI::UI(CM::folder_path+local_path+"UI/UI.txt");
 	back_music->play();
 	draw->Enable3D = false;

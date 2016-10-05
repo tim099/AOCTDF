@@ -58,10 +58,8 @@ void MoveStraight::set_delta(int _dx,int _dy){
 }
 void MoveStraight::update_UI(){
 	ui->update_UIObject();
-
 }
 void MoveStraight::draw_UI(){
-
 	Display::Draw *draw=Display::Draw::get_cur_object();
 
 	UI::EnterString *dxstr=dynamic_cast<UI::EnterString*>(ui->get_child("dx"));

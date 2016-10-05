@@ -86,6 +86,7 @@ protected:
 	void load_weapons(FILE* file);
 	void save_upgrades(FILE* file);
 	void load_upgrades(FILE* file);
+
 	void push_weapon(Weapon* weapon){
 		weapon->set_unit(this);
 		weapon->set_attack_cycle(attack_cycle);

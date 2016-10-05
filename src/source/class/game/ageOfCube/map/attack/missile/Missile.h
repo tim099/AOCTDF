@@ -25,6 +25,7 @@ protected:
 	virtual void collide_action(RigidBody* b);
 	virtual Display::DrawObject *get_missile_drawobj();
 	virtual void explode();
+	bool exploded_render;
 	int explode_timer;
 	int timer;
 	int type;

@@ -170,7 +170,6 @@ void Map::gen_land_scape(int i,int j,int k,
 			tree=(Tree*)landscape_creator.create("Tree");
 			tree->rand_tree_size();
 			tree->create_cube_large(i,j,k);
-			//push_CubeEX(i,j,k,landscape);
 		}
 	}
 
@@ -209,21 +208,16 @@ void Map::gen_map_cube_type(){
 	}
 }
 void Map::gen_map_water(){
-	///*
 	int water_height=get_water_height();
-	//double type_val;
-	//double height;
 	for(int i=0;i<map_size.x;i++){
 		for(int k=0;k<map_size.z;k++){
 			for(int j=0;j<map_size.y;j++){
 				if(!map->get(i,j,k)&&j<water_height){//&&j>=water_height-20
-					//push_CubeEX(i,j,k,new Water());
 					set_cube_type(i,j,k,Cube::water);
 				}
 			}
 		}
 	}
-	//*/
 }
 void Map::gen_map_land_scape(){
 	double stone_height;
@@ -260,11 +254,9 @@ void Map::gen_map(glm::ivec3 _map_size,unsigned _seed,int _ground_height){
 		std::cerr<<"Map::gen_map error Map size too large"<<std::endl;
 		return;
 	}
-	//map=new Tim::Array3D<Cube>(map_size.x,map_size.y,map_size.z);
 	init();
 
 	noise.init(seed);
-	//srand(seed);
 	regen_map();
 	init_path();
 	dp_map->update_whole_map();
@@ -292,7 +284,6 @@ void Map::save_update_pos(FILE * file){
 	}
 }
 void Map::load_update_pos(FILE * file){
-	///*
 	cur_update_pos=&update_pos1;
 	prev_update_pos=&update_pos2;
 	unsigned cur_update_pos_size;
@@ -308,7 +299,6 @@ void Map::load_update_pos(FILE * file){
 		fscanf(file,"%d %d %d\n",&p.x,&p.y,&p.z);
 		prev_update_pos->push_back(p);
 	}
-	//*/
 }
 void Map::save_map(FILE* file){
 	fprintf(file,"%d %d %d\n",map_size.x,map_size.y,map_size.z);

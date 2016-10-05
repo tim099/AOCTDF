@@ -64,7 +64,12 @@ void SceneMultiPlayer::scene_initialize(){
 	input->push_receiver(new Input::Receiver("promoted"));
 	UI = new UI::UI(CM::folder_path+local_path+"UI/UI.txt");
 	UI::EnterString *ipstr=dynamic_cast<UI::EnterString*>(UI->get_child("ip"));
-	ipstr->set_string(game::network::Socket::get_local_address());
+	if(ipstr){
+		ipstr->set_string(game::network::Socket::get_local_address());
+	}else{
+		std::cerr<<"no ip str!!"<<std::endl;
+	}
+
 	promotedUI = new UI::UI(CM::folder_path+local_path+"UI/promotedUI.txt");
 
 	resume();
