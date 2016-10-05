@@ -10,9 +10,12 @@
 
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/tim/math/vec3.h"
-#include "class/display/light/LightControl.h"
-#include "class/display/light/CubeLight.h"
 
+
+namespace Display{
+	class LightControl;
+	class CubeLight;
+}
 namespace AOC {
 
 class MapEditor {
@@ -25,6 +28,7 @@ public:
 	void highlightSelectedCubes(Display::LightControl *lc);
 
 	glm::ivec3 select_range;
+	bool destruct_mode;
 private:
 	Map *map;
 };

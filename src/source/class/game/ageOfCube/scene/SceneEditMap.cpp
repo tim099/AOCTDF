@@ -17,7 +17,6 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size, bool _ma
 	lightControl = 0;
 	UI = 0;
 	back_music=0;
-	destruct_mode=false;
 	pause_timer=false;
 	constructing_building=0;
 	map_empty = _map_empty;
@@ -238,7 +237,7 @@ void SceneEditMap::handle_input() {
 			}
 			constructing_building=0;
 		}else{
-			if(!destruct_mode){
+			if(!map_editor.destruct_mode){
 				map_editor.set_cube_type(field->map->selected_on.x,
 									field->map->selected_on.y,
 									field->map->selected_on.z,
@@ -280,7 +279,7 @@ void SceneEditMap::handle_input() {
 	}
 	*/
 	if (input->keyboard->get('V')) {
-		destruct_mode^=1;
+		map_editor.destruct_mode^=1;
 	}
 	if(input->keyboard->get('P')){
 		pause_timer^=1;
@@ -364,28 +363,7 @@ void SceneEditMap::scene_draw() {
 		}
 
 	}else{
-		if(destruct_mode){
-			/*
-			Display::CubeLight*cl=map_editor->getSelectedCubeLight();
-			cl->size=1.01f*Map::CUBE_SIZE;
-			cl->pos=glm::vec3((field->map->selected_cube.x+0.5f)*Map::CUBE_SIZE,
-							  (field->map->selected_cube.y+0.5f)*Map::CUBE_SIZE,
-							  (field->map->selected_cube.z+0.5f)*Map::CUBE_SIZE);
-			cl->color=glm::vec3(1,0,0);
-			lightControl->push_temp_light(cl);
-			*/
-			map_editor.highlightSelectedCubes(lightControl);
-		}else{
-			/*Display::CubeLight*cl=map_editor->getSelectedCubeLight();
-			cl->size=1.01f*Map::CUBE_SIZE;
-			cl->color=glm::vec3(0,1,0);
-			cl->pos=glm::vec3((field->map->selected_on.x+0.5f)*Map::CUBE_SIZE,
-					  (field->map->selected_on.y+0.5f)*Map::CUBE_SIZE,
-					  (field->map->selected_on.z+0.5f)*Map::CUBE_SIZE);
-			cl->color=glm::vec3(0,1,0);
-			lightControl->push_temp_light(cl);*/
-			map_editor.highlightSelectedCubes(lightControl);
-		}
+		map_editor.highlightSelectedCubes(lightControl);
 	}
 }
 
