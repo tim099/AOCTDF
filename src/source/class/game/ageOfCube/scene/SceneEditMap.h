@@ -6,10 +6,11 @@
 #include "class/display/UI/UI.h"
 #include "class/display/light/LightControl.h"
 #include "class/audio/AudioPlayer.h"
+#include "class/game/ageOfCube/scene/MapEditor.h"
 namespace AOC{
 class SceneEditMap : public Scene{
 public:
-	SceneEditMap(std::string map_name,glm::ivec3 map_size);
+	SceneEditMap(std::string map_name,glm::ivec3 map_size, bool _map_empty=false);
 	virtual ~SceneEditMap();
 	virtual std::string scene_name()const{
 		return "SceneEditMap";
@@ -41,7 +42,8 @@ protected:
 	Display::LightControl* lightControl;
 	Audio::AudioPlayer *back_music;
 	Building* constructing_building;
-
+	MapEditor *map_editor;
+	bool map_empty;
 
 	UI::UI *UI;
 

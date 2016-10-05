@@ -44,6 +44,7 @@ public:
 	virtual ~Map();
 	void init();
 	void gen_map(glm::ivec3 map_size,unsigned seed,int ground_height=150);
+	void gen_empty_map(glm::ivec3 _map_size,int _ground_height=150);
 
 	//ground height limited the max height of the ground
 	void regen_map();
@@ -131,6 +132,8 @@ protected:
 	void gen_map_cube_type();
 	void gen_map_water();
 	void gen_map_land_scape();
+
+	void gen_empty_map_shape();
 
 	void gen_cube_type(int i,int j,int k,
 			const double &stone_height,const double &height,
