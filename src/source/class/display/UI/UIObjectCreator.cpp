@@ -5,7 +5,7 @@
 #include "class/display/UI/button/pictureButton/PictureButton.h"
 
 #include "class/display/UI/panel/Panel.h"
-#include "class/display/UI/bar/Bar.h"
+//#include "class/display/UI/bar/Bar.h"
 
 #include "class/display/UI/group/SortGroup.h"
 
@@ -45,7 +45,7 @@ void UIObjectCreator::initial_creator(){
 	push(new ToggleButton());
 
 	push(new Panel());
-	push(new Bar());
+	//push(new Bar());
 
 	push(new SortGroup());
 

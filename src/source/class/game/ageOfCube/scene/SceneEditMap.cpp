@@ -20,7 +20,6 @@ SceneEditMap::SceneEditMap(std::string _map_name, glm::ivec3 _map_size, bool _ma
 	destruct_mode=false;
 	pause_timer=false;
 	constructing_building=0;
-	map_editor = new MapEditor();
 	map_empty = _map_empty;
 }
 void SceneEditMap::loading(){
@@ -32,7 +31,7 @@ void SceneEditMap::loading(){
 			field->map->gen_empty_map(map_size);
 		}
 	}
-	map_editor->setMap(field->map);
+	map_editor.setMap(field->map);
 	resume();
 }
 void SceneEditMap::scene_initialize() {
@@ -58,7 +57,6 @@ void SceneEditMap::scene_initialize() {
 	back_music->set_loop(true);
 
 	cube_type=Cube::cube_start;
-
 	field=new Field();
 }
 void SceneEditMap::pause() {
@@ -206,15 +204,15 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 	}else if(sig->get_data() == "reload_shader"){
 		Display::Renderer::get_cur_object()->reload_water_shader();
 	}else if(sig->get_data() == "select_range_xz_up"){
-		map_editor->select_range.x += 1;
-		map_editor->select_range.z += 1;
+		map_editor.select_range.x += 1;
+		map_editor.select_range.z += 1;
 	}else if(sig->get_data() == "select_range_xz_down"){
-		map_editor->select_range.x -= 1;
-		map_editor->select_range.z -= 1;
+		map_editor.select_range.x -= 1;
+		map_editor.select_range.z -= 1;
 	}else if(sig->get_data() == "select_range_y_up"){
-		map_editor->select_range.y += 1;
+		map_editor.select_range.y += 1;
 	}else if(sig->get_data() == "select_range_y_down"){
-		map_editor->select_range.y -= 1;
+		map_editor.select_range.y -= 1;
 	}
 }
 void SceneEditMap::handle_input() {
@@ -241,7 +239,7 @@ void SceneEditMap::handle_input() {
 			constructing_building=0;
 		}else{
 			if(!destruct_mode){
-				map_editor->set_cube_type(field->map->selected_on.x,
+				map_editor.set_cube_type(field->map->selected_on.x,
 									field->map->selected_on.y,
 									field->map->selected_on.z,
 									cube_type);
@@ -367,13 +365,16 @@ void SceneEditMap::scene_draw() {
 
 	}else{
 		if(destruct_mode){
-			/*Display::CubeLight*cl=map_editor->getSelectedCubeLight();
+			/*
+			Display::CubeLight*cl=map_editor->getSelectedCubeLight();
 			cl->size=1.01f*Map::CUBE_SIZE;
 			cl->pos=glm::vec3((field->map->selected_cube.x+0.5f)*Map::CUBE_SIZE,
 							  (field->map->selected_cube.y+0.5f)*Map::CUBE_SIZE,
 							  (field->map->selected_cube.z+0.5f)*Map::CUBE_SIZE);
 			cl->color=glm::vec3(1,0,0);
-			lightControl->push_temp_light(cl);*/
+			lightControl->push_temp_light(cl);
+			*/
+			map_editor.highlightSelectedCubes(lightControl);
 		}else{
 			/*Display::CubeLight*cl=map_editor->getSelectedCubeLight();
 			cl->size=1.01f*Map::CUBE_SIZE;
@@ -383,7 +384,7 @@ void SceneEditMap::scene_draw() {
 					  (field->map->selected_on.z+0.5f)*Map::CUBE_SIZE);
 			cl->color=glm::vec3(0,1,0);
 			lightControl->push_temp_light(cl);*/
-			map_editor->highlightSelectedCubes(lightControl);
+			map_editor.highlightSelectedCubes(lightControl);
 		}
 	}
 }

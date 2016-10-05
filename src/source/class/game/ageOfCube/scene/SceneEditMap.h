@@ -42,7 +42,7 @@ protected:
 	Display::LightControl* lightControl;
 	Audio::AudioPlayer *back_music;
 	Building* constructing_building;
-	MapEditor *map_editor;
+	MapEditor map_editor;
 	bool map_empty;
 
 	UI::UI *UI;

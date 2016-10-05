@@ -10,15 +10,13 @@
 namespace AOC {
 
 MapEditor::MapEditor() {
-	// TODO Auto-generated constructor stub
 	map = 0;
-	select_range = glm::ivec3(2, 2, 2);
+	select_range = glm::ivec3(1, 1, 1);
 }
 
 MapEditor::~MapEditor() {
-	// TODO Auto-generated destructor stub
-}
 
+}
 void MapEditor::set_cube_type(int x,int y,int z,int type){
 	int cur_x, cur_y, cur_z;
 	if(!map){

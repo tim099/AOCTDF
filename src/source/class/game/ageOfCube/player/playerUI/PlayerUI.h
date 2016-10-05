@@ -11,7 +11,7 @@
 #include <string>
 #include "class/display/UI/UI.h"
 #include "class/display/UI/string/UIString.h"
-#include "class/display/UI/UI3D/HealthCube3D.h"
+//#include "class/display/UI/UI3D/HealthCube3D.h"
 #include "class/display/camera/Camera.h"
 
 namespace AOC{
