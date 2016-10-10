@@ -15,6 +15,10 @@ void AgeOfCubes::initialize_game(){
 	//============================
 	textures = new Display::AllTextures(folder_path+"texture/script/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
+
+	Display::AllTextures* textures2 = new Display::AllTextures("files/test/test.txt");
+	textures2->Save_script("files/test/test.txt");
+	delete textures2;
 	modelBuffers=new Display::AllModelBuffers(folder_path+"/models/script/loadAllModelBuffers.txt");
 	modelBuffers->register_cur();
 	drawObjects = new Display::AllDrawObjects(folder_path+"/drawObject/loadAllDrawObjects.txt");

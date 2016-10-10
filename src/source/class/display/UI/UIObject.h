@@ -1,6 +1,6 @@
 #ifndef SOURCE_CLASS_DISPLAY_UI_UIOBJECT_H_
 #define SOURCE_CLASS_DISPLAY_UI_UIOBJECT_H_
-#include <glm/vec2.hpp>
+//#include <glm/vec2.hpp>
 #include <vector>
 #include <string>
 #include <iostream>

@@ -9,22 +9,13 @@ Parser::Parser() {
 Parser::~Parser() {
 
 }
-void Parser::Parse(std::istream &is) {
-	std::string line;
-	Load_Header(is);
-	while (!is.eof()) {
-		Tim::String::get_line(is, line, true, true);
-		if (line == "#END") {
-			break;
-		} else {
-			Parse_Script(is, line);
-		}
-	}
-}
-void Parser::Parse(std::ostream &os) {
-	Save_Header(os);
-	Parse_Script(os);
-	os << "#END" << std::endl;
+void Parser::Save_script(std::string script_path) {
+	std::filebuf file;
+	file.open(script_path.c_str(), std::ios::out);
+	std::ostream os(&file);
+	os << Script_name() << std::endl;
+	Parse(os);
+	file.close();
 }
 void Parser::Load_script(std::string script_path) {
 	std::filebuf file;
@@ -45,13 +36,22 @@ void Parser::Load_script(std::string script_path) {
 	Parse(is);
 	file.close();
 }
-void Parser::Save_script(std::string script_path) {
-	std::filebuf file;
-	file.open(script_path.c_str(), std::ios::out);
-	std::ostream os(&file);
-	os << Script_name() << std::endl;
-	Parse(os);
-	file.close();
+void Parser::Parse(std::istream &is) {
+	std::string line;
+	Load_Header(is);
+	while (!is.eof()) {
+		Tim::String::get_line(is, line, true, true);
+		if (line == "#END") {
+			break;
+		} else {
+			Parse_Script(is, line);
+		}
+	}
+}
+void Parser::Parse(std::ostream &os) {
+	Save_Header(os);
+	Parse_Script(os);
+	os << "#END" << std::endl;
 }
 void Parser::Save_Header(std::ostream &os) {
 	os << "#HEADER" << std::endl;
@@ -68,9 +68,7 @@ void Parser::Load_Header(std::istream &is) {
 	while (Tim::String::get_line(is, line, true, true)) {
 		if (line == "#HEADER_END") {
 			break;
-		} else if (line.substr(0, 1) == "//") { //do nothing
-
-		} else {
+		}else {
 			Parse_Header(is, line);
 		}
 	}

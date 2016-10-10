@@ -12,9 +12,10 @@
 #include <iostream>
 #include <fstream>
 namespace Display{
-TextureMap::TextureMap(std::string script_path) {
-	if (script_path != std::string("NULL")) {
-		Load_script(script_path);
+TextureMap::TextureMap(std::string _path,std::string folder_path) {
+	if (_path != std::string("NULL")) {
+		path=_path;
+		Load_script(folder_path+path);
 	}
 }
 TextureMap::~TextureMap() {
@@ -38,7 +39,24 @@ void TextureMap::Parse_Header(std::istream &is, std::string &line) {
 		folder_path = std::string(line);
 	} else if (line == "Name:") {
 		Tim::String::get_line(is, line, true, true);
-		set_name(std::string(line));
+		set_name(line);
+	}
+}
+void TextureMap::Parse_Header(std::ostream &os){
+	os << "FolderPath:" << std::endl;
+	os << "    "+folder_path << std::endl;
+	os << "Name:" << std::endl;
+	os << "    "+name << std::endl;
+}
+void TextureMap::Parse_Script(std::ostream &os){
+	std::map<std::string,Texture*>*all_maps=textures.get_map();
+	typename std::map<std::string,Texture*>::iterator it = all_maps->begin();
+	Texture* tex;
+	while (it != all_maps->end()) {
+		tex=it->second;
+		os<<tex->get_type()+":"<<std::endl;
+		tex->save(os);
+		it++;
 	}
 }
 void TextureMap::Parse_Script(std::istream &is, std::string &line) {

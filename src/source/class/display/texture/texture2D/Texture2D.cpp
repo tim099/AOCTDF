@@ -27,6 +27,12 @@ Texture2D::Texture2D(std::string imagepath,int Parameteri){
 Texture2D::~Texture2D() {
 
 }
+void Texture2D::save(std::ostream &os){
+	os << "	TextureName:" << std::endl;
+	os << "		"+name<< std::endl;
+	os << "	TexturePath:" << std::endl;
+	os << "		"+path<< std::endl;
+}
 void Texture2D::load(std::istream &is,std::string folder_path){
 	std::string line;
 	Tim::String::get_line(is, line, true, true);
@@ -39,8 +45,7 @@ void Texture2D::load(std::istream &is,std::string folder_path){
 	}
 	Tim::String::get_line(is, line, true, true);
 	if (line == "TexturePath:") {
-		Tim::String::get_line(is, line, true, true);
-		path = line;
+		Tim::String::get_line(is,path, true, true);
 	} else {
 		std::cerr << "Load_texture no TexturePath!!" << line << std::endl;
 		return;

@@ -27,6 +27,7 @@ public:
 	virtual Texture* clone()=0;
 	virtual int get_texture_type(){return 0;}
 
+	virtual void save(std::ostream &os){}
 	virtual void load(std::istream &is,std::string folder_path){}
 
 	virtual Texture2D* Tex2D();

@@ -34,6 +34,8 @@ protected:
 	glm::vec2 interval;
 	bool create_by_files;
 	bool create_by_dirs;
+	bool auto_prev_next;
+
 };
 
 } /* namespace UI */

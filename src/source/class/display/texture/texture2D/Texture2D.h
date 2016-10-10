@@ -21,6 +21,7 @@ public:
 	virtual std::string get_type(){
 		return "Texture";
 	}
+	virtual void save(std::ostream &os);
 	virtual void load(std::istream &is,std::string folder_path);
 	void load(std::string imagepath,int Parameteri=P_MipMap);
 	void init(unsigned char *pixels,glm::ivec2 size,GLint internalformat,GLenum format

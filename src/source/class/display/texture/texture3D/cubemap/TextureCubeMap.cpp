@@ -33,6 +33,17 @@ void TextureCubeMap::init(glm::ivec2 _size,GLint _internalformat,GLenum _format,
 	}
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
 }
+void TextureCubeMap::save(std::ostream &os){
+	os << "	TextureName:" << std::endl;
+	os << "		"+name<< std::endl;
+	os << "	TextureSize:" << std::endl;
+	os << "		"<<size.x<< std::endl;
+	os << "		"<<size.y<< std::endl;
+	for(unsigned i=0;i<paths.size();i++){
+		os << "	TexturePath:" << std::endl;
+		os << "		"+paths.at(i) << std::endl;
+	}
+}
 void TextureCubeMap::load(std::istream &is,std::string folder_path){
 	std::string line;
 	Tim::String::get_line(is, line, true, true);
@@ -52,12 +63,12 @@ void TextureCubeMap::load(std::istream &is,std::string folder_path){
 		std::cerr << "Load_textureCubeMap no TextureSize:!!" << line
 				<< std::endl;
 	}
-
+	std::vector<std::string> tex_paths;
 	for (unsigned i = 0; i < 6; i++) {
 		Tim::String::get_line(is, line, true, true);
 		if (line == "TexturePath:") {
-			Tim::String::get_line(is, line, true, true);
-			path = folder_path + line;
+			Tim::String::get_line(is,path, true, true);
+			tex_paths.push_back(folder_path + path);
 			paths.push_back(path);
 		} else {
 			std::cerr << "Load_textureCubeMap no TexturePath!!" << line << ";"
@@ -65,7 +76,7 @@ void TextureCubeMap::load(std::istream &is,std::string folder_path){
 			return;
 		}
 	}
-	load(paths,glm::ivec2(size.x, size.y),GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_MipMap);
+	load(tex_paths,glm::ivec2(size.x, size.y),GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_MipMap);
 }
 void TextureCubeMap::load(std::vector<std::string>&path,glm::ivec2 _size,GLint _internalformat,
 		GLenum _format,GLenum _type,int Parameteri){

@@ -20,6 +20,7 @@ public:
 	virtual std::string get_type(){
 		return "Texture2DArr";
 	}
+	virtual void save(std::ostream &os);
 	virtual void load(std::istream &is,std::string folder_path);
 	virtual int get_texture_type();
 	virtual int get_layer()const;

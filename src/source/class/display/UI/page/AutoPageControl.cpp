@@ -11,6 +11,8 @@ AutoPageControl::AutoPageControl() {
 	button_template=0;
 	create_by_files=false;
 	create_by_dirs=false;
+	auto_prev_next=false;
+
 }
 AutoPageControl::~AutoPageControl() {
 	if(button_template)delete button_template;

@@ -21,6 +21,18 @@ Texture2DArr::Texture2DArr(std::vector<std::string>&path,glm::ivec3 size,GLint i
 Texture2DArr::~Texture2DArr() {
 
 }
+void Texture2DArr::save(std::ostream &os){
+	os << "	TextureName:" << std::endl;
+	os << "		"+name<< std::endl;
+	os << "	TextureSize:" << std::endl;
+	os << "		"<<size.x<< std::endl;
+	os << "		"<<size.y<< std::endl;
+	for(unsigned i=0;i<paths.size();i++){
+		os << "	TexturePath:" << std::endl;
+		os << "		"+paths.at(i) << std::endl;
+	}
+	os << "#Load_texture2DArr_END"<< std::endl;
+}
 void Texture2DArr::load(std::istream &is,std::string folder_path){
 	std::string line;
 	Tim::String::get_line(is, line, true, true);
@@ -40,15 +52,15 @@ void Texture2DArr::load(std::istream &is,std::string folder_path){
 		std::cerr << "Load_texture2DArr no TextureSize:!!" << line << std::endl;
 	}
 	Tim::String::get_line(is, line, true, true);
-
+	std::vector<std::string> tex_paths;
 	while(Tim::String::get_line(is, line, true, true)&&line!="#Load_texture2DArr_END"){
 		if (line == "TexturePath:") {
-			Tim::String::get_line(is, line, true, true);
-			path = folder_path + line;
+			Tim::String::get_line(is, path, true, true);
+			tex_paths.push_back(folder_path + path);
 			paths.push_back(path);
 		}
 	}
-	load(paths,glm::ivec3(size.x, size.y, paths.size()),GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_MipMap);
+	load(tex_paths,glm::ivec3(size.x, size.y, paths.size()),GL_RGB, GL_RGB, GL_UNSIGNED_BYTE, P_MipMap);
 }
 void Texture2DArr::load(std::vector<std::string>&path,glm::ivec3 size,GLint internalformat,
 		GLenum format,GLenum type,int Parameteri){

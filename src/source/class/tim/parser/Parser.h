@@ -18,8 +18,9 @@ protected:
 	void Parse(std::istream &is);
 	void Parse(std::ostream &os);
 	virtual void Parse_Script(std::istream &is,std::string &line)=0;
-	virtual void Parse_Header(std::istream &is,std::string &line)=0;
 	virtual void Parse_Script(std::ostream &os);
+
+	virtual void Parse_Header(std::istream &is,std::string &line)=0;
 	virtual void Parse_Header(std::ostream &os);
 };
 

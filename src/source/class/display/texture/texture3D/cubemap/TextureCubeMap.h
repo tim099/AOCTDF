@@ -12,7 +12,7 @@ public:
 	TextureCubeMap(std::vector<std::string>&path,glm::ivec2 size,GLint internalformat,GLenum format,
 			GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_Linear);
 	virtual ~TextureCubeMap();
-
+	virtual void save(std::ostream &os);
 	virtual void load(std::istream &is,std::string folder_path);
 	void load(std::vector<std::string>&path,glm::ivec2 size,GLint internalformat,GLenum format,
 			GLenum type=GL_UNSIGNED_BYTE,int Parameteri=P_Linear);
