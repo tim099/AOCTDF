@@ -17,6 +17,7 @@
 namespace Display{
 DrawObject::DrawObject(std::string _obj_str, std::string _tex_str,
 std::string _normalTex_str, bool _layer_texture) {
+	modelbuffer_name=_obj_str;
 	init_drawObject(_obj_str, _tex_str, _normalTex_str, _layer_texture);
 	mat = math::vec4<float>(0.3, 0.4, 0.01, 0.15); //x=diffuse,y=specular_value,z=ambient,w=emissive
 }
@@ -60,12 +61,40 @@ void DrawObject::init_drawObject(ModelBuffer* _obj, Texture* _texture,
 	NormalMap = _NormalMap;
 	draw_shadow = true;
 	layer_texture = _layer_texture;
-
-
 }
 DrawObject::~DrawObject() {
 	//std::cout << "delete draw object" << std::endl;
 	clear_temp_drawdata();
+}
+void DrawObject::save(std::ostream &os){
+	os << "	Name:" << std::endl;
+	os << "		"+name<< std::endl;
+	os << "	ModelBuffer:" << std::endl;
+	os << "		"+modelbuffer_name<< std::endl;
+	if(texture_name!=""){
+		os << "Texture:" << std::endl;
+		os << "		"+texture_name<< std::endl;
+	}
+	if(normalmap_name!=""){
+		os << "NormalMap:" << std::endl;
+		os << "		"+normalmap_name<< std::endl;
+	}
+	os << "	Material:" << std::endl;
+	os << "		"<<mat.x<<" "<<mat.y<<" "<<mat.z<<" "<<mat.w<<" "<< std::endl;
+	os << "	DrawShadow:" << std::endl;
+	if(draw_shadow){
+		os << "		true"<< std::endl;
+	}else{
+		os << "		false"<< std::endl;
+	}
+	os << "	SkyMap:" << std::endl;
+	if(sky_map){
+		os << "		true"<< std::endl;
+	}else{
+		os << "		false"<< std::endl;
+	}
+	os <<"#load_end"<<std::endl<< std::endl;
+
 }
 void DrawObject::load(std::istream &is){
 	std::string line;

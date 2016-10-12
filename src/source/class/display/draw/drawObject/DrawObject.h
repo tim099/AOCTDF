@@ -24,6 +24,7 @@ public:
 	std::string get_name()const{
 		return name;
 	}
+	void save(std::ostream &os);
 	void load(std::istream &is);
 
 	void init_drawObject(std::string obj, std::string tex_str,
@@ -44,7 +45,7 @@ public:
 	void set_obj(ModelBuffer *obj);
 	void clear_temp_drawdata();
 
-
+	std::string name;
 	bool draw_shadow;
 	bool sky_map;
 	//x=diffuse,y=specular_value,z=ambient,w=emissive
@@ -56,7 +57,7 @@ protected:
 	Texture* texture;
 	Texture* NormalMap;
 
-	std::string name;
+
 	std::string texture_name,normalmap_name;
 	std::string modelbuffer_name;
 	//Camera* cur_camera;

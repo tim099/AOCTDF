@@ -5,8 +5,9 @@ namespace Display{
 DrawObjectMap::DrawObjectMap() {
 
 }
-DrawObjectMap::DrawObjectMap(std::string script_path) {
-	Load_script(script_path);
+DrawObjectMap::DrawObjectMap(std::string _path,std::string folder_path) {
+	path=_path;
+	Load_script(folder_path+path);
 }
 DrawObjectMap::~DrawObjectMap() {
 	Display::Draw* cur_draw=Display::Draw::get_cur_object();
@@ -28,8 +29,8 @@ std::string DrawObjectMap::get_name()const{
 void DrawObjectMap::set_name(std::string _name){
 	name=_name;
 }
-void DrawObjectMap::push(std::string name,DrawObject* obj){
-	objs.push(name,obj);
+void DrawObjectMap::push(DrawObject* obj){
+	objs.push(obj->get_name(),obj);
 }
 DrawObject* DrawObjectMap::get(std::string name){
 	return objs.get(name);
@@ -43,16 +44,32 @@ void DrawObjectMap::Parse_Header(std::istream &is, std::string &line) {
 		set_name(std::string(line));
 	}
 }
+void DrawObjectMap::Parse_Header(std::ostream &os){
+	os << "FolderPath:" << std::endl;
+	os << "    "+folder_path << std::endl;
+	os << "Name:" << std::endl;
+	os << "    "+name << std::endl;
+}
+
 void DrawObjectMap::Parse_Script(std::istream &is,std::string &line){
 	if(line=="DrawObject:"){
 		DrawObject* d_obj=new DrawObject();
 		d_obj->load(is);
 
-		push(d_obj->get_name(),d_obj);
+		push(d_obj);
 		Display::Draw::get_cur_object()->push(d_obj);
 	}
 }
-void DrawObjectMap::Parse_DrawObject(std::istream &is){
+void DrawObjectMap::Parse_Script(std::ostream &os){
+	std::map<std::string,DrawObject*>*all_maps=objs.get_map();
+	typename std::map<std::string,DrawObject*>::iterator it = all_maps->begin();
+	DrawObject* obj;
+	while (it != all_maps->end()) {
+		obj=it->second;
+		os<<"DrawObject:"<<std::endl;
+		obj->save(os);
 
+		it++;
+	}
 }
 }

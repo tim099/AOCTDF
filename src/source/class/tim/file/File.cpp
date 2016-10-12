@@ -3,7 +3,7 @@
 #include "sys/stat.h"
 #include <cstdio>
 #include <cstring>
-
+#include <windows.h>
 namespace Tim {
 
 File::File() {
@@ -14,6 +14,9 @@ File::File() {
 File::~File() {
 	if (data)
 		delete[] data;
+}
+bool File::create_dir(std::string str){
+	return CreateDirectory(str.c_str(),NULL);
 }
 bool File::delete_file(std::string file_path){
 	if(!remove(file_path.c_str())){

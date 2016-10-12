@@ -14,7 +14,6 @@ ChessMaster::~ChessMaster() {
 
 }
 void ChessMaster::initialize_game(){
-	//textures = new Display::AllTextures("files/AgeOfCube/texture/script/loadAllTexture.txt");
 	textures = new Display::AllTextures(CM::folder_path+"script/texture/Textures.txt");
 	textures->register_cur();	//set as cur using textures
 	modelBuffers = new Display::AllModelBuffers(CM::folder_path+"script/modelbuffer/ModelBuffers.txt");
