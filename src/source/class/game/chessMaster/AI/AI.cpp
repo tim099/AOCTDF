@@ -130,7 +130,7 @@ double AI::get_node_score(int wins,int simulations){
 void AI::get_node_scores(Tim::vector<CM::Step> &next_step,
 		CM::Board<short int> *chess_board,std::vector<int>&node_scores,
 		float &SD,float &avg_node_score){
-	static const double visit_score=10.0;//the score of unexplored node
+	static constexpr double visit_score=10.0;//the score of unexplored node
 	CM::StepNode *cur_node=board->get_cur_node();
 	CM::StepNode *next_node;
 	float total_node_score;

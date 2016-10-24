@@ -9,8 +9,8 @@ namespace UI {
 
 class PictureButton : public Button{
 public:
-	const static float auto_Size=0.0f;
-	static const float AutoHeight = 0.0f;
+	static constexpr float auto_Size=0.0f;
+	static constexpr float AutoHeight = 0.0f;
 	/*
 	 * auto height means it will determine height by texture's height
 	 */

@@ -36,13 +36,28 @@ std::vector<std::string> File::get_all_files(std::string path) {
 	std::vector<std::string> filenames;
 	DIR *dir;
 	struct dirent *ent;
+	struct stat st;
+	char filename[512];
 	dir = opendir(path.c_str());
 	if (dir) {
 		while ((ent = readdir(dir))) {
 			if (strcmp(".", ent->d_name) && strcmp("..", ent->d_name)) {
-				if(ent->d_type==0){//if type==0 then ent is a file
+				snprintf(filename, sizeof(filename), "%s/%s", path.c_str(), ent->d_name);
+				stat(filename, &st);
+
+				if(S_ISDIR(st.st_mode))
+				{
+					// This directory entry is another directory
+				}
+				else if(S_ISREG(st.st_mode))
+				{
+					// This entry is a regular file
 					filenames.push_back(std::string(ent->d_name));
 				}
+
+				/*if(ent->d_type==0){//if type==0 then ent is a file
+					filenames.push_back(std::string(ent->d_name));
+				}*/
 				//if ent->d_type == 16, ent is a folder
 				//printf ("%s,type=%d\n",ent->d_name,ent->d_type);
 			}
@@ -57,13 +72,29 @@ std::vector<std::string> File::get_all_dirs(std::string path) {
 	std::vector<std::string> dirnames;
 	DIR *dir;
 	struct dirent *ent;
+	struct stat st;
+	char filename[512];
 	dir = opendir(path.c_str());
 	if (dir) {
 		while ((ent = readdir(dir))) {
 			if (strcmp(".", ent->d_name) && strcmp("..", ent->d_name)) {
-				if(ent->d_type==16){//if type==0 then ent is a file
+
+				snprintf(filename, sizeof(filename), "%s/%s", path.c_str(), ent->d_name);
+				stat(filename, &st);
+
+				if(S_ISDIR(st.st_mode))
+				{
+					// This directory entry is another directory
 					dirnames.push_back(std::string(ent->d_name));
 				}
+				else if(S_ISREG(st.st_mode))
+				{
+					// This entry is a regular file
+				}
+
+				/*if(ent->d_type==16){//if type==0 then ent is a file
+					dirnames.push_back(std::string(ent->d_name));
+				}*/
 				//if ent->d_type == 16, ent is a folder
 				//printf ("%s,type=%d\n",ent->d_name,ent->d_type);
 			}
