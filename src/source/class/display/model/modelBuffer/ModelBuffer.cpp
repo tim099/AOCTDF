@@ -18,13 +18,9 @@ ModelBuffer::ModelBuffer(){
 ModelBuffer::ModelBuffer(Model *m) {
 	initialize(m);
 }
-/*
-ModelBuffer::ModelBuffer(std::string model_path, float size,bool align_center) {
-	initialize(model_path,size,align_center);
-}
-*/
-void ModelBuffer::initialize(std::string model_path, float _size,bool align_center){
-	Model*m = Model::load_obj(model_path.c_str(), _size, align_center);
+void ModelBuffer::initialize(std::string path, float _size,bool align_center){
+
+	Model*m = Model::load_obj(path.c_str(), _size, align_center);
 	initialize(m);
 	delete m;
 }
@@ -42,6 +38,21 @@ ModelBuffer::~ModelBuffer() {
 	if (lybuffer)
 		delete lybuffer;
 	//std::cout << "delete model buffer" << std::endl;
+}
+void ModelBuffer::save(std::ostream &os){
+	os << "	Name:" << std::endl;
+	os << "		"+name<< std::endl;
+	os << "	Path:" << std::endl;
+	os << "		"+path<< std::endl;
+	os << "	Size:" << std::endl;
+	os << "		"<<size<< std::endl;
+	os << "	Align_center:" << std::endl;
+	if(Align_center){
+		os << "		true"<< std::endl;
+	}else{
+		os << "		false"<< std::endl;
+	}
+	os<<"#load_end"<<std::endl;
 }
 void ModelBuffer::load(std::istream &is,std::string folder_path){
 	std::string line;
@@ -112,11 +123,10 @@ void ModelBuffer::bind_buffer(Shader *shader) {
 	}
 }
 void ModelBuffer::unbind_buffer(Shader *shader) {
-	if (lybuffer)
-		lybuffer->unbind_buffer();
-	//vtbuffer->unbind_buffer();
-	//uvbuffer->unbind_buffer();
-	//vnbuffer->unbind_buffer();
+	if (lybuffer)lybuffer->unbind_buffer();
+	if (vtbuffer)vtbuffer->unbind_buffer();
+	if (uvbuffer)uvbuffer->unbind_buffer();
+	if (vnbuffer)vnbuffer->unbind_buffer();
 }
 void ModelBuffer::draw(GLuint programID, GLenum mode) {
 	//std::cout<<"ModelBuffer::draw="<<vertex_num<<std::endl;

@@ -1,11 +1,14 @@
 #include "class/display/model/modelBuffer/ModelBufferMap.h"
+
 #include "class/tim/string/String.h"
+#include "class/tim/file/File.h"
 namespace Display{
 ModelBufferMap::ModelBufferMap() {
 
 }
-ModelBufferMap::ModelBufferMap(std::string script_path){
-	Load_script(script_path);
+ModelBufferMap::ModelBufferMap(std::string _path,std::string folder_path){
+	path=_path;
+	Load_script(folder_path+path);
 }
 ModelBufferMap::~ModelBufferMap() {
 
@@ -30,11 +33,38 @@ void ModelBufferMap::Parse_Header(std::istream &is, std::string &line) {
 		set_name(std::string(line));
 	}
 }
+void ModelBufferMap::Parse_Header(std::ostream &os){
+	os << "FolderPath:" << std::endl;
+	os << "    "+folder_path << std::endl;
+	os << "Name:" << std::endl;
+	os << "    "+name << std::endl;
+}
+void ModelBufferMap::load_folder(std::string path){
+	std::vector<std::string> names=Tim::File::get_all_files(path);
+	for(unsigned i=0;i<names.size();i++){
+		ModelBuffer* model=new ModelBuffer();
+		model->initialize(path+names.at(i),1.0,true);
+		model->name=names.at(i);
+		push(model->name,model);
+	}
+}
 void ModelBufferMap::Parse_Script(std::istream &is,std::string &line){
 	if(line=="ModelBuffer:"){
 		ModelBuffer* m=new ModelBuffer();
 		m->load(is,folder_path);
-		push(m->get_name(),m);
+		push(m->name,m);
+	}
+}
+void ModelBufferMap::Parse_Script(std::ostream &os){
+	std::map<std::string,ModelBuffer*>*all_maps=mbuffer_map.get_map();
+	typename std::map<std::string,ModelBuffer*>::iterator it = all_maps->begin();
+	ModelBuffer* model;
+	while (it != all_maps->end()) {
+		model=it->second;
+		os<<"ModelBuffer:"<<std::endl;
+		model->save(os);
+
+		it++;
 	}
 }
 }

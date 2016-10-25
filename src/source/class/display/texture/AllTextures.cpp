@@ -51,7 +51,6 @@ void AllTextures::Parse_Script(std::ostream &os){
 
 		it++;
 	}
-
 	}
 }
 void AllTextures::Parse_Header(std::ostream &os){

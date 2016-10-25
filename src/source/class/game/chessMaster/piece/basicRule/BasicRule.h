@@ -29,6 +29,7 @@ public:
 	virtual void load(FILE* file){}
 	virtual void draw_UI(){}
 	virtual void update(){}
+	virtual void init_UI(){}
 	virtual void update_UI(){}
 	virtual void deselected(){}
 	virtual void draw_rule(CM::Board<short int> *chess_board,

@@ -469,12 +469,14 @@ void SceneMultiPlayer::scene_update_end(){
 		}else if(client){
 			client->sent_data("switch_chess#"+chess_board->game_name);
 		}
+		delete sig;
 	}
 	while(Input::Signal*sig=input->get_signal("promoted")){
 		std::cout<<"promoted:"<<sig->get_data()<<std::endl;
 		unsigned num=Tim::String::str_to_int(sig->get_data());
 		selected_step=next_step.at(num);
 		promoting=false;
+		delete sig;
 	}
 }
 } /* namespace CM */

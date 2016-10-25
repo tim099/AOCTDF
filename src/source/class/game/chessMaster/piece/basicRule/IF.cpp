@@ -146,6 +146,42 @@ bool IF::get_edit_done(){
 	selected_rule=0;
 	return false;
 }
+bool IF::remove_rule(){
+	for(unsigned i=0;i<true_rules.size();i++){
+		if(true_rules.at(i)==selected_rule){
+			delete selected_rule;
+			selected_rule=0;
+			true_rules.at(i)=true_rules.back();
+			true_rules.pop_back();
+			create_rule_page();
+			return false;
+		}
+	}
+	for(unsigned i=0;i<false_rules.size();i++){
+		if(false_rules.at(i)==selected_rule){
+			delete selected_rule;
+			selected_rule=0;
+			false_rules.at(i)=false_rules.back();
+			false_rules.pop_back();
+			create_rule_page();
+			return false;
+		}
+	}
+	return true;
+}
+bool IF::remove_condition(){
+	for(unsigned i=0;i<conditions.size();i++){
+		if(conditions.at(i)==selected_condition){
+			delete selected_condition;
+			selected_condition=0;
+			conditions.at(i)=conditions.back();
+			conditions.pop_back();
+			create_condition_page();
+			return false;
+		}
+	}
+	return true;
+}
 bool IF::get_remove_rule(){
 	if(!selected_rule&&!selected_condition)return true;
 
@@ -154,6 +190,10 @@ bool IF::get_remove_rule(){
 		if(!selected_rule->get_remove_rule()){
 			return false;
 		}
+		if(!remove_rule()){
+			return false;
+		}
+		/*
 		for(unsigned i=0;i<true_rules.size();i++){
 			if(true_rules.at(i)==selected_rule){
 				delete selected_rule;
@@ -172,16 +212,11 @@ bool IF::get_remove_rule(){
 				return false;
 			}
 		}
+		*/
 	}
 	if(selected_condition){
-		for(unsigned i=0;i<conditions.size();i++){
-			if(conditions.at(i)==selected_condition){
-				delete selected_condition;
-				selected_condition=0;
-				conditions.at(i)=conditions.back();
-				conditions.pop_back();
-				return false;
-			}
+		if(!remove_condition()){
+			return false;
 		}
 	}
 	return false;
@@ -193,10 +228,12 @@ void IF::add_rule(std::string rule_name){
 	}else{
 		false_rules.push_back(rule);
 	}
+	create_rule_page();
 }
 void IF::add_condition(std::string rule_name){
 	Condition* condition=ConditionCreator::get_cur_object()->create(rule_name);
 	conditions.push_back(condition);
+	create_condition_page();
 }
 void IF::get_rule_names(std::vector<std::string> &names){
 	if(true_mode){
@@ -231,11 +268,14 @@ void IF::update(){
 	}
 
 	Input::Input *input=Input::Input::get_cur_object();
+
 	while(Input::Signal*sig=input->get_signal("add_rule")){
 		add_rule(sig->get_data());
+		delete sig;
 	}
 	while(Input::Signal*sig=input->get_signal("if_add_condition")){
 		add_condition(sig->get_data());
+		delete sig;
 	}
 	while(Input::Signal*sig=input->get_signal("rule_if")){
 		if(sig->get_data()=="switch_if"){
@@ -243,6 +283,7 @@ void IF::update(){
 		}else if(sig->get_data()=="switch_else"){
 			true_mode=false;
 		}
+		delete sig;
 	}
 	while(Input::Signal*sig=input->get_signal("if_edit_rule")){
 		unsigned num=Tim::String::str_to_int(sig->get_data());
@@ -257,7 +298,7 @@ void IF::update(){
 				selected_condition=0;
 			}
 		}
-
+		delete sig;
 	}
 	while(Input::Signal*sig=input->get_signal("if_edit_condition")){
 		unsigned num=Tim::String::str_to_int(sig->get_data());
@@ -268,9 +309,11 @@ void IF::update(){
 				selected_rule=0;
 			}
 		}
+		delete sig;
 	}
 }
-void IF::update_UI(){
+void IF::create_rule_page(){
+	//std::cout<<"IF::create_rule_page()"<<std::endl;
 	UI::AutoPageControl *page;
 	page=dynamic_cast<UI::AutoPageControl*>(ui->get_child("rules_page"));
 	if(page){
@@ -282,7 +325,10 @@ void IF::update_UI(){
 		}
 		page->create_pages(names,&sigs);
 	}
-	page=dynamic_cast<UI::AutoPageControl*>(ui->get_child("conditions_page"));
+	ui->update_UIObject();
+}
+void IF::create_condition_page(){
+	UI::AutoPageControl *page=dynamic_cast<UI::AutoPageControl*>(ui->get_child("conditions_page"));
 	if(page){
 		std::vector<std::string> names;
 		std::vector<std::string> sigs;
@@ -292,7 +338,13 @@ void IF::update_UI(){
 		}
 		page->create_pages(names,&sigs);
 	}
-	//
+	ui->update_UIObject();
+}
+void IF::init_UI(){
+	create_rule_page();
+	create_condition_page();
+}
+void IF::update_UI(){
 	UI::UIString *ui_str;
 	ui_str=dynamic_cast<UI::UIString*>(ui->get_child("statement"));
 	if(true_mode){

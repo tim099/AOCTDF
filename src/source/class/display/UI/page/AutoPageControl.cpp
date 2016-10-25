@@ -21,7 +21,7 @@ void AutoPageControl::set_path(std::string _load_path){
 	load_path=_load_path;
 }
 void AutoPageControl::Parse_button_template(std::ostream &os){
-	button_template->Parse_texture(os);
+	button_template->Parse_UIScript(os);
 	os<<"	"<<"#create_template_end"<<std::endl;
 }
 void AutoPageControl::Parse_button_template(std::istream &is,std::string &line){
@@ -29,10 +29,10 @@ void AutoPageControl::Parse_button_template(std::istream &is,std::string &line){
 	button_template=new PictureButton();
 	while (Tim::String::get_line(is, line, true, true)) {
 		if (line == "#create_template_end") {
-			button_template->set_texture();
+			//button_template->set_texture();
 			break;
 		}else{
-			button_template->Parse_texture(is,line);
+			button_template->Parse_UIScript(is,line);
 		}
 	}
 }

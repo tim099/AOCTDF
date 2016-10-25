@@ -10,6 +10,8 @@ public:
 	virtual ~Parser();
 	void Load_script(std::string script_path);
 	void Save_script(std::string script_path);
+
+
 protected:
 	virtual std::string Script_name()const=0;
 	void Load_Header(std::istream &is);

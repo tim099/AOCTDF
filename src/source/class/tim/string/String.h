@@ -12,6 +12,7 @@ public:
 	static std::string to_string(unsigned num);
 	static std::string to_string(double num);
 	static int str_to_int(std::string str);
+	static float str_to_float(std::string str);
 
 	static bool get_line(std::istream &is,std::string& strline,bool skip_blankline=true,bool skip_blankspace=true);
 	static void put_back_line(std::istream &is,std::string& line);

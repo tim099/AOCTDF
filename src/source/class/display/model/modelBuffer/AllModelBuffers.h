@@ -10,15 +10,20 @@ class AllModelBuffers: public Tim::MapTree<ModelBufferMap, ModelBuffer>,
 		public Tim::GlobalObject<AllModelBuffers> {
 public:
 	AllModelBuffers();
-	AllModelBuffers(std::string script_path);
+	AllModelBuffers(std::string script_path,std::string folder_path="");
 	static ModelBuffer *get_cur_model(std::string obj_path);
 	virtual ~AllModelBuffers();
+	std::string path;
 protected:
 	virtual inline std::string Script_name() const {
 		return "#LOAD_ALL_MODELBUFFERS_SCRIPT";
 	}
 	virtual void Parse_Script(std::istream &is, std::string &line);
+	virtual void Parse_Script(std::ostream &os);
+
 	virtual void Parse_Header(std::istream &is, std::string &line);
+	virtual void Parse_Header(std::ostream &os);
+
 	virtual void Parse_map(std::istream &is);
 	virtual void Parse_dir(std::istream &is);
 	std::string folder_path;

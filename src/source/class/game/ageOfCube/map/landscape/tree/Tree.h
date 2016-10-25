@@ -9,7 +9,7 @@ class DrawObject;
 }
 namespace AOC{
 class Tree : public AOC::Landscape{
-	static constexpr float max_tree_size=10.0;
+	static const float max_tree_size=10.0;
 	static const unsigned char pine_tree=0;
 public:
 	Tree();

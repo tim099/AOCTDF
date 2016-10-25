@@ -1,8 +1,9 @@
 #include "class/game/chessMaster/scene/SceneStart.h"
+#include "class/game/chessMaster/common.h"
+
 
 #include "class/game/chessMaster/chessboard/chineseChess/ChineseChess.h"
 #include "class/game/chessMaster/chessboard/renju/Renju.h"
-#include "class/game/chessMaster/common.h"
 #include "class/display/light/LightControl.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/game/chessMaster/AI/AI.h"
@@ -13,6 +14,7 @@
 #include "class/game/chessMaster/scene/ScenePlay.h"
 #include "class/game/chessMaster/scene/SceneEdit.h"
 #include "class/game/chessMaster/scene/SceneMultiPlayer.h"
+#include "class/game/chessMaster/scene/SceneCreateGame.h"
 #include <stdlib.h>
 #include <time.h>
 namespace CM {
@@ -65,29 +67,27 @@ void SceneStart::resume(){
 	draw->Enable3D = false;
 }
 void SceneStart::handle_signal(Input::Signal *sig){
-	//std::cerr<<sig->get_data()<<std::endl;
-	//std::cerr<<"SceneStart::handle_signal 1"<<std::endl;
-	//std::cerr<<"SceneStart::handle_signal 2"<<std::endl;
-	//std::cout<<sig->get_data()<<std::endl;
-
 	if(sig->get_data()=="edit_chess"){
-		Input::Signal *sig=new Input::Signal("push_scene","Game");
-		sig->ex_data=new SceneEdit();
-		sig->sent();
+		Input::Signal sig("push_scene","Game");
+		sig.ex_data=new SceneEdit();
+		sig.sent();
 	}else if(sig->get_data()=="play_chess"){
-		Input::Signal *sig=new Input::Signal("push_scene","Game");
-		sig->ex_data=new ScenePlay();
-		sig->sent();
+		Input::Signal sig("push_scene","Game");
+		sig.ex_data=new ScenePlay();
+		sig.sent();
 	}else if(sig->get_data()=="multi_player"){
-		Input::Signal *sig=new Input::Signal("push_scene","Game");
-		sig->ex_data=new SceneMultiPlayer();
-		sig->sent();
+		Input::Signal sig("push_scene","Game");
+		sig.ex_data=new SceneMultiPlayer();
+		sig.sent();
+	}else if(sig->get_data()=="create_game"){
+		Input::Signal sig("push_scene","Game");
+		sig.ex_data=new SceneCreateGame();
+		sig.sent();
 	}
 }
 void SceneStart::handle_input(){
 
 }
-
 void SceneStart::scene_update(){
 	UI->update_UIObject();
 }

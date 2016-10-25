@@ -18,6 +18,14 @@ MapContainer<Key,Type>::~MapContainer() {
 	}
 }
 template<class Key,class Type>
+void MapContainer<Key,Type>::get_vec(std::vector<Type*> &vec){
+	typename std::map<Key, Type*>::iterator it = map.begin();
+	while (it != map.end()) {
+		vec.push_back(it->second);
+		it++;
+	}
+}
+template<class Key,class Type>
 void MapContainer<Key,Type>::remove(Key key){
 	Type* obj=get(key);
 	if(obj){

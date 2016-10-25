@@ -7,6 +7,7 @@ Renju::Renju() {
 
 	dir_path="files/game/chessMaster/game/renju/";
 	game_name="renju";
+	board_size=math::vec2<int>(9,9);
 	init_drawobject();
 
 	create_pieces();

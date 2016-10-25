@@ -46,6 +46,8 @@ public:
 	void save_pieces(std::string path);
 	void load_pieces(std::string path);
 
+	void init_UI(UI::UI *UI);
+	void update_UI(UI::UI *UI);
 	void save_mct();
 	void load_mct();
 	void find_select_cube();
@@ -117,6 +119,10 @@ public:
 	inline CM::StepNode *get_cur_node(){
 		return cur_node;
 	}
+	inline void push_piece(Piece* piece){
+		pieces.push_back(piece);
+		piece->type=pieces.size();
+	}
 	void update();
 
 	//cube being selected by mouse
@@ -157,10 +163,7 @@ protected:
 
 	void find_selected_on(glm::vec3 pos);
 	void find_selected_cube(glm::vec3 pos);
-	inline void push_piece(Piece* piece){
-		pieces.push_back(piece);
-		piece->type=pieces.size();
-	}
+
 
 	int pieces_weight[max_pieces_num];
 
@@ -170,7 +173,7 @@ protected:
 	Display::CubeModel *cube;
 	math::Position *pos;
 	Display::ModelBufferMap* model_map;
-	Display::TextureMap * tex_map;
+	Display::TextureMap* tex_map;
 	Display::DrawObjectMap *draw_map;
 	CM::StepNode *cur_node;
 

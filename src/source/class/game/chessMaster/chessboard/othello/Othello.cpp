@@ -8,6 +8,7 @@ namespace CM {
 Othello::Othello() {
 	dir_path="files/game/chessMaster/game/othello/";
 	game_name="othello";
+	board_size=math::vec2<int>(8,8);
 	init_drawobject();
 
 	create_pieces();

@@ -46,12 +46,14 @@ void ScenePlay::scene_initialize() {
 			pos+glm::vec3(0,-7,0.5f*chess_board->size.z),
 			glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
+	p1camera->shadow_far=60.0f;
 	glm::vec3 pos2=glm::vec3(0.5*chess_board->cube_size*chess_board->size.x,10,
 			chess_board->cube_size*chess_board->size.z+2);
 	p2camera = new Display::Camera(pos2,
 			pos2+glm::vec3(0,-7,-0.5f*chess_board->size.z),
 			glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
+	p2camera->shadow_far=60.0f;
 	camera=p2camera;
 	draw->set_camera(camera);
 
@@ -87,21 +89,20 @@ void ScenePlay::loading(){
 
 }
 void ScenePlay::scene_terminate() {
-	std::cout<<"ScenePlay::scene_terminate() 1"<<std::endl;
 	input->remove_receiver("switch_chess");
 	input->remove_receiver("promoted");
 	if(back_music)delete back_music;
-	std::cout<<"ScenePlay::scene_terminate() 2"<<std::endl;
+
 	delete ai;
-	std::cout<<"ScenePlay::scene_terminate() 3"<<std::endl;
+
 	delete chess_board;
-	std::cout<<"ScenePlay::scene_terminate() 4"<<std::endl;
+
 	delete p1camera;
 	delete p2camera;
 	delete lightControl;
+
 	delete UI;
 	delete promotedUI;
-	std::cout<<"ScenePlay::scene_terminate() 5"<<std::endl;
 }
 void ScenePlay::pause(){
 	back_music->pause();
@@ -446,12 +447,14 @@ void ScenePlay::scene_update_end(){
 
 		delete chess_board;
 		chess_board=ChessBoardCreator::create(sig->get_data());
+		delete sig;
 	}
 	while(Input::Signal*sig=input->get_signal("promoted")){
 		//std::cout<<"promoted:"<<sig->get_data()<<std::endl;
 		unsigned num=Tim::String::str_to_int(sig->get_data());
 		selected_step=next_step.at(num);
 		promoting=false;
+		delete sig;
 	}
 }
 void ScenePlay::draw_AI_difficulty(){

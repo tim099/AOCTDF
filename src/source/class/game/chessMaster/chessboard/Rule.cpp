@@ -21,6 +21,8 @@ void Rule::load_rule(std::string path){
 	rule->p_call(0,0,0);
 }
 int Rule::check_winner(CM::Board<short int> *chess_board){
+	if(!rule)return 0;
+
 	rule_mutex->wait_for_this();
 	rule->pushlightuserdata(chess_board);
 	rule->set_global("board");

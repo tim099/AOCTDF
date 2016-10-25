@@ -361,13 +361,13 @@ void ScenePlayTD::resume() {
 
 void ScenePlayTD::reload_map(){
 
-	Input::Signal *sig=new Input::Signal("push_scene","Game");
-	Input::Signal *sig2=new Input::Signal("pop_scene","Game");
+	Input::Signal sig("push_scene","Game");
+	Input::Signal sig2("pop_scene","Game");
 
-	sig2->sent();
+	sig2.sent();
 
-	sig->ex_data=new AOC::ScenePlayTD(map_name,glm::ivec3(1,1,1));
-	sig->sent();
+	sig.ex_data=new AOC::ScenePlayTD(map_name,glm::ivec3(1,1,1));
+	sig.sent();
 }
 
 }

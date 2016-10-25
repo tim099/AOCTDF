@@ -24,6 +24,7 @@ public:
 		return "Button";
 	}
 protected:
+	static Button* cur_selected_but;
 	virtual void update();
 
 	/*

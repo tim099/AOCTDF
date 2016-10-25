@@ -131,18 +131,15 @@ void Game::scene_loading(Scene* scene){
 	loading=false;
 }
 void Game::pop_scene(){
-	std::cout<<"Game::pop_scene() 1"<<std::endl;
 	if(scenes.empty())return;
 	scenes.back()->terminate();
 	delete scenes.back();
-	std::cout<<"Game::pop_scene() 2"<<std::endl;
 	scenes.pop_back();
-	std::cout<<"Game::pop_scene() 3"<<std::endl;
+
 	Scene* cur_scene=get_cur_scene();
 	if(cur_scene){
 		cur_scene->resume();
 	}
-	std::cout<<"Game::pop_scene() 4"<<std::endl;
 }
 void Game::handle_game_signal(){
 	Input::Signal *sig = game_receiver->get_signal(); //get signal from receiver "test"
@@ -154,7 +151,6 @@ void Game::handle_game_signal(){
 			end=true;
 		}else if(sig->get_data()=="push_scene"){
 			push_scene((Scene*)sig->ex_data);
-			delete sig;
 		}else if(sig->get_data()=="pop_scene"){
 			pop_scene();
 		}else if(strs.at(0)=="resolution"){
@@ -194,7 +190,9 @@ void Game::handle_game_signal(){
 			}
 			restart=true;
 		}
+		delete sig;
 	}
+
 }
 void Game::update(){
 	//std::cout<<"Game::update() 1"<<std::endl;

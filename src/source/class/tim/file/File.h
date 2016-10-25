@@ -13,10 +13,17 @@ public:
 	virtual ~File();
 	static std::vector<std::string> get_all_files(std::string path);
 	static std::vector<std::string> get_all_dirs(std::string path);
+
 	static bool check_if_file_exist(std::string dir_path,std::string file_name);
-	static bool check_if_file_exist(std::string file_path);
+	static bool check_if_file_exist(std::string path);
+	static bool check_if_dir_exist(std::string path);
+
+	static void copy_file(std::string from,std::string to);
+	static void copy_folder(std::string from,std::string to);
+
 	static bool delete_file(std::string file_path);
 
+	static bool create_dir(std::string);
 	static std::string get_type(std::string path);
 	static off_t get_file_size(const char *path);
 	static std::string* load_file_to_string(const char* path);

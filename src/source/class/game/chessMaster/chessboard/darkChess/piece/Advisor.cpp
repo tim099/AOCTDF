@@ -4,8 +4,8 @@ namespace CM {
 namespace darkChess {
 
 Advisor::Advisor() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/red_advisor");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/black_advisor");
+	set_draw_piece1("chess/red_advisor");
+	set_draw_piece2("chess/black_advisor");
 	weight=80;
 	name="Advisor";
 }

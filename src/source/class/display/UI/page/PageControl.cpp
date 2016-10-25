@@ -56,6 +56,7 @@ void PageControl::update() {
 		Input::Signal *sig;
 		while ((sig = receiver->get_signal())) {
 			handle_signal(sig);
+			delete sig;
 		}
 	}
 	for (unsigned i = 0; i < childs.size(); i++) {

@@ -24,9 +24,9 @@ const std::string& Signal::get_data()const{
 }
 void Signal::sent(){
 	if(receiver){
-		receiver->push_signal(this);
+		receiver->push_signal(clone());//this
 	}else{
-		Input::get_cur_object()->sent_signal(this);
+		Input::get_cur_object()->sent_signal(clone());//this
 	}
 }
 }

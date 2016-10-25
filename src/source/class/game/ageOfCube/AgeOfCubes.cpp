@@ -1,6 +1,6 @@
 #include "class/game/ageOfCube/AgeOfCubes.h"
 #include "class/game/ageOfCube/scene/SceneStart.h"
-
+#include <windows.h>
 #include <iostream>
 namespace AOC{
 AgeOfCubes::AgeOfCubes() {
@@ -16,13 +16,29 @@ void AgeOfCubes::initialize_game(){
 	textures = new Display::AllTextures(folder_path+"texture/script/loadAllTexture.txt");
 	textures->register_cur();	//set as cur using textures
 
-	Display::AllTextures* textures2 = new Display::AllTextures("files/test/test.txt");
-	textures2->Save_script("files/test/test.txt");
-	delete textures2;
+	//Display::AllTextures* textures2 = new Display::AllTextures("files/test/test.txt");
+	//textures2->Save_script("files/test/test.txt");
+	//delete textures2;
+
+
 	modelBuffers=new Display::AllModelBuffers(folder_path+"/models/script/loadAllModelBuffers.txt");
 	modelBuffers->register_cur();
+
+	//Display::AllModelBuffers *m=new Display::AllModelBuffers("files/test/model.txt");
+	//m->Save_script("files/test/model.txt");
+	//delete m;
+
 	drawObjects = new Display::AllDrawObjects(folder_path+"/drawObject/loadAllDrawObjects.txt");
 	drawObjects->register_cur();
+
+	Display::DrawObjectMap* dobj = new Display::DrawObjectMap("files/test/dobj/default.txt");
+
+	//Display::DrawObject* obj=new Display::DrawObject("default/cube","default/stars");
+	//obj->name="testhaha";
+	//dobj->push(obj);
+	//dobj->Save_script("files/test/dobj/default.txt");
+	delete dobj;
+
 
 	audioSources = new Audio::AllAudioSources(folder_path+"/audio/loadAllAudios.txt");
 	audioSources->register_cur();

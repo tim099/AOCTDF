@@ -14,7 +14,7 @@ namespace Display{
 namespace AOC {
 
 class Minion: public Unit{
-	static constexpr float gravity=-0.003f;
+	static const float gravity=-0.003f;
 public:
 	Minion();
 	virtual ~Minion();

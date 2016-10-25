@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Bishop::Bishop() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/bishop");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/bishop");
+	set_draw_piece1("chess/bishop");
+	set_draw_piece2("chess/bishop");
 	weight=130;
 	name="Bishop";
 

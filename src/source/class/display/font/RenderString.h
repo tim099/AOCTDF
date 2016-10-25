@@ -6,7 +6,7 @@
 namespace Display{
 class RenderString {
 public:
-	static constexpr float Font_Interval=0.65f;
+	static const float Font_Interval=0.65f;
 	RenderString(std::string str,float char_size,math::vec2<float> pos=math::vec2<float>(0,0)
 	,bool render_at_middle=false);
 	virtual ~RenderString();

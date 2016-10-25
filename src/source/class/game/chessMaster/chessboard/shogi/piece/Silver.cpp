@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Silver::Silver() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/silver");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/silver");
+	set_draw_piece1("chess/silver");
+	set_draw_piece2("chess/silver");
 	weight=80;
 	name="Silver";
 }

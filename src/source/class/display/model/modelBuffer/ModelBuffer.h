@@ -13,15 +13,13 @@ class ModelBuffer{
 public:
 	ModelBuffer();
 	ModelBuffer(Model *m);
-	//ModelBuffer(std::string model_path,float size,bool align_center=true);
 
 	virtual ~ModelBuffer();
 	void initialize(Model *m);
-	void initialize(std::string model_path, float size,bool align_center);
+	void initialize(std::string path, float size,bool align_center);
 
-	std::string get_name()const{
-		return name;
-	}
+	//std::string get_name()const{return name;}
+	void save(std::ostream &os);
 	void load(std::istream &is,std::string folder_path);
 
 	void load_model(Model *m);
@@ -36,8 +34,9 @@ public:
 	Buffer *vnbuffer;
 	Buffer *lybuffer;
 	//bool enable_lybuffer;
-private:
 	std::string path,name;
+private:
+
 	float size;
 	bool Align_center;
 };

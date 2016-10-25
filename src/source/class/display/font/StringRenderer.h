@@ -8,7 +8,7 @@ class Texture2D;
 class Buffer;
 class StringRenderer {
 public:
-	static constexpr double Font_seg = 1.0 / 16.0;
+	static const double Font_seg = 1.0 / 16.0;
 	static const int TAB_SIZE = 4;
 	StringRenderer(std::string fontTexturePath);
 	virtual ~StringRenderer();

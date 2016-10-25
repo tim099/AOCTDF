@@ -122,18 +122,18 @@ void SceneStart::handle_signal(Input::Signal* sig){
 void SceneStart::load_map(std::string mode){
 	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();
 	if(map_name=="Null")return;
-	Input::Signal *sig=new Input::Signal("push_scene","Game");
+	Input::Signal sig("push_scene","Game");
 
 	if(mode == "edit"){
-		sig->ex_data=new AOC::SceneEditMap(map_folder_path+map_name,
+		sig.ex_data=new AOC::SceneEditMap(map_folder_path+map_name,
 			glm::ivec3(1,1,1));
 	}
 	else if(mode == "play"){
-		sig->ex_data=new AOC::ScenePlayTD(map_folder_path+map_name,
+		sig.ex_data=new AOC::ScenePlayTD(map_folder_path+map_name,
 					glm::ivec3(1,1,1));
 	}
 
-	sig->sent();
+	sig.sent();
 }
 void SceneStart::delete_map(){
 	std::string map_name=((UI::UIString*)UI->get_child("Selected_Map"))->get_string();

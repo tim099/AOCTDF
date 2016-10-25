@@ -11,26 +11,19 @@ public:
 	void set_name(std::string name);
 
 	type *get(std::string path);
+	void push(std::string path,type* obj);
+	bool find(std::string path);
 
-	//push a map into this
-	void push_map(maptype* map);
+
 
 	//remove a map from this
 	void remove_map(maptype* map);
 
+	void push_map(maptype* map);//push a map into this
+	maptype* get_map(std::string name);//get map by name
 
-	/*
-	 * get map by name
-	 */
-	maptype* get_map(std::string name);
-	/*
-	 *push a dir into this
-	 */
-	void push_dir(MapTree *dir);
-	/*
-	 * get Dir by name
-	 */
-	MapTree* get_dir(std::string name);
+	void push_dir(MapTree *dir);//push a dir into this
+	MapTree* get_dir(std::string name);//get Dir by name
 protected:
 	Tim::MapContainer<std::string,maptype>maps;
 	Tim::MapContainer<std::string,MapTree<maptype,type> >dirs;

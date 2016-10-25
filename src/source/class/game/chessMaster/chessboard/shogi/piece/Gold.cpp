@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Gold::Gold() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/gold");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/gold");
+	set_draw_piece1("chess/gold");
+	set_draw_piece2("chess/gold");
 	weight=90;
 	name="Gold";
 }

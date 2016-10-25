@@ -4,8 +4,8 @@ namespace CM {
 namespace darkChess {
 
 Horse::Horse() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/red_horse");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/black_horse");
+	set_draw_piece1("chess/red_horse");
+	set_draw_piece2("chess/black_horse");
 	weight=40;
 	name="Horse";
 }

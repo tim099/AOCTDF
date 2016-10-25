@@ -6,17 +6,19 @@ namespace Display{
 class Texture;
 }
 namespace UI {
-
+class AutoPageControl;
 class PictureButton : public Button{
+	friend AutoPageControl;
 public:
-	static constexpr float auto_Size=0.0f;
-	static constexpr float AutoHeight = 0.0f;
+	static const float auto_Size=0.0f;
+	static const float AutoHeight = 0.0f;
 	/*
 	 * auto height means it will determine height by texture's height
 	 */
 	PictureButton(math::vec2<float> pos,std::string tex_path,float width,float height=AutoHeight);
 	PictureButton();
-	virtual void init(math::vec2<float>,std::string tex_path,float width,float height=AutoHeight);
+	virtual void init(math::vec2<float>,std::string tex_path,float width,
+			float height=AutoHeight,bool high_light_when_selected=false);
 
 	void set_texture(std::string tex_path,float width,float height=AutoHeight);
 
@@ -42,6 +44,7 @@ protected:
 	std::string* str;
 	Display::Texture* tex2D;
 	std::string tex_path;
+	bool high_light_when_selected;
 	float height;
 	float font_size;
 };
