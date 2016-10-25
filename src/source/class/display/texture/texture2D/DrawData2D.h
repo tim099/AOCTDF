@@ -6,7 +6,7 @@ namespace Display{
 
 class DrawData2D: public DrawData {
 public:
-	static constexpr float AutoHeight = 0.0f;
+	static const float AutoHeight = 0.0f;
 	/*targetaspect is the aspect of render target(window or FBO,aspect=width/height
 	 *pos is the position to render texture form 0,0 ot 1,1
 	 */

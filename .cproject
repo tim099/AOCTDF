@@ -54,12 +54,12 @@
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="gdi32"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="glu32"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="lua"/>
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="openal"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="alut"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="Ws2_32"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="Mswsock"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="AdvApi32"/>
 									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="wininet"/>
+									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="openal32"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1807809723" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

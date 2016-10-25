@@ -2,6 +2,11 @@
 #define SOURCE_CLASS_TIM_MATH_VEC3_H_
 #include "glm/detail/precision.hpp"
 #include <cmath>
+
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
+
 namespace glm{
 namespace detail{
 template <typename T, precision P> struct tvec3;

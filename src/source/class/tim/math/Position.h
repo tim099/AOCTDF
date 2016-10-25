@@ -5,6 +5,9 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
+#ifndef M_PI
+#define M_PI (3.14159265358979323846)
+#endif
 namespace math {
 class Position {
 public:

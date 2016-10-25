@@ -508,10 +508,10 @@
 	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && (GLM_COMPILER & GLM_COMPILER_CLANG) && (GLM_COMPILER >= GLM_COMPILER_CLANG29)))
 
 // N2235
-#define GLM_HAS_CONSTEXPR ( \
+#define GLM_HAS_const ( \
 	(GLM_LANG & GLM_LANG_CXX11_FLAG) || \
 	((GLM_LANG & GLM_LANG_CXX0X_FLAG) && (GLM_COMPILER & GLM_COMPILER_GCC) && (GLM_COMPILER >= GLM_COMPILER_GCC46)) || \
-	__has_feature(cxx_constexpr))
+	__has_feature(cxx_const))
 
 // N2672
 #define GLM_HAS_INITIALIZER_LISTS ( \
@@ -781,10 +781,10 @@ namespace glm
 #	define GLM_RESTRICT_VAR
 #endif//GLM_COMPILER
 
-#if GLM_HAS_CONSTEXPR
-#	define GLM_CONSTEXPR constexpr
+#if GLM_HAS_const
+#	define GLM_const const
 #else
-#	define GLM_CONSTEXPR
+#	define GLM_const
 #endif
 
 #endif//GLM_SETUP_INCLUDED

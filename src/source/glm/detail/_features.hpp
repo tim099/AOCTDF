@@ -306,8 +306,8 @@
 #		define GLM_CXX11_ATTRIBUTES
 #	endif
 
-#	if(__has_feature(cxx_constexpr))
-#		define GLM_CXX11_CONSTEXPR
+#	if(__has_feature(cxx_const))
+#		define GLM_CXX11_const
 #	endif
 
 #	if(__has_feature(cxx_decltype))
