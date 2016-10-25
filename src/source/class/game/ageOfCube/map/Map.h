@@ -38,7 +38,7 @@ class Map : public Tim::GlobalObject<Map>{
 
 public:
 	static const int MX=5000,MY=5000,MZ=5000;
-	static const double CUBE_SIZE=1.0;
+	static constexpr double CUBE_SIZE=1.0;
 
 	Map();
 	virtual ~Map();

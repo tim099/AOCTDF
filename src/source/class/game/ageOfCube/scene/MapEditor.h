@@ -29,6 +29,7 @@ public:
 	Display::CubeLight *highlightCube(int x, int y, int z);
 	void highlightSelectedCubes(Display::LightControl *lc);
 	void undo();
+	void redo();
 
 	glm::ivec3 select_range;
 	bool destruct_mode;

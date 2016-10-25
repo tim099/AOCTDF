@@ -37,12 +37,12 @@ void MapEditor::set_cube_type(int x,int y,int z,int type){
 			}
 		}
 	}
+	record.setType(type);
 
-	if(undo_count > 0){
-		while(undo_count--){
-			edit_records.pop_back();
-		}
-		undo_count = 0;
+	while(undo_count>0){
+		edit_records.pop_back();
+		undo_count--;
+		std::cout<<"undo count : "<<undo_count<<std::endl;
 	}
 
 	edit_records.push_back(record);
@@ -62,6 +62,13 @@ void MapEditor::undo(){
 	}
 	record.undo(map);
 	undo_count++;
+}
+
+void MapEditor::redo(){
+	if(undo_count <= 0)return;
+	MapEditRecord record = edit_records.at(edit_records.size()-undo_count);
+	record.redo(map);
+	undo_count--;
 }
 
 Display::CubeLight* MapEditor::highlightCube(int x, int y, int z){

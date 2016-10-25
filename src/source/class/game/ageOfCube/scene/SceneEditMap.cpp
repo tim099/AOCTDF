@@ -214,6 +214,8 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 		map_editor.select_range.y -= 1;
 	}else if(sig->get_data() == "undo"){
 		map_editor.undo();
+	}else if(sig->get_data() == "redo"){
+		map_editor.redo();
 	}
 }
 void SceneEditMap::handle_input() {
