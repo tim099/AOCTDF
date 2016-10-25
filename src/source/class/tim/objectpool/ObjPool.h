@@ -13,7 +13,7 @@ template <class Type>
 class ObjPool : public GlobalObject<ObjPool<Type> >{
 	static ObjPool<Type>* cur_pool;
 public:
-	ObjPool(unsigned size);
+	ObjPool(unsigned size=2);
 	virtual ~ObjPool();
 	inline static Type* mycreate(){
 		return cur_pool->create();

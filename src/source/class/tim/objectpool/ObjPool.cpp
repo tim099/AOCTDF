@@ -6,7 +6,7 @@ namespace Tim {
 template <class Type>
 ObjPool<Type>* ObjPool<Type>::cur_pool=0;
 template <class Type>
-ObjPool<Type>::ObjPool(unsigned size=2) {
+ObjPool<Type>::ObjPool(unsigned size) {
 	create_obj(size);
 	cur_pool=this;
 	//mutex=new Tim::Mutex();

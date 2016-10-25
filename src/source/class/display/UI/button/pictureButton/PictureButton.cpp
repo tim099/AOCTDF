@@ -150,7 +150,7 @@ void PictureButton::set_string(std::string* _str, float _font_size) {
 	font_size = _font_size;
 	if (font_size == auto_Size) {
 
-		static const float edgex = 0.9, edgey = 0.8;
+		static constexpr float edgex = 0.9, edgey = 0.8;
 		math::vec2<float> max_size(edgex * size.x, edgey * size.y);
 
 		font_size = 1.0;
