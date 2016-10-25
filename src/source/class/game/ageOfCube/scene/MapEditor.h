@@ -8,6 +8,8 @@
 #ifndef SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_MAPEDITOR_H_
 #define SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_MAPEDITOR_H_
 
+#include <deque>
+#include "class/game/ageOfCube/scene/MapEditRecord.h"
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/tim/math/vec3.h"
 
@@ -26,11 +28,14 @@ public:
 	void set_cube_type(int x,int y,int z,int type);
 	Display::CubeLight *highlightCube(int x, int y, int z);
 	void highlightSelectedCubes(Display::LightControl *lc);
+	void undo();
 
 	glm::ivec3 select_range;
 	bool destruct_mode;
 private:
 	Map *map;
+	int undo_count;
+	std::deque <MapEditRecord> edit_records;
 };
 
 } /* namespace AOC */
