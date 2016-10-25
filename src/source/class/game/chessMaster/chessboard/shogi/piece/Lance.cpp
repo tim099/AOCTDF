@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Lance::Lance() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/lance");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/lance");
+	set_draw_piece1("chess/lance");
+	set_draw_piece2("chess/lance");
 	weight=50;
 	name="Lance";
 }

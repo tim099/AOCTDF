@@ -12,8 +12,8 @@
 namespace UI {
 
 EnterString::EnterString() {
-	input_mode=true;
-	cur_input_str=this;
+	input_mode=false;
+	//cur_input_str=this;
 	tex_path="UI/UI/button2";
 	width=0.2;
 }
@@ -21,7 +21,7 @@ EnterString::~EnterString() {
 
 }
 void EnterString::update(){
-	input_mode=true;
+	//input_mode=true;
 	if(receiver){
 		Input::Signal *sig=receiver->get_signal();
 		if(sig){

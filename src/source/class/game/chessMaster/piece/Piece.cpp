@@ -7,6 +7,8 @@
 #include "class/display/UI/page/AutoPageControl.h"
 #include "class/tim/string/String.h"
 #include "class/game/chessMaster/common.h"
+#include "class/display/UI/string/EnterString.h"
+#include "class/display/draw/Draw.h"
 
 #include <fstream>
 namespace CM {
@@ -28,7 +30,55 @@ Piece::~Piece() {
 		delete basic_rules.at(i);
 	}
 }
+void Piece::init(std::string _name){
+	set_name(_name);
+	if(!draw_piece1){
+		if(draw_piece_str1==""){
+			draw_piece_str1="chess/"+name+"_p1";
+		}
+		if(!Display::AllDrawObjects::get_cur_object()->find(draw_piece_str1)){
+			Display::DrawObject *obj=new Display::DrawObject();
+			std::vector<std::string> path_vec;
+			Tim::String::split(draw_piece_str1, "/", path_vec);
+			obj->name=path_vec.back();
+			Display::AllDrawObjects::get_cur_object()->push(draw_piece_str1,obj);
+			Display::Draw::get_cur_object()->push(obj);
+		}
+		set_draw_piece1(draw_piece_str1);
+	}
+	if(!draw_piece2){
+		if(draw_piece_str2==""){
+			draw_piece_str2="chess/"+name+"_p2";
+		}
+		if(!Display::AllDrawObjects::get_cur_object()->find(draw_piece_str2)){
+			Display::DrawObject *obj=new Display::DrawObject();
+			std::vector<std::string> path_vec;
+			Tim::String::split(draw_piece_str2, "/", path_vec);
+			obj->name=path_vec.back();
+			Display::AllDrawObjects::get_cur_object()->push(draw_piece_str2,obj);
+			Display::Draw::get_cur_object()->push(obj);
+		}
+		set_draw_piece2(draw_piece_str2);
+	}
+}
+void Piece::set_draw_piece1(std::string draw_piece_str){
+	Display::DrawObject *obj=Display::AllDrawObjects::get_cur_object()->get(draw_piece_str);
+	if(obj){
+		draw_piece_str1=draw_piece_str;
+		draw_piece1=obj;
+	}
+}
+void Piece::set_draw_piece2(std::string draw_piece_str){
+	Display::DrawObject *obj=Display::AllDrawObjects::get_cur_object()->get(draw_piece_str);
+	if(obj){
+		draw_piece_str2=draw_piece_str;
+		draw_piece2=obj;
+	}
+}
 void Piece::update_rule_UI(UI::UI *rule_UI){
+	rule_UI->update_UIObject();
+}
+void Piece::init_rule_page(UI::UI *rule_UI){
 	UI::AutoPageControl *page=dynamic_cast<UI::AutoPageControl*>(rule_UI->get_child("rules_page"));
 	if(page){
 		//std::cout<<"Piece::update_rule_UI"<<std::endl;
@@ -40,14 +90,123 @@ void Piece::update_rule_UI(UI::UI *rule_UI){
 		}
 		page->create_pages(names,&sigs);
 	}
+	page->update_UIObject();
+}
+void Piece::init_piece_UI(UI::UI *ui){
+	UI::EnterString *str=dynamic_cast<UI::EnterString*>(ui->get_child("weight"));
+	str->set_string(Tim::String::to_string(weight));
+
+	if(draw_piece1){
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1tex"));
+		str->set_string(draw_piece1->texture_name);
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1model"));
+		str->set_string(draw_piece1->modelbuffer_name);
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1matx"));
+		str->set_string(Tim::String::to_string(draw_piece1->mat.x));
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1maty"));
+		str->set_string(Tim::String::to_string(draw_piece1->mat.y));
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1matz"));
+		str->set_string(Tim::String::to_string(draw_piece1->mat.z));
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1matw"));
+		str->set_string(Tim::String::to_string(draw_piece1->mat.w));
+	}
+	if(draw_piece2){
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2tex"));
+		str->set_string(draw_piece2->texture_name);
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2model"));
+		str->set_string(draw_piece2->modelbuffer_name);
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2matx"));
+		str->set_string(Tim::String::to_string(draw_piece2->mat.x));
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2maty"));
+		str->set_string(Tim::String::to_string(draw_piece2->mat.y));
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2matz"));
+		str->set_string(Tim::String::to_string(draw_piece2->mat.z));
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2matw"));
+		str->set_string(Tim::String::to_string(draw_piece2->mat.w));
+	}
 
 
-	rule_UI->update_UIObject();
+}
+void Piece::update_piece_UI(UI::UI *ui){
+	UI::EnterString *str=dynamic_cast<UI::EnterString*>(ui->get_child("weight"));
+	weight=Tim::String::str_to_int(str->get_string());
+
+	//str=dynamic_cast<UI::EnterString*>(ui->get_child("p1model"));
+	//set_draw_piece1(str->get_string());
+
+	//str=dynamic_cast<UI::EnterString*>(ui->get_child("p2model"));
+	//set_draw_piece2(str->get_string());
+
+	if(draw_piece1){
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1tex"));
+		draw_piece1->set_texture(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1model"));
+		draw_piece1->set_model(str->get_string());
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1matx"));
+		draw_piece1->mat.x=Tim::String::str_to_float(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1maty"));
+		draw_piece1->mat.y=Tim::String::str_to_float(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1matz"));
+		draw_piece1->mat.z=Tim::String::str_to_float(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p1matw"));
+		draw_piece1->mat.w=Tim::String::str_to_float(str->get_string());
+
+	}
+	if(draw_piece2){
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2tex"));
+		draw_piece2->set_texture(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2model"));
+		draw_piece2->set_model(str->get_string());
+
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2matx"));
+		draw_piece2->mat.x=Tim::String::str_to_float(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2maty"));
+		draw_piece2->mat.y=Tim::String::str_to_float(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2matz"));
+		draw_piece2->mat.z=Tim::String::str_to_float(str->get_string());
+		str=dynamic_cast<UI::EnterString*>(ui->get_child("p2matw"));
+		draw_piece2->mat.w=Tim::String::str_to_float(str->get_string());
+	}
 }
 void Piece::get_rule_names(std::vector<std::string> &names){
 	for(unsigned i=0;i<basic_rules.size();i++){
 		names.push_back(basic_rules.at(i)->get_name());
 	}
+}
+void Piece::save_script(std::string dir_path,std::string path){
+	std::filebuf file;
+	file.open((dir_path+path+".txt").c_str(), std::ios::out);
+	if (!file.is_open()) {
+		std::cerr << "Piece::save_script fail,file:" << dir_path+path
+				<< " open fail" << std::endl;
+		return;
+	}
+	std::ostream os(&file);
+	if(draw_piece_str1!=""){
+		os<<"draw_piece1:"<<std::endl;
+		os<<"	"<<draw_piece_str1<<std::endl;
+	}
+	if(draw_piece_str2!=""){
+		os<<"draw_piece2:"<<std::endl;
+		os<<"	"<<draw_piece_str2<<std::endl;
+	}
+
+	os<<"weight:"<<std::endl;
+	os<<"	"<<weight<<std::endl;
+	if(!rule){
+		os<<"#no_lua_rule"<<std::endl;
+	}
+
+	os<<"#END"<<std::endl;
 }
 void Piece::load_script(std::string dir_path,std::string path){
 	std::filebuf file;
@@ -64,11 +223,9 @@ void Piece::load_script(std::string dir_path,std::string path){
 	bool no_lua_rule=false;
 	while(Tim::String::get_line(is, line, true, true)&&line!="#END"){
 		if(line=="draw_piece1:"){
-			Tim::String::get_line(is, line, true, true);
-			draw_piece1=Display::AllDrawObjects::get_cur_object()->get(line);
+			Tim::String::get_line(is,draw_piece_str1, true, true);
 		}else if(line=="draw_piece2:"){
-			Tim::String::get_line(is, line, true, true);
-			draw_piece2=Display::AllDrawObjects::get_cur_object()->get(line);
+			Tim::String::get_line(is,draw_piece_str2, true, true);
 		}else if(line=="weight:"){//.lua file
 			Tim::String::get_line(is, line, true, true);
 			sscanf(line.c_str(),"%d",&weight);
@@ -78,21 +235,50 @@ void Piece::load_script(std::string dir_path,std::string path){
 			std::cerr<<"Piece::load_script unknown script:"<<line<<std::endl;
 		}
 	}
+	if(!draw_piece1){
+		if(draw_piece_str1==""){
+			draw_piece_str1="chess/"+name+"_p1";
+		}
+		if(!Display::AllDrawObjects::get_cur_object()->find(draw_piece_str1)){
+			Display::DrawObject *obj=new Display::DrawObject();
+			std::vector<std::string> path_vec;
+			Tim::String::split(draw_piece_str1, "/", path_vec);
+			obj->name=path_vec.back();
+			Display::AllDrawObjects::get_cur_object()->push(draw_piece_str1,obj);
+			Display::Draw::get_cur_object()->push(obj);
+		}
+		set_draw_piece1(draw_piece_str1);
+	}
+	if(!draw_piece2){
+		if(draw_piece_str2==""){
+			draw_piece_str2="chess/"+name+"_p2";
+		}
+		if(!Display::AllDrawObjects::get_cur_object()->find(draw_piece_str2)){
+			Display::DrawObject *obj=new Display::DrawObject();
+			std::vector<std::string> path_vec;
+			Tim::String::split(draw_piece_str2, "/", path_vec);
+			obj->name=path_vec.back();
+			Display::AllDrawObjects::get_cur_object()->push(draw_piece_str2,obj);
+			Display::Draw::get_cur_object()->push(obj);
+		}
+		set_draw_piece2(draw_piece_str2);
+	}
 	if(rule){
 		delete rule;
 		rule=0;
 	}
 	if(!no_lua_rule){
-		rule=new Tim::Lua();
-		rule->loadfile((dir_path+path+".lua"));
-		rule->rigister_function("get_board",ChessBoard::get_board);
-		rule->p_call(0,0,0);
+		if(Tim::File::check_if_file_exist(dir_path+path+".lua")){
+			rule=new Tim::Lua();
+			rule->loadfile((dir_path+path+".lua"));
+			rule->rigister_function("get_board",ChessBoard::get_board);
+			rule->p_call(0,0,0);
+		}
 	}else{
+
 		std::cout<<"Piece::load_script no lua rule:"<<name<<std::endl;
 	}
-
 	//load_basic_rule(dir_path+path+".rule");
-
 }
 void Piece::remove_basic_rule(BasicRule* rule){
 	for(unsigned i=0;i<basic_rules.size();i++){
@@ -182,9 +368,9 @@ void Piece::next_step(CM::Board<short int> *chess_board,
 }
 void Piece::draw(math::Position* pos,int player){
 	if(player==1){
-		draw_piece1->push_temp_drawdata(new Display::DrawDataObj(pos,true,true));
+		if(draw_piece1)draw_piece1->push_temp_drawdata(new Display::DrawDataObj(pos,true,true));
 	}else{
-		draw_piece2->push_temp_drawdata(new Display::DrawDataObj(pos,true,true));
+		if(draw_piece2)draw_piece2->push_temp_drawdata(new Display::DrawDataObj(pos,true,true));
 	}
 }
 

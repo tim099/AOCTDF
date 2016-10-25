@@ -14,6 +14,8 @@ public:
 
 	void push(std::string name,ModelBuffer* buffer);
 	ModelBuffer* get(std::string name);
+
+	void load_folder(std::string path);
 	std::string folder_path,path;
 protected:
 	virtual inline std::string Script_name()const{

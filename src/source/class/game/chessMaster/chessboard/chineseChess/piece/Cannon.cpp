@@ -4,8 +4,8 @@
 namespace CM {
 
 Cannon::Cannon() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_cannon");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_cannon");
+	set_draw_piece1("chess/red_cannon");
+	set_draw_piece2("chess/black_cannon");
 	weight=50;
 	name="Cannon";
 }

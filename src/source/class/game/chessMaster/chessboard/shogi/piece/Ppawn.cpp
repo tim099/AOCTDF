@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Ppawn::Ppawn() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/ppawn");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/ppawn");
+	set_draw_piece1("chess/ppawn");
+	set_draw_piece2("chess/ppawn");
 	weight=90;
 	name="Promoted Pawn";
 }

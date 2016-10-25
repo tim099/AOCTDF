@@ -4,8 +4,8 @@
 namespace CM {
 
 General::General() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chineseChess/red_general");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chineseChess/black_general");
+	set_draw_piece1("chess/red_general");
+	set_draw_piece2("chess/black_general");
 	weight=9999;
 	name="General";
 }

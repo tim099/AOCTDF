@@ -5,7 +5,10 @@ Receiver::Receiver(std::string _name) {
 	name=_name;
 }
 Receiver::~Receiver() {
-
+	while(!signal_q.empty()){
+		delete signal_q.front();
+		signal_q.pop();//don't delete the signal!!
+	}
 }
 const std::string& Receiver::get_name(){
 	return name;

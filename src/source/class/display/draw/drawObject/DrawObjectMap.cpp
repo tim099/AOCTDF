@@ -32,6 +32,9 @@ void DrawObjectMap::set_name(std::string _name){
 void DrawObjectMap::push(DrawObject* obj){
 	objs.push(obj->get_name(),obj);
 }
+bool DrawObjectMap::find(std::string name){
+	return objs.find(name);
+}
 DrawObject* DrawObjectMap::get(std::string name){
 	return objs.get(name);
 }

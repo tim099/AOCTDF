@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Psilver::Psilver() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/psilver");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/psilver");
+	set_draw_piece1("chess/psilver");
+	set_draw_piece2("chess/psilver");
 	weight=90;
 	name="Promoted Silver";
 }

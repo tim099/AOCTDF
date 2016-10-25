@@ -4,8 +4,8 @@ namespace CM {
 namespace darkChess {
 
 Elephant::Elephant() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/red_elephant");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/black_elephant");
+	set_draw_piece1("chess/red_elephant");
+	set_draw_piece2("chess/black_elephant");
 	weight=70;
 	name="Elephant";
 }

@@ -16,6 +16,7 @@ namespace darkChess {
 DarkChess::DarkChess() {
 	dir_path="files/game/chessMaster/game/darkChess/";
 	game_name="darkChess";
+	board_size=math::vec2<int>(8,4);
 	init_drawobject();
 
 	//rule_path=dir_path+"chessBoard/rule.lua";

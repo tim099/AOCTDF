@@ -1,6 +1,8 @@
 #include "class/tim/file/File.h"
 #include "class/tim/string/String.h"
 #include "sys/stat.h"
+#include <fstream>
+#include <iostream>
 #include <cstdio>
 #include <cstring>
 #include <windows.h>
@@ -86,12 +88,40 @@ bool File::check_if_file_exist(std::string dir_path, std::string file_name) {
 	}
 	return false;
 }
+bool File::check_if_dir_exist(std::string path){
+    struct stat info;
+    if(stat( path.c_str(),&info)==0&&(info.st_mode&S_IFDIR)){
+    	return true;
+    }
+    return false;
+}
 bool File::check_if_file_exist(std::string file_path){
 	struct stat st;
 	if(stat(file_path.c_str(), &st)==0){
 		return true;
 	}
 	return false;
+}
+void File::copy_folder(std::string from,std::string to){
+	std::vector<std::string> fromstr;
+	Tim::String::split(from,"/",fromstr);
+	std::string folder_name=fromstr.back();
+	if(!check_if_dir_exist(to+"/"+folder_name)){
+		create_dir(to+"/"+folder_name);
+	}
+	std::vector<std::string> files=get_all_files(from);
+	for(unsigned i=0;i<files.size();i++){
+		copy_file(from+"/"+files.at(i),to+"/"+folder_name+"/"+files.at(i));
+	}
+	std::vector<std::string> dirs=get_all_dirs(from);
+	for(unsigned i=0;i<dirs.size();i++){
+		copy_folder(from+"/"+dirs.at(i),to+"/"+folder_name);
+	}
+}
+void File::copy_file(std::string from,std::string to){
+    std::ifstream src(from.c_str(),std::ios::binary);
+    std::ofstream dst(to.c_str(),std::ios::binary);
+    dst<<src.rdbuf();
 }
 off_t File::get_file_size(const char *path) {
 	struct stat st;

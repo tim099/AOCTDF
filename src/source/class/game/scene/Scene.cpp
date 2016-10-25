@@ -29,6 +29,7 @@ void Scene::get_signal(){
 	Input::Signal* sig;
 	while((sig=receiver->get_signal())){
 		handle_signal(sig);
+		delete sig;
 	}
 }
 void Scene::update(){

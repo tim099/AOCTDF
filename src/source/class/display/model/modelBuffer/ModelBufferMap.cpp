@@ -1,5 +1,7 @@
 #include "class/display/model/modelBuffer/ModelBufferMap.h"
+
 #include "class/tim/string/String.h"
+#include "class/tim/file/File.h"
 namespace Display{
 ModelBufferMap::ModelBufferMap() {
 
@@ -37,11 +39,20 @@ void ModelBufferMap::Parse_Header(std::ostream &os){
 	os << "Name:" << std::endl;
 	os << "    "+name << std::endl;
 }
+void ModelBufferMap::load_folder(std::string path){
+	std::vector<std::string> names=Tim::File::get_all_files(path);
+	for(unsigned i=0;i<names.size();i++){
+		ModelBuffer* model=new ModelBuffer();
+		model->initialize(path+names.at(i),1.0,true);
+		model->name=names.at(i);
+		push(model->name,model);
+	}
+}
 void ModelBufferMap::Parse_Script(std::istream &is,std::string &line){
 	if(line=="ModelBuffer:"){
 		ModelBuffer* m=new ModelBuffer();
 		m->load(is,folder_path);
-		push(m->get_name(),m);
+		push(m->name,m);
 	}
 }
 void ModelBufferMap::Parse_Script(std::ostream &os){

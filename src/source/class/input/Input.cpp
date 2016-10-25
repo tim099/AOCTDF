@@ -28,7 +28,9 @@ void Input::update(){
 }
 void Input::sent_signal(Signal* signal){
 	Receiver* receiver=get_receiver(signal->get_sent_to());
-	if(!receiver)receiver=default_receiver;
+	if(!receiver){
+		receiver=default_receiver;
+	}
 	receiver->push_signal(signal);
 
 }

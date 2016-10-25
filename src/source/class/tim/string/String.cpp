@@ -12,6 +12,11 @@ String::String() {
 String::~String() {
 
 }
+float String::str_to_float(std::string str){
+	float val;
+	sscanf(str.c_str(),"%f",&val);
+	return val;
+}
 int String::str_to_int(std::string str){
 	int val;
 	sscanf(str.c_str(),"%d",&val);

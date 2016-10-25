@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 King::King() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/king");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/queen");
+	set_draw_piece1("chess/king");
+	set_draw_piece2("chess/queen");
 	weight=99999;
 	name="King";
 }

@@ -42,6 +42,10 @@ AudioPlayer::AudioPlayer(const AudioPlayer &that){
 	buffer=that.buffer;
 	//alSourcei(source, AL_BUFFER, buffer);
 }
+AudioPlayer::~AudioPlayer() {
+	pause();
+	if(source)alDeleteSources(1, &source);
+}
 AudioPlayer& AudioPlayer::operator=(const AudioPlayer &that){
 	set_source(that.buffer);
 	return *this;
@@ -53,10 +57,6 @@ void AudioPlayer::init(){
 	if(!source)alGenSources(1, &source);
 
 	set_volume(1.0);
-}
-AudioPlayer::~AudioPlayer() {
-	pause();
-	if(source)alDeleteSources(1, &source);
 }
 void AudioPlayer::play(){
 	//std::cout<<"play "<<source<<std::endl;

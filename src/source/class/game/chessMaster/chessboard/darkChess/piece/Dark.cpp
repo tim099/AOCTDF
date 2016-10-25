@@ -5,8 +5,8 @@ namespace CM {
 namespace darkChess {
 
 Dark::Dark() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/dark");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/dark");
+	set_draw_piece1("chess/dark");
+	set_draw_piece2("chess/dark");
 	weight=0;
 	name="Dark";
 }

@@ -21,6 +21,26 @@ void MapTree<maptype,type>::set_name(std::string _name) {
 	name = _name;
 }
 template <class maptype,class type>
+void MapTree<maptype,type>::push(std::string obj_path,type* obj){
+	std::vector<std::string> path;
+	Tim::String::split(obj_path, "/", path);
+	if (path.size() == 2) {
+		maptype *obj_map = get_map(path.at(0));
+		if (obj_map) {
+			obj_map->push(obj);
+		}
+	} else if (path.size() > 2) {
+		MapTree<maptype,type>* dir=get_dir(path.at(0));
+		if(dir){
+			std::string new_path;
+			for(unsigned i=1;i<path.size();i++){
+				new_path+="/"+path.at(i);
+			}
+			return dir->push(new_path,obj);
+		}
+	}
+}
+template <class maptype,class type>
 type *MapTree<maptype,type>::get(std::string obj_path){
 	std::vector<std::string> path;
 	Tim::String::split(obj_path, "/", path);
@@ -42,6 +62,28 @@ type *MapTree<maptype,type>::get(std::string obj_path){
 	std::cerr<<"Map tree can't find object:"<<obj_path<<std::endl;
 	return 0;
 }
+template <class maptype,class type>
+bool  MapTree<maptype,type>::find(std::string obj_path){
+	std::vector<std::string> path;
+	Tim::String::split(obj_path, "/", path);
+	if (path.size() == 2) {
+		maptype *obj_map = get_map(path.at(0));
+		if (obj_map) {
+			return obj_map->find(path.at(1));
+		}
+	} else if (path.size() > 2) { //bigger than 2
+		MapTree<maptype,type>* dir=get_dir(path.at(0));
+		if(dir){
+			std::string new_path;
+			for(unsigned i=1;i<path.size();i++){
+				new_path+="/"+path.at(i);
+			}
+			return dir->find(new_path);
+		}
+	}
+	return 0;
+}
+
 template <class maptype,class type>
 void MapTree<maptype,type>::push_map(maptype* map){
 	maps.push(map->get_name(),map);

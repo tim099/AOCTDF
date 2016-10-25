@@ -13,6 +13,7 @@ namespace CM {
 ChineseChess::ChineseChess() {
 	dir_path="files/game/chessMaster/game/chineseChess/";
 	game_name="chineseChess";
+	board_size=math::vec2<int>(9,9);
 	init_drawobject();
 
 	//rule_path=dir_path+"chessBoard/rule.lua";

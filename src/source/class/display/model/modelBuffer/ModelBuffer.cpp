@@ -123,11 +123,10 @@ void ModelBuffer::bind_buffer(Shader *shader) {
 	}
 }
 void ModelBuffer::unbind_buffer(Shader *shader) {
-	if (lybuffer)
-		lybuffer->unbind_buffer();
-	//vtbuffer->unbind_buffer();
-	//uvbuffer->unbind_buffer();
-	//vnbuffer->unbind_buffer();
+	if (lybuffer)lybuffer->unbind_buffer();
+	if (vtbuffer)vtbuffer->unbind_buffer();
+	if (uvbuffer)uvbuffer->unbind_buffer();
+	if (vnbuffer)vnbuffer->unbind_buffer();
 }
 void ModelBuffer::draw(GLuint programID, GLenum mode) {
 	//std::cout<<"ModelBuffer::draw="<<vertex_num<<std::endl;

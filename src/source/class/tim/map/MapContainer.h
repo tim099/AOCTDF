@@ -1,6 +1,7 @@
 #ifndef SOURCE_CLASS_TIM_MAP_MAPCONTAINER_H_
 #define SOURCE_CLASS_TIM_MAP_MAPCONTAINER_H_
 #include <map>
+#include <vector>
 /*
  * auto delete object in this map when this object being deleted
  */
@@ -20,6 +21,7 @@ public:
 	std::map<Key,Type*>* get_map(){
 		return &map;
 	}
+	void get_vec(std::vector<Type*> &vec);
 protected:
 	std::map<Key,Type*>map;
 	bool auto_delete;

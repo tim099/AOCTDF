@@ -21,6 +21,7 @@ namespace shogi {
 Shogi::Shogi() {
 	dir_path="files/game/chessMaster/game/shogi/";
 	game_name="shogi";
+	board_size=math::vec2<int>(9,9);
 	init_drawobject();
 	//rule_path=dir_path+"chessBoard/rule.lua";
 

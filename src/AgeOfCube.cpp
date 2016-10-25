@@ -12,6 +12,8 @@
 #include "class/game/ageOfCube/AgeOfCubes.h"
 #include "class/game/chessMaster/ChessMaster.h"
 #include "class/game/GamePlayer.h"
+#include "class/tim/file/File.h"
+
 int main(){
 	game::GamePlayer player;
 	player.play(new ChessMaster());

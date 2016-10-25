@@ -15,7 +15,11 @@ public:
 	static std::vector<std::string> get_all_dirs(std::string path);
 
 	static bool check_if_file_exist(std::string dir_path,std::string file_name);
-	static bool check_if_file_exist(std::string file_path);
+	static bool check_if_file_exist(std::string path);
+	static bool check_if_dir_exist(std::string path);
+
+	static void copy_file(std::string from,std::string to);
+	static void copy_folder(std::string from,std::string to);
 
 	static bool delete_file(std::string file_path);
 

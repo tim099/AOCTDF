@@ -23,7 +23,10 @@ public:
 
 	virtual void deselected();
 	virtual void draw_UI();
+
 	virtual void update();
+
+	virtual void init_UI();
 	virtual void update_UI();
 	void add_rule(std::string rule_name);
 	void add_condition(std::string rule_name);
@@ -31,6 +34,12 @@ public:
 	void get_condition_names(std::vector<std::string> &names);
 	virtual void draw_rule(CM::Board<short int> *chess_board,
 			int x,int y);
+protected:
+	void create_rule_page();
+	void create_condition_page();
+
+	bool remove_rule();
+	bool remove_condition();
 	bool true_mode;
 	BasicRule* selected_rule;
 	Condition* selected_condition;

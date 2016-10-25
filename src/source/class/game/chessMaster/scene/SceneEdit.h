@@ -27,7 +27,7 @@ public:
 
 	virtual void loading();
 	virtual void scene_update_end();
-
+	std::string init_game;
 	std::string local_path;
 protected:
 	virtual void scene_update();
@@ -38,22 +38,32 @@ protected:
 	virtual	void scene_terminate();
 	virtual void handle_signal(Input::Signal *sig);
 
+	void set_chess_board(ChessBoard* board);
+	void set_selected_rule(BasicRule* selected_rule);
+	void set_selected_piece(Piece *piece);
 	void handle_input();
 	void camera_control();
+	void add_piece();
 
 	void init_board();
 
-	void set_selected_piece(Piece *piece);
 
+	void set_chess_type(int type);
+	void load_UI();
 	enum Mode{
-		edit_piece,edit_board,edit_rule
+		edit_piece,edit_board,edit_rule,import_texture
 	};
+
+	Mode mode;
+
 	math::Position back_ground_pos;
 	UI::UI *UI;
 	UI::UI *edit_chess_UI;
 	UI::UI *edit_board_UI;
 	UI::UI *edit_rule_UI;
+	UI::UI *import_texture_UI;
 	UI::UI *rule_UI;
+
 	ChessBoard *chess_board;
 	Piece *selected_piece;
 	glm::ivec2 piece_at;
@@ -61,7 +71,6 @@ protected:
 	Display::Camera* camera;
 	Audio::AudioPlayer *back_music;
 
-	//CM::AI *ai;
 
 	Display::LightControl* light_control;
 
@@ -69,9 +78,6 @@ protected:
 	int type;
 	int chess_type;
 	glm::ivec2 s;
-	//int prev_sx,prev_sy;
-	Mode mode;
-	//bool edit_chess;
 };
 }
 } /* namespace CM */

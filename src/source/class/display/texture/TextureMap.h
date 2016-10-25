@@ -11,11 +11,16 @@ class TextureMap : public Tim::Parser{
 public:
 	TextureMap(std::string path="NULL",std::string folder_path="");
 	virtual ~TextureMap();
+
 	std::string get_name()const;
 	void set_name(std::string name);
 
+	void load_folder_to_tex2D(std::string path);
+	int load_folder_to_tex2DArr(std::string path,std::string name,unsigned sx,unsigned sy);
 	void push(std::string tex_name,Texture* tex);
 	Texture* get(std::string tex_name);
+
+	Tim::MapContainer<std::string,Texture>textures;
 	std::string folder_path;
 	std::string path;
 protected:
@@ -26,7 +31,7 @@ protected:
 	virtual void Parse_Script(std::ostream &os);
 	virtual void Parse_Header(std::istream &is,std::string &line);
 	virtual void Parse_Header(std::ostream &os);
-	Tim::MapContainer<std::string,Texture>textures;
+
 
 	std::string name;
 };

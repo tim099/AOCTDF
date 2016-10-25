@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Pawn::Pawn() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/pawn");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/pawn");
+	set_draw_piece1("chess/pawn");
+	set_draw_piece2("chess/pawn");
 	weight=10;
 	name="Pawn";
 }

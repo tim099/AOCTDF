@@ -18,9 +18,7 @@ public:
 	void initialize(Model *m);
 	void initialize(std::string path, float size,bool align_center);
 
-	std::string get_name()const{
-		return name;
-	}
+	//std::string get_name()const{return name;}
 	void save(std::ostream &os);
 	void load(std::istream &is,std::string folder_path);
 
@@ -36,8 +34,9 @@ public:
 	Buffer *vnbuffer;
 	Buffer *lybuffer;
 	//bool enable_lybuffer;
-private:
 	std::string path,name;
+private:
+
 	float size;
 	bool Align_center;
 };

@@ -4,8 +4,8 @@
 namespace CM {
 
 OthelloStone::OthelloStone() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/black");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/white");
+	set_draw_piece1("chess/black");
+	set_draw_piece2("chess/white");
 	weight=1;
 	name="stone";
 }

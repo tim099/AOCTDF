@@ -4,8 +4,8 @@ namespace CM {
 namespace shogi {
 
 Plance::Plance() {
-	draw_piece1=Display::AllDrawObjects::get_cur_object()->get("chess/plance");
-	draw_piece2=Display::AllDrawObjects::get_cur_object()->get("chess/plance");
+	set_draw_piece1("chess/plance");
+	set_draw_piece2("chess/plance");
 	weight=90;
 	name="Promoted Lance";
 }

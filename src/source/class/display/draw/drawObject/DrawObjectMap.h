@@ -14,6 +14,7 @@ public:
 	void set_name(std::string name);
 	void push(DrawObject* obj);
 	DrawObject* get(std::string name);
+	bool find(std::string name);
 	std::string folder_path,path;
 protected:
 	virtual inline std::string Script_name()const{

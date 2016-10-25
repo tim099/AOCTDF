@@ -59,6 +59,28 @@ void TextureMap::Parse_Script(std::ostream &os){
 		it++;
 	}
 }
+void TextureMap::load_folder_to_tex2D(std::string path){
+	std::vector<std::string> names=Tim::File::get_all_files(path);
+	for(unsigned i=0;i<names.size();i++){
+		Texture2D* tex=new Texture2D();
+		tex->load(path+names.at(i));
+		tex->name=names.at(i);
+		push(tex->name,tex);
+	}
+}
+int TextureMap::load_folder_to_tex2DArr(std::string path,std::string name,unsigned sx,unsigned sy){
+	std::vector<std::string> names=Tim::File::get_all_files(path);
+	std::string new_path;
+	for(unsigned i=0;i<names.size();i++){
+		new_path=path+names.at(i);
+		names.at(i)=new_path;
+	}
+	Texture2DArr* tex=new Texture2DArr();
+	tex->load(names,glm::ivec3(sx,sy,names.size()));
+	tex->name=name;
+	push(tex->name,tex);
+	return names.size();
+}
 void TextureMap::Parse_Script(std::istream &is, std::string &line) {
 	if (line=="Texture:"||line=="Texture2DArr:"||line=="TextureCubeMap:") {
 		line=line.substr(0,line.length()-1);
