@@ -213,8 +213,10 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 	}else if(sig->get_data() == "select_range_y_down"){
 		map_editor.select_range.y -= 1;
 	}else if(sig->get_data() == "undo"){
+		//std::cout<<"undo"<<std::endl;
 		map_editor.undo();
 	}else if(sig->get_data() == "redo"){
+		//std::cout<<"redo"<<std::endl;
 		map_editor.redo();
 	}
 }
@@ -236,6 +238,7 @@ void SceneEditMap::handle_input() {
 				//field->map->selected_on.z<<std::endl;
 		if(constructing_building){
 			if(constructing_building->create_building()){
+
 			}else{
 				delete constructing_building;
 			}
