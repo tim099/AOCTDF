@@ -237,7 +237,7 @@ void SceneEditMap::handle_input() {
 				//field->map->selected_on.y<<","<<
 				//field->map->selected_on.z<<std::endl;
 		if(constructing_building){
-			if(constructing_building->create_building()){
+			if(map_editor.build(constructing_building)){
 
 			}else{
 				delete constructing_building;
@@ -360,7 +360,7 @@ void SceneEditMap::scene_draw() {
 	field->draw(draw,camera,thread_pool); //push position
 
 	if(constructing_building){
-		if(input->mouse->_pos_delta==glm::ivec2(0,0)){
+		if(input->mouse->_pos_delta==glm::ivec2(0,0)){ // cursor didn't move
 			constructing_building->draw_buildable(field->map);
 		}else{
 			constructing_building->set_pos(

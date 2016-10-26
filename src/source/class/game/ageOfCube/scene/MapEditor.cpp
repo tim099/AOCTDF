@@ -51,6 +51,16 @@ void MapEditor::set_cube_type(int x,int y,int z,int type){
 	}
 }
 
+bool MapEditor::build(Building *building){
+	MapEditRecord record;
+	bool success = building->create_building();
+	if(success){
+		record.setUnit(building);
+		edit_records.push_back(record);
+	}
+	return success;
+}
+
 void MapEditor::undo(){
 	if(edit_records.size() - undo_count <= 0)return;
 	MapEditRecord record;
@@ -60,15 +70,17 @@ void MapEditor::undo(){
 	else{
 		record = edit_records.at(edit_records.size()-1-undo_count);
 	}
-	record.undo(map);
-	undo_count++;
+	if(record.undo(map)){ //undo success
+		undo_count++;
+	}
 }
 
 void MapEditor::redo(){
 	if(undo_count <= 0)return;
 	MapEditRecord record = edit_records.at(edit_records.size()-undo_count);
-	record.redo(map);
-	undo_count--;
+	if(record.redo(map)){ //redo success
+		undo_count--;
+	}
 }
 
 Display::CubeLight* MapEditor::highlightCube(int x, int y, int z){
