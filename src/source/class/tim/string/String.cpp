@@ -34,7 +34,7 @@ std::string String::to_string(unsigned num){
 }
 std::string String::to_string(double num){
 	char cnum[100];
-	sprintf(cnum,"%.2lf",num);
+	std::sprintf(cnum,"%.2f",num);
 	return std::string(cnum);
 }
 void String::put_back_line(std::istream &is,std::string& line){

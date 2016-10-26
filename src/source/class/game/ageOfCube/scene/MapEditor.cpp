@@ -65,7 +65,6 @@ void MapEditor::undo(){
 }
 
 void MapEditor::redo(){
-
 	if(undo_count <= 0)return;
 	MapEditRecord record = edit_records.at(edit_records.size()-undo_count);
 	record.redo(map);
