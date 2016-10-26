@@ -23,7 +23,7 @@ namespace Display{
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
-	static const int max_pieces_num=1000;
+	static constexpr int max_pieces_num=1000;
 public:
 	ChessBoard(int sizex=8,int sizey=3,int sizez=8);
 	virtual ~ChessBoard();

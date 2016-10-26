@@ -19,11 +19,13 @@ public:
 	void set_delta(int dx,int dy);
 	virtual void get_next_step(CM::Board<short int> *chess_board,
 			int x,int y,std::vector<int> &next_step,int player);
-
+	virtual void handle_input(int x,int y,int sx,int sy);
 	virtual void draw_UI();
 	virtual void update_UI();
+	virtual void update();
 protected:
 	int dx,dy;
+	bool setting_mode;
 
 };
 

@@ -3,7 +3,7 @@
 namespace CM {
 
 BasicRule::BasicRule() {
-	ui=0;
+	ui=0;parent=0;
 }
 BasicRule::~BasicRule() {
 

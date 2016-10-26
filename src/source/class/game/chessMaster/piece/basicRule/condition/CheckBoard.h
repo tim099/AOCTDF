@@ -2,10 +2,10 @@
 #define SOURCE_CLASS_GAME_CHESSMASTER_PIECE_BASICRULE_CONDITION_CHECKBOARD_H_
 #include "class/game/chessMaster/piece/basicRule/condition/Condition.h"
 namespace CM {
-static const int type_empty=1;
-static const int type_enemy=2;
-static const int type_player=3;
-static const int type_piece=4;
+static constexpr int type_empty=1;
+static constexpr int type_enemy=2;
+static constexpr int type_player=3;
+static constexpr int type_piece=4;
 class CheckBoard : public Condition{
 public:
 	CheckBoard();

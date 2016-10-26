@@ -19,7 +19,7 @@ namespace UI {
 class UIObjectCreator;
 
 namespace Mode{
-	static const int EDIT=1<<0;
+	static constexpr int EDIT=1<<0;
 }
 class UIObject : public Input::SelectableRec{
 public:

@@ -63,7 +63,7 @@ void Tower::building_set_pos(int x,int y,int z){
 	pos.set_scale(glm::vec3(size,size,size));
 }
 void Tower::draw_building(){
-	static const int loop_time=200;
+	static constexpr int loop_time=200;
 	if(timer<loop_time){
 		timer++;
 	}else{

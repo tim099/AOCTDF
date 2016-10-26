@@ -710,8 +710,8 @@ GLM_FUNC_QUALIFIER detail::fvec4SIMD fastSqrt(detail::fvec4SIMD const & x)
 // By Elan Ruskin, http://assemblyrequired.crashworks.org/
 GLM_FUNC_QUALIFIER detail::fvec4SIMD inversesqrt(detail::fvec4SIMD const & x)
 {
-	GLM_ALIGN(4) static const __m128 three = {3, 3, 3, 3}; // aligned consts for fast load
-	GLM_ALIGN(4) static const __m128 half = {0.5,0.5,0.5,0.5};
+	GLM_ALIGN(4) static constexpr __m128 three = {3, 3, 3, 3}; // aligned consts for fast load
+	GLM_ALIGN(4) static constexpr __m128 half = {0.5,0.5,0.5,0.5};
 
 	__m128 recip = _mm_rsqrt_ps(x.Data);  // "estimate" opcode
 	__m128 halfrecip = _mm_mul_ps(half, recip);

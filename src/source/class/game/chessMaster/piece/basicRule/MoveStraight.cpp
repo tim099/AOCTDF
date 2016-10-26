@@ -5,11 +5,12 @@
 #include "class/tim/string/String.h"
 #include "class/display/UI/string/EnterString.h"
 #include "class/tim/string/String.h"
+#include "class/input/Input.h"
 #include <cstdio>
 namespace CM {
 
 MoveStraight::MoveStraight() {
-	dx=0;dy=0;
+	dx=0;dy=0;setting_mode=false;
 	ui=new UI::UI(CM::folder_path+"basicRule/"+get_name()+"/UI.txt");
 }
 MoveStraight::~MoveStraight() {
@@ -55,6 +56,22 @@ void MoveStraight::set_delta(int _dx,int _dy){
 
 	UI::EnterString *dystr=dynamic_cast<UI::EnterString*>(ui->get_child("dy"));
 	dystr->set_string(Tim::String::to_string(dy));
+}
+void MoveStraight::update(){
+	Input::Input *input=Input::Input::get_cur_object();
+	while(Input::Signal*sig=input->get_signal("rule")){
+		if(sig->get_data()=="set"){
+			setting_mode=true;
+		}
+		delete sig;
+	}
+}
+void MoveStraight::handle_input(int x,int y,int sx,int sy){
+	Input::Input *input=Input::Input::get_cur_object();
+	if(setting_mode&&input->mouse->get_left_click()){
+		set_delta(sx-x,sy-y);
+		setting_mode=false;
+	}
 }
 void MoveStraight::update_UI(){
 	ui->update_UIObject();

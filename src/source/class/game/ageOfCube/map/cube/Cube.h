@@ -12,11 +12,11 @@ class Cube {
 	static bool cube_inited;
 public:
 	static std::vector<unsigned char>basic_cubes;
-	static const int cubeOutofEdge=-1;
-	static const unsigned char cubeNull=0;
-	static const unsigned char cubeEX=1;
-	static const unsigned char water=2;
-	static const unsigned char cube_start=3;//the number at the start of the basic cube
+	static constexpr int cubeOutofEdge=-1;
+	static constexpr unsigned char cubeNull=0;
+	static constexpr unsigned char cubeEX=1;
+	static constexpr unsigned char water=2;
+	static constexpr unsigned char cube_start=3;//the number at the start of the basic cube
 	static unsigned char cube_end;
 	static unsigned char stone;
 	static unsigned char dirt;

@@ -492,12 +492,12 @@ void ChessBoard::update_UI(UI::UI *ui){
 }
 void ChessBoard::gen_model(){
 	//Model *mapmodel = dmaps[px][pz]->model;
-	static const unsigned char up = 1 << 0;
-	static const unsigned char down = 1 << 1;
-	static const unsigned char left = 1 << 2;
-	static const unsigned char right = 1 << 3;
-	static const unsigned char front = 1 << 4;
-	static const unsigned char back = 1 << 5;
+	static constexpr unsigned char up = 1 << 0;
+	static constexpr unsigned char down = 1 << 1;
+	static constexpr unsigned char left = 1 << 2;
+	static constexpr unsigned char right = 1 << 3;
+	static constexpr unsigned char front = 1 << 4;
+	static constexpr unsigned char back = 1 << 5;
 	unsigned char cube_exist;
 	int tex_layer;
 	Display::Model *model = dboard->model;

@@ -4,11 +4,11 @@
 namespace Display{
 class Buffer {
 public:
-	static const int vt=0;
-	static const int uv=1;
-	static const int vn=2;
-	static const int ly=3;
-	static const int m=4;
+	static constexpr int vt=0;
+	static constexpr int uv=1;
+	static constexpr int vn=2;
+	static constexpr int ly=3;
+	static constexpr int m=4;
 	Buffer(GLfloat* data,int datasize,GLuint index,GLint size,GLenum type
 			,GLboolean normalized=GL_FALSE
 			,GLsizei stride=0);
