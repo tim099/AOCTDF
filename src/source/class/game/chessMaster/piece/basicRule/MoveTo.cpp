@@ -10,6 +10,7 @@ namespace CM {
 MoveTo::MoveTo() {
 	dx=0;dy=0;type=type_move_and_attack;
 	ui=new UI::UI(CM::folder_path+"basicRule/"+get_name()+"/UI.txt");
+	setting_mode=false;
 }
 MoveTo::~MoveTo() {
 	delete ui;
@@ -30,6 +31,13 @@ void MoveTo::set_delta(int _dx,int _dy){
 	UI::EnterString *dystr=dynamic_cast<UI::EnterString*>(ui->get_child("dy"));
 	dystr->set_string(Tim::String::to_string(dy));
 }
+void MoveTo::handle_input(int x,int y,int sx,int sy){
+	Input::Input *input=Input::Input::get_cur_object();
+	if(setting_mode&&input->mouse->get_left_click()){
+		set_delta(sx-x,sy-y);
+		setting_mode=false;
+	}
+}
 void MoveTo::update(){
 	Input::Input *input=Input::Input::get_cur_object();
 	while(Input::Signal*sig=input->get_signal("rule")){
@@ -39,8 +47,12 @@ void MoveTo::update(){
 			type=type_attack;
 		}else if(sig->get_data()=="move&attack"){
 			type=type_move_and_attack;
+		}else if(sig->get_data()=="set"){
+			setting_mode=true;
 		}
+		delete sig;
 	}
+
 }
 void MoveTo::update_UI(){
 	ui->update_UIObject();

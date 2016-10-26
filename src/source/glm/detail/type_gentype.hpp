@@ -165,34 +165,34 @@ namespace detail
 	//template <typename T>
 	//struct traits
 	//{
-	//	static const bool is_signed = false;
-	//	static const bool is_float = false;
-	//	static const bool is_vector = false;
-	//	static const bool is_matrix = false;
-	//	static const bool is_genType = false;
-	//	static const bool is_genIType = false;
-	//	static const bool is_genUType = false;
+	//	static constexpr bool is_signed = false;
+	//	static constexpr bool is_float = false;
+	//	static constexpr bool is_vector = false;
+	//	static constexpr bool is_matrix = false;
+	//	static constexpr bool is_genType = false;
+	//	static constexpr bool is_genIType = false;
+	//	static constexpr bool is_genUType = false;
 	//};
 	
 	//template <>
 	//struct traits<half>
 	//{
-	//	static const bool is_float = true;
-	//	static const bool is_genType = true;
+	//	static constexpr bool is_float = true;
+	//	static constexpr bool is_genType = true;
 	//};
 	
 	//template <>
 	//struct traits<float>
 	//{
-	//	static const bool is_float = true;
-	//	static const bool is_genType = true;
+	//	static constexpr bool is_float = true;
+	//	static constexpr bool is_genType = true;
 	//};
 	
 	//template <>
 	//struct traits<double>
 	//{
-	//	static const bool is_float = true;
-	//	static const bool is_genType = true;
+	//	static constexpr bool is_float = true;
+	//	static constexpr bool is_genType = true;
 	//};
 	
 	//template <typename genType>
@@ -209,7 +209,7 @@ namespace detail
 	
 	//	typedef typename genType::value_type	value_type;
 	//	typedef typename genType::size_type		size_type;
-	//	static const typename size_type			value_size;
+	//	static constexpr typename size_type			value_size;
 	//};
 	
 	//template <typename genType>

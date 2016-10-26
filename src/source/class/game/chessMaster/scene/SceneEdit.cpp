@@ -302,6 +302,14 @@ void SceneEdit::camera_control(){
 	}
 }
 void SceneEdit::handle_input(){
+	if(mode==edit_rule){
+		if(selected_piece){
+			if(selected_rule){
+				selected_rule->handle_input(piece_at.x,piece_at.y,
+						chess_board->selected_on.x,chess_board->selected_on.z);
+			}
+		}
+	}
 	if(input->keyboard->get('V')){
 		destruct_mode^=1;
 	}

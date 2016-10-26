@@ -9,23 +9,23 @@ namespace Display{
 
 class Shader {
 public:
-	static const int NormalMapping=1<<0;
-	static const int LayerTexture=1<<1;
-	static const int AlphaTexture=1<<2;
-	static const int Clipping=1<<3;
-	static const int SkyMap=1<<4;
-	static const int Back_culling=1<<5;
-	static const int BillBoard=1<<6;
-	static const int Particle=1<<7;
-	static const int Atlas=1<<8;
-	static const int ModelMatArr=1<<9;
+	static constexpr int NormalMapping=1<<0;
+	static constexpr int LayerTexture=1<<1;
+	static constexpr int AlphaTexture=1<<2;
+	static constexpr int Clipping=1<<3;
+	static constexpr int SkyMap=1<<4;
+	static constexpr int Back_culling=1<<5;
+	static constexpr int BillBoard=1<<6;
+	static constexpr int Particle=1<<7;
+	static constexpr int Atlas=1<<8;
+	static constexpr int ModelMatArr=1<<9;
 
-	static const int SobelMode=1<<10;
-	static const int AddOnMode=1<<11;
-	static const int ColorAlterMode=1<<12;
+	static constexpr int SobelMode=1<<10;
+	static constexpr int AddOnMode=1<<11;
+	static constexpr int ColorAlterMode=1<<12;
 
-	static const int Type_Texture=0;
-	static const int Type_TextureArr=1;
+	static constexpr int Type_Texture=0;
+	static constexpr int Type_TextureArr=1;
 
 	Shader(std::string name=std::string("default"));
 	virtual ~Shader();

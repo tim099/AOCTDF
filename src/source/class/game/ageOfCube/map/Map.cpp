@@ -81,7 +81,7 @@ void Map::init(){
 	dp_map=new DisplayMap(this);
 }
 void Map::gen_map_seg(){
-	static const int size_per_sig=15;
+	static constexpr int size_per_sig=15;
 	//seg.x=((double)map->get_size().x/size_per_sig)+0.5;
 	seg_num.x=ceil((double)get_size().x/size_per_sig);
 	seg_num.y=1;

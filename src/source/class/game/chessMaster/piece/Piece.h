@@ -44,7 +44,7 @@ public:
 
 	void remove_basic_rule(BasicRule* rule);
 	void add_rule(std::string rule_name);
-
+	void push_rule(BasicRule* rule);
 	void draw(math::Position* pos,int player);
 
 	void get_rule_names(std::vector<std::string> &names);

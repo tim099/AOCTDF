@@ -14,14 +14,14 @@ namespace network{
 class Socket {
 	static bool init;
 	static WSAData wsaData;
-	static const int type_TCP=SOCK_STREAM;
-	static const int type_UDP=SOCK_DGRAM;
-	static const int IPv4=AF_INET;
-	static const int IPv6=AF_INET6;
-	static const int protocol_TCP=IPPROTO_TCP;
-	static const int protocol_UDP=IPPROTO_UDP;
+	static constexpr int type_TCP=SOCK_STREAM;
+	static constexpr int type_UDP=SOCK_DGRAM;
+	static constexpr int IPv4=AF_INET;
+	static constexpr int IPv6=AF_INET6;
+	static constexpr int protocol_TCP=IPPROTO_TCP;
+	static constexpr int protocol_UDP=IPPROTO_UDP;
 public:
-	static const  int buffer_len=1024;
+	static constexpr  int buffer_len=1024;
 	static void socket_init();
 	static void socket_exit();
 	Socket(int af=IPv4,int type=type_TCP,int protocol=protocol_TCP);

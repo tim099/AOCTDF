@@ -6,9 +6,9 @@
 namespace CM {
 
 class MoveTo: public BasicRule {
-	static const int type_move=1;
-	static const int type_attack=2;
-	static const int type_move_and_attack=3;
+	static constexpr int type_move=1;
+	static constexpr int type_attack=2;
+	static constexpr int type_move_and_attack=3;
 public:
 	MoveTo();
 	virtual ~MoveTo();
@@ -25,8 +25,10 @@ public:
 
 	virtual void draw_UI();
 	virtual void update();
+	virtual void handle_input(int x,int y,int sx,int sy);
 	virtual void update_UI();
 	void set_delta(int dx,int dy);
+	bool setting_mode;
 	int type;
 	int dx,dy;
 };

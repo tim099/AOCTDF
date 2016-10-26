@@ -13,7 +13,7 @@ class AI;
 
 namespace scene{
 class SceneStart : public Scene{
-	static const int MAX=999999;
+	static constexpr int MAX=999999;
 public:
 	SceneStart();
 	virtual ~SceneStart();

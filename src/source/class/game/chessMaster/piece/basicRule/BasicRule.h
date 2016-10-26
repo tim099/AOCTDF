@@ -8,7 +8,7 @@
 #include "class/game/chessMaster/common.h"
 #include "class/display/UI/UI.h"
 namespace CM {
-
+class Piece;
 class BasicRule {
 public:
 	BasicRule();
@@ -27,6 +27,7 @@ public:
 	}
 	virtual void save(FILE* file){}
 	virtual void load(FILE* file){}
+	virtual void handle_input(int x,int y,int sx,int sy){}
 	virtual void draw_UI(){}
 	virtual void update(){}
 	virtual void init_UI(){}
@@ -38,7 +39,7 @@ public:
 			int x,int y,Tim::vector<CM::Step> &next_step);
 	virtual void get_next_step(CM::Board<short int> *chess_board,
 			int x,int y,std::vector<int> &next_step,int player)=0;
-
+	Piece* parent;
 	UI::UI *ui;
 };
 

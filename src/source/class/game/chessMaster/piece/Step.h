@@ -9,7 +9,7 @@
 namespace CM {
 
 class Step {
-	static const int max_move=20;
+	static constexpr int max_move=20;
 public:
 	Step();
 	Step(Step *step);

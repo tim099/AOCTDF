@@ -294,6 +294,10 @@ void Piece::remove_basic_rule(BasicRule* rule){
 }
 void Piece::add_rule(std::string rule_name){
 	BasicRule* rule=BasicRuleCreator::get_cur_object()->create(rule_name);
+	push_rule(rule);
+}
+void Piece::push_rule(BasicRule* rule){
+	rule->parent=this;
 	basic_rules.push_back(rule);
 }
 void Piece::load_basic_rule(std::string path){
@@ -310,7 +314,7 @@ void Piece::load_basic_rule(std::string path){
 		fscanf(file,"%s\n",name);
 		BasicRule* rule=BasicRuleCreator::get_cur_object()->create(name);
 		rule->load(file);
-		basic_rules.push_back(rule);
+		push_rule(rule);
 	}
 
 	fclose(file);

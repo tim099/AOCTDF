@@ -31,13 +31,14 @@ class CubeNull;
 class CubeError;
 class AllCubes;
 namespace path{
-static const unsigned char standable=1<<0;
-static const unsigned char jumpable=1<<1;
+static constexpr unsigned char standable=1<<0;
+static constexpr unsigned char jumpable=1<<1;
 }
 class Map : public Tim::GlobalObject<Map>{
 
 public:
-	static const int MX=5000,MY=5000,MZ=5000;
+
+	static constexpr int MX=5000,MY=5000,MZ=5000;
 	static constexpr double CUBE_SIZE=1.0;
 
 	Map();

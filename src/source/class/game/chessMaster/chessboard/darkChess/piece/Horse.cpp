@@ -15,7 +15,7 @@ Horse::~Horse() {
 void Horse::next_step(CM::Board<short int> *chess_board,
 		int x,int y,Tim::vector<CM::Step> &next_step,int player){
 	if(!bound_check(x,y))return;
-	static const int rank=4;
+	static constexpr int rank=4;
 	CM::Step cur_step;
 	cur_step.add_move(x,y,0,-1);
 	cur_step.add_move(0,0,chess_board->get(x,y),1);

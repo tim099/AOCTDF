@@ -2,7 +2,7 @@
 #define SOURCE_CLASS_TIM_MATH_PERLINNOISE_H_
 #include <vector>
 class PerlinNoise {
-	static const unsigned char permutation[256];
+	static unsigned char permutation[256];
 public:
 	PerlinNoise();
 	virtual ~PerlinNoise();
