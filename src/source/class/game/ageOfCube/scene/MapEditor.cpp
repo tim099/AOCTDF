@@ -21,7 +21,7 @@ MapEditor::~MapEditor() {
 
 }
 void MapEditor::set_cube_type(int x,int y,int z,int type){
-	//MapEditRecord record;
+	MapEditRecord record;
 	int cur_x, cur_y, cur_z;
 	if(!map){
 		return;
@@ -32,13 +32,12 @@ void MapEditor::set_cube_type(int x,int y,int z,int type){
 			cur_x = x-(select_range.x/2)+j;
 			for(int k=0; k<select_range.z; k++){
 				cur_z = z-(select_range.z/2)+k;
-				//record.push(cur_x, cur_y, cur_z, map->get_cube_type(cur_x, cur_y, cur_z));
+				record.push(cur_x, cur_y, cur_z, map->get_cube_type(cur_x, cur_y, cur_z));
 				map->set_cube_type(cur_x, cur_y, cur_z, type);
 			}
 		}
 	}
-	//record.setType(type);
-	/*
+	record.setType(type);
 	while(undo_count>0){
 		edit_records.pop_back();
 		undo_count--;
@@ -49,11 +48,9 @@ void MapEditor::set_cube_type(int x,int y,int z,int type){
 	while(edit_records.size() > 10){
 		edit_records.pop_front();
 	}
-	*/
 }
 
 void MapEditor::undo(){
-	/*
 	if(edit_records.size() - undo_count <= 0)return;
 	MapEditRecord record;
 	if(undo_count==0){
@@ -64,16 +61,13 @@ void MapEditor::undo(){
 	}
 	record.undo(map);
 	undo_count++;
-	*/
 }
 
 void MapEditor::redo(){
-	/*
 	if(undo_count <= 0)return;
 	MapEditRecord record = edit_records.at(edit_records.size()-undo_count);
 	record.redo(map);
 	undo_count--;
-	*/
 }
 
 Display::CubeLight* MapEditor::highlightCube(int x, int y, int z){

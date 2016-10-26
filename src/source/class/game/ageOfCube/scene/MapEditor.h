@@ -9,7 +9,7 @@
 #define SOURCE_CLASS_GAME_AGEOFCUBE_SCENE_MAPEDITOR_H_
 
 #include <deque>
-//#include "class/game/ageOfCube/scene/MapEditRecord.h"
+#include "class/game/ageOfCube/scene/MapEditRecord.h"
 #include "class/game/ageOfCube/map/Map.h"
 #include "class/tim/math/vec3.h"
 
@@ -36,7 +36,7 @@ public:
 private:
 	Map *map;
 	int undo_count;
-	//std::deque <MapEditRecord> edit_records;
+	std::deque <MapEditRecord> edit_records;
 };
 
 } /* namespace AOC */
