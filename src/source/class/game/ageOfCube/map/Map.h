@@ -37,6 +37,7 @@ static constexpr unsigned char jumpable=1<<1;
 class Map : public Tim::GlobalObject<Map>{
 
 public:
+
 	static constexpr int MX=5000,MY=5000,MZ=5000;
 	static constexpr double CUBE_SIZE=1.0;
 

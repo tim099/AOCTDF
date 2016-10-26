@@ -37,7 +37,7 @@ void SceneEditMap::scene_initialize() {
 	glm::vec3 pos(10,80,10);
 
 	camera = new Display::Camera(pos,
-			pos+glm::vec3(10,-10,10), glm::vec3(0, 1, 0), 60.0, 0.1f,
+			pos+glm::vec3(50,-40,50), glm::vec3(0, 1, 0), 60.0, 0.1f,
 			10000.0f);
 	camera->shadow_far=200.0;
 	lightControl = new Display::LightControl(120);
@@ -212,6 +212,10 @@ void SceneEditMap::handle_signal(Input::Signal *sig){
 		map_editor.select_range.y += 1;
 	}else if(sig->get_data() == "select_range_y_down"){
 		map_editor.select_range.y -= 1;
+	}else if(sig->get_data() == "undo"){
+		map_editor.undo();
+	}else if(sig->get_data() == "redo"){
+		map_editor.redo();
 	}
 }
 void SceneEditMap::handle_input() {
@@ -222,7 +226,7 @@ void SceneEditMap::handle_input() {
 		if(cube_type<Cube::cube_end)cube_type++;
 	}
 	if(input->keyboard->get(Input::KeyCode::Minus)){
-		if(cube_type>Cube::cube_start)cube_type--;
+		if(cube_type>Cube::water)cube_type--;
 		//std::cout<<"- volume"<<std::endl;
 		//back_music->set_volume(0.97*back_music->get_volume());
 	}
