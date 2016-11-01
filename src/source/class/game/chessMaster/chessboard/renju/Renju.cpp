@@ -22,6 +22,7 @@ Renju::Renju() {
 	if(rule)delete rule;
 	rule=new CM::RenjuRule();
 	load_mct();
+	table_pos.set_pos(glm::vec3(0.5*chess_board->sizex,-6,0.5*chess_board->sizey));
 }
 Renju::~Renju() {
 

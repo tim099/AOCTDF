@@ -7,7 +7,7 @@ namespace CM {
 
 class Othello: public ChessBoard {
 public:
-	static constexpr int board_width=8;
+	static const int board_width=8;
 	Othello();
 	virtual ~Othello();
 	void create_pieces();

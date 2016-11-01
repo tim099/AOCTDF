@@ -6,14 +6,14 @@
 #include <string>
 namespace Input{
 namespace KeyCode {
-	static constexpr unsigned BackSpace = 259;
-	static constexpr unsigned Enter = 257;
-	static constexpr unsigned Plus = 334;
-	static constexpr unsigned Minus = 333;
-	static constexpr unsigned Left = 263;
-	static constexpr unsigned Right = 262;
-	static constexpr unsigned Up = 265;
-	static constexpr unsigned Down = 264;
+	static const unsigned BackSpace = 259;
+	static const unsigned Enter = 257;
+	static const unsigned Plus = 334;
+	static const unsigned Minus = 333;
+	static const unsigned Left = 263;
+	static const unsigned Right = 262;
+	static const unsigned Up = 265;
+	static const unsigned Down = 264;
 };
 class KeyBoard {
 

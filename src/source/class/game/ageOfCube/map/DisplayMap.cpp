@@ -152,12 +152,12 @@ void DisplayMap::update_map(math::vec3<int> pos) {
 }
 void DisplayMap::create_map_object(int px, int pz) {
 	//Model *mapmodel = dmaps[px][pz]->mapmodel;
-	static constexpr unsigned char up=1<<0;
-	static constexpr unsigned char down=1<<1;
-	static constexpr unsigned char left=1<<2;
-	static constexpr unsigned char right=1<<3;
-	static constexpr unsigned char front=1<<4;
-	static constexpr unsigned char back=1<<5;
+	static const unsigned char up=1<<0;
+	static const unsigned char down=1<<1;
+	static const unsigned char left=1<<2;
+	static const unsigned char right=1<<3;
+	static const unsigned char front=1<<4;
+	static const unsigned char back=1<<5;
 	MapDrawObject *map_dobj=dmaps->get(px,pz);
 	Display::Model *mapmodel=map_dobj->model;
 	mapmodel->clear();
@@ -227,12 +227,12 @@ void DisplayMap::create_map_object(int px, int pz) {
 void DisplayMap::create_water_object(int px, int pz) {
 	//Model *watermodel = dmaps[px][pz]->watermodel;
 
-	static constexpr unsigned char up=1<<0;
-	static constexpr unsigned char down=1<<1;
-	static constexpr unsigned char left=1<<2;
-	static constexpr unsigned char right=1<<3;
-	static constexpr unsigned char front=1<<4;
-	static constexpr unsigned char back=1<<5;
+	static const unsigned char up=1<<0;
+	static const unsigned char down=1<<1;
+	static const unsigned char left=1<<2;
+	static const unsigned char right=1<<3;
+	static const unsigned char front=1<<4;
+	static const unsigned char back=1<<5;
 	WaterDrawObject *water_dobj=water_dmaps->get(px,pz);
 	Display::Model *watermodel=water_dobj->model;
 	watermodel->clear();

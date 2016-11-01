@@ -42,7 +42,6 @@ void AttackController::save(FILE *file){
 	}
 }
 void AttackController::load(FILE *file){
-	///*
 	unsigned attacks_size;
 	char name[100];
 	fscanf(file,"%u\n",&attacks_size);
@@ -53,6 +52,5 @@ void AttackController::load(FILE *file){
 		attack->load(file);
 		attack->create_attack();
 	}
-	//*/
 }
 } /* namespace AOC */

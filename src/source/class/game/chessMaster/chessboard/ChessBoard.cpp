@@ -7,6 +7,7 @@
 #include "class/display/model/modelBuffer/AllModelBuffers.h"
 #include "class/display/draw/drawObject/AllDrawObjects.h"
 #include "class/display/UI/string/EnterString.h"
+#include "class/game/chessMaster/chessboard/rule/RuleCreator.h"
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -24,11 +25,13 @@ ChessBoard::ChessBoard(int sizex,int sizey,int sizez) {
 	model_map=0;
 	tex_map=0;
 	draw_map=0;
+	show_rule_ui=false;
 	board_size=math::vec2<int>(8,8);
 	board_start=math::vec2<int>(0,0);
 	dboard = new Display::DynamicDrawObject();
 	Display::Draw::get_cur_object()->push(dboard);//remember to remove before delete dboard
 	pos = new math::Position(glm::vec3(0, 0, 0), glm::vec3());
+	table_pos.set_pos(glm::vec3(5,-6,5));
 	cube = new Display::CubeModel(0.5*cube_size);
 
 	dboard->init_drawObject("","","",true);
@@ -246,6 +249,8 @@ void ChessBoard::load_script(std::string path){
 			sscanf(line.c_str(),"%d,%d",&board_start.x,&board_start.y);
 		}
 	}
+	file.close();
+
 	init_drawobject();
 
 	load_pieces(dir_path+"chessBoard/pieces.txt");
@@ -270,15 +275,41 @@ void ChessBoard::load_script(std::string path){
 		delete rule;
 		rule=0;
 	}
-	rule=new CM::Rule();
-	if(Tim::File::check_if_file_exist(dir_path+"chessBoard/rule.lua")){
-		rule->load_rule(dir_path+"chessBoard/rule.lua");
+	if(Tim::File::check_if_file_exist(dir_path+"chessBoard/rule.txt")){
+		std::filebuf file;
+		file.open((dir_path+"chessBoard/rule.txt").c_str(), std::ios::in);
+		if (!file.is_open()) {
+			std::cerr << "ChessBoard::load_script fail,file:" << (dir_path+"chessBoard/rule.txt")
+					<< " open fail" << std::endl;
+			return;
+		}
+		std::istream is(&file);
+		std::string name;
+		Tim::String::get_line(is,name, true, true);
+		switch_rule(name);
+		rule->load(is);
+		rule->init_UI();
+		file.close();
+	}else{
+		switch_rule("Rule");
 	}
 
+	if(Tim::File::check_if_file_exist(dir_path+"chessBoard/rule.lua")){
+		rule->load_rule(dir_path+"chessBoard/rule.lua");
+	}else{
+		//std::cerr<<"ChessBoard::load_script no lua rule"<<std::endl;
+	}
 
+	table_pos.set_pos(glm::vec3(0.5*chess_board->sizex,-6,0.5*chess_board->sizey));
 	load_mct();
-
-	file.close();
+}
+void ChessBoard::switch_rule(std::string name){
+	if(rule){
+		delete rule;
+		rule=0;
+	}
+	rule=RuleCreator::get_cur_object()->create(name);
+	rule->init_UI();
 }
 void ChessBoard::init_drawobject(){
 	model_map=new Display::ModelBufferMap();
@@ -291,7 +322,7 @@ void ChessBoard::init_drawobject(){
 		model_map->load_folder(model_map->folder_path+"chess/");
 	}
 	Display::AllModelBuffers::get_cur_object()->push_map(model_map);
-
+	Display::AllModelBuffers::get_cur_object()->set_default_map(model_map);
 
 	tex_map=new Display::TextureMap();
 	tex_map->folder_path=dir_path+"textures/";
@@ -303,13 +334,14 @@ void ChessBoard::init_drawobject(){
 	}
 
 	if(Tim::File::check_if_dir_exist(tex_map->folder_path+"chessBoard/texture")){
-		cube_type_num=
-				tex_map->load_folder_to_tex2DArr(tex_map->folder_path+"chessBoard/texture/",
-						"board_tex",256,256);
+		cube_type_num=tex_map->load_folder_to_tex2DArr(
+				tex_map->folder_path+"chessBoard/texture/","board_tex",256,256);
 		tex_path="chess/board_tex";
 	}
 	if(Tim::File::check_if_dir_exist(tex_map->folder_path+"chessBoard/normal")){
-		int normal_num=tex_map->load_folder_to_tex2DArr(tex_map->folder_path+"chessBoard/normal/","board_nor",256,256);
+		int normal_num=tex_map->load_folder_to_tex2DArr(tex_map->folder_path+
+				"chessBoard/normal/",
+				"board_nor",256,256);
 		if(normal_num>0){
 			normal_path="chess/board_nor";
 		}else{
@@ -317,9 +349,11 @@ void ChessBoard::init_drawobject(){
 		}
 	}
 	Display::AllTextures::get_cur_object()->push_map(tex_map);
+	Display::AllTextures::get_cur_object()->set_default_map(tex_map);
 
 	draw_map=new Display::DrawObjectMap(dir_path+"drawobject/chess.txt");
 	Display::AllDrawObjects::get_cur_object()->push_map(draw_map);
+	Display::AllDrawObjects::get_cur_object()->set_default_map(draw_map);
 }
 void ChessBoard::remove_drawobject(){
 	if(model_map){
@@ -376,24 +410,37 @@ void ChessBoard::load_mct(){
 }
 void ChessBoard::save_board(std::string path){
 	{
-	std::filebuf file_buff;
-	file_buff.open((dir_path+"chessBoard/boardscript.txt").c_str(), std::ios::out);
-	std::ostream os(&file_buff);
-	if(tex_path!="chess/board_tex"&&tex_path!=""){
-		os<<"texture:"<<std::endl;
-		os<<"	"<<tex_path<<std::endl;
+		std::filebuf file_buff;
+		file_buff.open((dir_path+"chessBoard/boardscript.txt").c_str(), std::ios::out);
+		std::ostream os(&file_buff);
+		if(tex_path!="chess/board_tex"&&tex_path!=""){
+			os<<"texture:"<<std::endl;
+			os<<"	"<<tex_path<<std::endl;
+		}
+		if(normal_path!="chess/board_nor"&&normal_path!=""){
+			os<<"normal_texture:"<<std::endl;
+			os<<"	"<<normal_path<<std::endl;
+		}
+		os<<"board_size:"<<std::endl;
+		os<<"	"<<board_size.x<<","<<board_size.y<<std::endl;
+		os<<"board_start:"<<std::endl;
+		os<<"	"<<board_start.x<<","<<board_start.y<<std::endl;
+		os<<"#END"<<std::endl;
+		file_buff.close();
 	}
-	if(normal_path!="chess/board_nor"&&normal_path!=""){
-		os<<"normal_texture:"<<std::endl;
-		os<<"	"<<normal_path<<std::endl;
+	if(rule){
+		std::filebuf file_buff;
+		file_buff.open((dir_path+"chessBoard/rule.txt").c_str(), std::ios::out);
+		std::ostream os(&file_buff);
+		os<<rule->get_name()<<std::endl;
+		rule->save(os);
+		os<<"#END"<<std::endl;
+		file_buff.close();
 	}
-	os<<"board_size:"<<std::endl;
-	os<<"	"<<board_size.x<<","<<board_size.y<<std::endl;
-	os<<"board_start:"<<std::endl;
-	os<<"	"<<board_start.x<<","<<board_start.y<<std::endl;
-	os<<"#END"<<std::endl;
-	file_buff.close();
-	}
+
+
+
+
 	if(draw_map){
 		draw_map->Save_script(dir_path+"drawobject/chess.txt");
 	}
@@ -478,6 +525,9 @@ void ChessBoard::init_UI(UI::UI *ui){
 	str=dynamic_cast<UI::EnterString*>(ui->get_child("board_range_sy"));
 	str->set_string(Tim::String::to_string(board_start.y));
 
+	if(rule){
+		rule->init_UI();
+	}
 }
 void ChessBoard::update_UI(UI::UI *ui){
 	UI::EnterString* str=dynamic_cast<UI::EnterString*>(ui->get_child("board_range_x"));
@@ -490,14 +540,24 @@ void ChessBoard::update_UI(UI::UI *ui){
 	str=dynamic_cast<UI::EnterString*>(ui->get_child("board_range_sy"));
 	board_start.y=Tim::String::str_to_int(str->get_string());
 }
+void ChessBoard::update_rule_UI(){
+	if(show_rule_ui&&rule){
+		rule->update_UI();
+	}
+}
+void ChessBoard::set_rule_UI(){
+	if(show_rule_ui&&rule){
+		rule->set_UI();
+	}
+}
 void ChessBoard::gen_model(){
 	//Model *mapmodel = dmaps[px][pz]->model;
-	static constexpr unsigned char up = 1 << 0;
-	static constexpr unsigned char down = 1 << 1;
-	static constexpr unsigned char left = 1 << 2;
-	static constexpr unsigned char right = 1 << 3;
-	static constexpr unsigned char front = 1 << 4;
-	static constexpr unsigned char back = 1 << 5;
+	static const unsigned char up = 1 << 0;
+	static const unsigned char down = 1 << 1;
+	static const unsigned char left = 1 << 2;
+	static const unsigned char right = 1 << 3;
+	static const unsigned char front = 1 << 4;
+	static const unsigned char back = 1 << 5;
 	unsigned char cube_exist;
 	int tex_layer;
 	Display::Model *model = dboard->model;
@@ -792,9 +852,17 @@ void ChessBoard::restart(){
 		//steps.pop_back();
 	}
 }
-
+void ChessBoard::draw_rule_UI(){
+	if(rule&&show_rule_ui){
+		rule->draw_UI();
+	}
+}
 void ChessBoard::draw(){
 	//std::cout<<"ChessBoard::draw()"<<std::endl;
+	Display::AllDrawObjects::get_cur_object()->get("default/table")->
+			push_temp_drawdata(new Display::DrawDataObj(&table_pos,true));
+
+
 	if(updated)gen_model();
 	dboard->draw=true;
 	dboard->push_temp_drawdata(new Display::DrawDataObj(pos,true));

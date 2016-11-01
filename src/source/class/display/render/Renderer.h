@@ -25,7 +25,7 @@ public:
 	void reload_water_shader();
 	void set_window(Window *window);
 
-	void switch_shader(std::string name);
+	bool set_shader(std::string name);
 	FrameBuffer *FBO3D,*FBO2D,*waterReflectFBO,*waterRefractFBO;
 protected:
 	void creat_shaders();

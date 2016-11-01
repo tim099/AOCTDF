@@ -469,28 +469,28 @@ static unsigned readBitsFromStream(size_t* bitpointer, const unsigned char* bits
 #define NUM_CODE_LENGTH_CODES 19
 
 /*the base lengths represented by codes 257-285*/
-static constexpr unsigned LENGTHBASE[29]
+static const unsigned LENGTHBASE[29]
   = {3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43, 51, 59,
      67, 83, 99, 115, 131, 163, 195, 227, 258};
 
 /*the extra bits used by codes 257-285 (added to base length)*/
-static constexpr unsigned LENGTHEXTRA[29]
+static const unsigned LENGTHEXTRA[29]
   = {0, 0, 0, 0, 0, 0, 0,  0,  1,  1,  1,  1,  2,  2,  2,  2,  3,  3,  3,  3,
       4,  4,  4,   4,   5,   5,   5,   5,   0};
 
 /*the base backwards distances (the bits of distance codes appear after length codes and use their own huffman tree)*/
-static constexpr unsigned DISTANCEBASE[30]
+static const unsigned DISTANCEBASE[30]
   = {1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257, 385, 513,
      769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289, 16385, 24577};
 
 /*the extra bits of backwards distances (added to base)*/
-static constexpr unsigned DISTANCEEXTRA[30]
+static const unsigned DISTANCEEXTRA[30]
   = {0, 0, 0, 0, 1, 1, 2,  2,  3,  3,  4,  4,  5,  5,   6,   6,   7,   7,   8,
        8,    9,    9,   10,   10,   11,   11,   12,    12,    13,    13};
 
 /*the order in which "code length alphabet code lengths" are stored, out of this
 the huffman tree of the dynamic huffman tree lengths is generated*/
-static constexpr unsigned CLCL_ORDER[NUM_CODE_LENGTH_CODES]
+static const unsigned CLCL_ORDER[NUM_CODE_LENGTH_CODES]
   = {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
 
 /* ////////////////////////////////////////////////////////////////////////// */
@@ -1290,7 +1290,7 @@ static unsigned inflate(unsigned char** out, size_t* outsize,
 /* / Deflator (Compressor)                                                  / */
 /* ////////////////////////////////////////////////////////////////////////// */
 
-static constexpr size_t MAX_SUPPORTED_DEFLATE_LENGTH = 258;
+static const size_t MAX_SUPPORTED_DEFLATE_LENGTH = 258;
 
 /*bitlen is the size in bits of the code*/
 static void addHuffmanSymbol(size_t* bp, ucvector* compressed, unsigned code, unsigned bitlen)
@@ -1340,8 +1340,8 @@ static void addLengthDistance(uivector* values, size_t length, size_t distance)
 
 /*3 bytes of data get encoded into two bytes. The hash cannot use more than 3
 bytes as input because 3 is the minimum match length for deflate*/
-static constexpr unsigned HASH_NUM_VALUES = 65536;
-static constexpr unsigned HASH_BIT_MASK = 65535; /*HASH_NUM_VALUES - 1, but C90 does not like that as initializer*/
+static const unsigned HASH_NUM_VALUES = 65536;
+static const unsigned HASH_BIT_MASK = 65535; /*HASH_NUM_VALUES - 1, but C90 does not like that as initializer*/
 
 typedef struct Hash
 {
@@ -3778,10 +3778,10 @@ static unsigned char paethPredictor(short a, short b, short c)
 
 /*shared values used by multiple Adam7 related functions*/
 
-static constexpr unsigned ADAM7_IX[7] = { 0, 4, 0, 2, 0, 1, 0 }; /*x start values*/
-static constexpr unsigned ADAM7_IY[7] = { 0, 0, 4, 0, 2, 0, 1 }; /*y start values*/
-static constexpr unsigned ADAM7_DX[7] = { 8, 8, 4, 4, 2, 2, 1 }; /*x delta values*/
-static constexpr unsigned ADAM7_DY[7] = { 8, 8, 8, 4, 4, 2, 2 }; /*y delta values*/
+static const unsigned ADAM7_IX[7] = { 0, 4, 0, 2, 0, 1, 0 }; /*x start values*/
+static const unsigned ADAM7_IY[7] = { 0, 0, 4, 0, 2, 0, 1 }; /*y start values*/
+static const unsigned ADAM7_DX[7] = { 8, 8, 4, 4, 2, 2, 1 }; /*x delta values*/
+static const unsigned ADAM7_DY[7] = { 8, 8, 8, 4, 4, 2, 2 }; /*y delta values*/
 
 /*
 Outputs various dimensions and positions in the image related to the Adam7 reduced images.

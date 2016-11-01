@@ -24,9 +24,14 @@ public:
 
 	void push_dir(MapTree *dir);//push a dir into this
 	MapTree* get_dir(std::string name);//get Dir by name
+
+	inline void set_default_map(maptype* map){
+		default_map=map;
+	}
 protected:
 	Tim::MapContainer<std::string,maptype>maps;
 	Tim::MapContainer<std::string,MapTree<maptype,type> >dirs;
+	maptype* default_map;
 	std::string name;
 };
 

@@ -18,8 +18,8 @@ class FrameBuffer;
 class Draw;
 class LightControl {
 public:
-static constexpr int MAX_LIGHT=100;
-static constexpr int MAX_POINT_LIGHT=100;
+static const int MAX_LIGHT=100;
+static const int MAX_POINT_LIGHT=100;
 
 	/*
 	 * draw distance determined how far a point light will be render

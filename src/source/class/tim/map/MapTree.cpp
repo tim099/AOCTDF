@@ -6,7 +6,7 @@
 namespace Tim {
 template <class maptype,class type>
 MapTree<maptype,type>::MapTree() {
-
+	default_map=0;
 }
 template <class maptype,class type>
 MapTree<maptype,type>::~MapTree() {
@@ -38,6 +38,8 @@ void MapTree<maptype,type>::push(std::string obj_path,type* obj){
 			}
 			return dir->push(new_path,obj);
 		}
+	} else if (path.size()==1&&default_map) {
+		default_map->push(obj);
 	}
 }
 template <class maptype,class type>
@@ -58,8 +60,10 @@ type *MapTree<maptype,type>::get(std::string obj_path){
 			}
 			return dir->get(new_path);
 		}
+	} else if (path.size()==1&&default_map) {
+		return default_map->get(path.at(0));
 	}
-	std::cerr<<"Map tree can't find object:"<<obj_path<<std::endl;
+	//std::cerr<<"Map tree can't find object:"<<obj_path<<std::endl;
 	return 0;
 }
 template <class maptype,class type>
@@ -80,6 +84,8 @@ bool  MapTree<maptype,type>::find(std::string obj_path){
 			}
 			return dir->find(new_path);
 		}
+	} else if (path.size()==1&&default_map) {
+		return default_map->find(path.at(0));
 	}
 	return 0;
 }
@@ -90,6 +96,9 @@ void MapTree<maptype,type>::push_map(maptype* map){
 }
 template <class maptype,class type>
 void MapTree<maptype,type>::remove_map(maptype* map){
+	if(map==default_map){
+		default_map=0;
+	}
 	maps.remove(map->get_name());
 }
 template <class maptype,class type>

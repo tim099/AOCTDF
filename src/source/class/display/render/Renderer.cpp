@@ -100,14 +100,16 @@ void Renderer::creat_shaders() {
 			//"files/shader/lightScatter/LightScatter.frag");
 	//shaders.push_back(shader);
 
-	switch_shader("NormalMapping");
+	set_shader("NormalMapping");
 }
-void Renderer::switch_shader(std::string name) {
+bool Renderer::set_shader(std::string name) {
 	for (unsigned i = 0; i < shaders.size(); i++) {
 		if (name == shaders.at(i)->Name()) {
 			shader = shaders.at(i);
+			return true;
 		}
 	}
+	return false;
 }
 bool Renderer::Rendering() const {
 	return rendering;

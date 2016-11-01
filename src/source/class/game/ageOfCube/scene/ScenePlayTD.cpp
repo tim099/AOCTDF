@@ -27,8 +27,6 @@ void ScenePlayTD::loading(){
 
 }
 void ScenePlayTD::scene_initialize() {
-
-
 	glm::vec3 pos(50,30,50);
 	camera = new Display::Camera(pos+glm::vec3(-50,40,50),
 			pos, glm::vec3(0, 1, 0), 60.0, 0.1f,

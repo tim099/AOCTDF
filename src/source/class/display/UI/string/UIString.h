@@ -8,7 +8,7 @@ namespace UI {
 class UIString: public UIObject {
 public:
 	UIString();
-	void initialize(std::string* str,float font_size);
+	void initialize(std::string str,float font_size);
 	virtual ~UIString();
 
 	virtual UIObject* create_UIObject(){
@@ -41,7 +41,7 @@ protected:
 			cur_input_str=0;
 		}
 	}
-	std::string* str;
+	std::string str;
 	int cur_insert_at;
 	float font_size;
 	int blink;

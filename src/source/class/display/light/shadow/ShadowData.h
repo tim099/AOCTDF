@@ -17,9 +17,9 @@ class Shader;
 
 
 namespace Display{
-static constexpr unsigned ShadowHighQuality=4096;
-static constexpr unsigned ShadowNormalQuality=2048;
-static constexpr unsigned ShadowLowQuality=1024;
+static const unsigned ShadowHighQuality=4096;
+static const unsigned ShadowNormalQuality=2048;
+static const unsigned ShadowLowQuality=1024;
 /*
 enum shadowMode{
 	Normal,PSSM

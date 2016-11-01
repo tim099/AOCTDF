@@ -35,6 +35,7 @@ DarkChess::DarkChess() {
 	load_mct();
 	srand(time(NULL));
 	both_selectable_piece.push_back(1);
+	table_pos.set_pos(glm::vec3(0.5*chess_board->sizex,-6,0.5*chess_board->sizey));
 }
 DarkChess::~DarkChess() {
 

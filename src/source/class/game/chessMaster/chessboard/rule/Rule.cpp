@@ -1,14 +1,13 @@
-#include "class/game/chessMaster/chessboard/Rule.h"
+#include "class/game/chessMaster/chessboard/rule/Rule.h"
 #include "class/game/chessMaster/chessboard/ChessBoard.h"
 namespace CM {
 
 Rule::Rule() {
 	rule=0;
-	rule_mutex=new Tim::Mutex();
+	ui=0;
 }
 Rule::~Rule() {
 	if(rule)delete rule;
-	delete rule_mutex;
 }
 void Rule::load_rule(std::string path){
 	if(rule)delete rule;
@@ -23,7 +22,7 @@ void Rule::load_rule(std::string path){
 int Rule::check_winner(CM::Board<short int> *chess_board){
 	if(!rule)return 0;
 
-	rule_mutex->wait_for_this();
+	rule_mutex.wait_for_this();
 	rule->pushlightuserdata(chess_board);
 	rule->set_global("board");
 	//ChessBoard::get_cur_object()->set_current(chess_board);
@@ -33,7 +32,7 @@ int Rule::check_winner(CM::Board<short int> *chess_board){
 	int result=rule->get_number(-1);
 	//std::cout<<"ChessBoard::check_winner() result="<<result<<std::endl;
 
-	rule_mutex->release();
+	rule_mutex.release();
 	return result;
 }
 } /* namespace CM */

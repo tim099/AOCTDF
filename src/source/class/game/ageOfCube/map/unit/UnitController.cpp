@@ -57,6 +57,7 @@ void UnitController::load_minion(FILE * file){
 	unsigned size;
 	char name[100];
 	Minion* minion;
+
 	fscanf(file,"%u\n",&size);
 	for(unsigned i=0;i<size;i++){
 		fscanf(file,"%s\n",name);

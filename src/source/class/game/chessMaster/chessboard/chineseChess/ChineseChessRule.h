@@ -1,7 +1,7 @@
 #ifndef SOURCE_CLASS_GAME_CHESSMASTER_CHESSBOARD_CHINESECHESS_CHINESECHESSRULE_H_
 #define SOURCE_CLASS_GAME_CHESSMASTER_CHESSBOARD_CHINESECHESS_CHINESECHESSRULE_H_
 
-#include "class/game/chessMaster/chessboard/Rule.h"
+#include "class/game/chessMaster/chessboard/rule/Rule.h"
 
 namespace CM {
 

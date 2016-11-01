@@ -10,7 +10,7 @@ Bullet::Bullet() {
 	timer=0;
 	explode_timer=0;
 	//be_collide_off=true;
-	speed=1.0f;
+	speed=0.3f;
 }
 Bullet::~Bullet() {
 
@@ -26,16 +26,31 @@ Display::DrawObject* Bullet::get_bullet_drawobj(){
 }
 void  Bullet::explode(){
 	//std::cout<<"Missile::explode()"<<std::endl;
+	bool exploded=false;
 	for(unsigned i=0;i<collied_units.size();i++){
 		if(target==collied_units.at(i)){
 			damage_target(damage);
-		}else{
+			exploded=true;
+		}else if(collied_units.at(i)->get_player()==target->get_player()){
 			collied_units.at(i)->hp_alter(-damage);
+			exploded=true;
 		}
 	}
-	Audio::AudioController::get_cur_object()->
-			play_by_dis("default_sound_effect/Bomb.wav",pos,100);
-	explode_timer++;
+	/*
+	Attack* attack=AttackCreator::get_cur_object()->create("Bullet");
+	attack->radius=radius;
+	attack->pos=pos;
+	attack->vel=vel+math::vec3<>(0,0,0);
+	attack->set_target(target);
+	attack->set_damage(damage);
+	attack->set_player(player_id);
+	attack->create_attack();
+	*/
+	if(exploded){
+		Audio::AudioController::get_cur_object()->
+				play_by_dis("default_sound_effect/Bomb.wav",pos,100);
+		explode_timer++;
+	}
 }
 void Bullet::draw_attack(){
 	if(explode_timer){
@@ -55,6 +70,7 @@ void Bullet::draw_attack(){
 
 }
 void Bullet::fire(){
+	if(!target)return;
 	math::vec3<double> del_vec=(target->get_mid_pos()-pos);
 	double time_require=del_vec.get_length()/speed;
 	math::vec3<double> del_vec2=(target->get_mid_pos()+time_require*target->get_speed()-pos);
@@ -67,15 +83,18 @@ void Bullet::attack_update(){
 		return;
 	}
 	timer++;
-	//
-	if((target->get_mid_pos()-pos).get_length()>3.0){
+	vel.y-=0.05;
+
+	if(timer<10){//(target->get_mid_pos()-pos).get_length()>3.0
 		collision_off=true;
 	}else{
 		collision_off=false;
 	}
-	if(be_collided==true||collided==true){
+	if(((be_collided==true||collided==true)&&collied_units.size())){
 		explode();
 	}
-
+	if(timer>1000){
+		die=true;
+	}
 }
 } /* namespace AOC */

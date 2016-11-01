@@ -16,8 +16,6 @@ ChineseChess::ChineseChess() {
 	board_size=math::vec2<int>(9,9);
 	init_drawobject();
 
-	//rule_path=dir_path+"chessBoard/rule.lua";
-
 	create_pieces();
 
 	load_board(dir_path+"chessBoard/board.txt");
@@ -30,7 +28,7 @@ ChineseChess::ChineseChess() {
 	if(rule)delete rule;
 	rule=new CM::ChineseChessRule();
 	load_mct();
-
+	table_pos.set_pos(glm::vec3(0.5*chess_board->sizex,-6,0.5*chess_board->sizey));
 	//rule->load_rule(rule_path);
 }
 ChineseChess::~ChineseChess() {

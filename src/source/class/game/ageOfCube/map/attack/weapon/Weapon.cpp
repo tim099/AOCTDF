@@ -63,6 +63,7 @@ void Weapon::fire(Unit* target){
 	attack->set_damage(attack_damage*unit->get_atk_ajusted());
 	attack->set_player(unit->get_player());
 	attack->create_attack();
+	//attack->fire();
 }
 void Weapon::update(){
 	if(!unit){

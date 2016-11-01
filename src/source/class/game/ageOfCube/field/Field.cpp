@@ -44,13 +44,17 @@ void Field::save(const std::string& path){
 	fclose(file);
 }
 void Field::load(const std::string& path){
+	std::cout<<"Field::load(const std::string& path) 1"<<std::endl;
 	FILE * file = fopen(path.c_str(),"r");
 	entity_controller->load(file);
 	map->load_map(file);
-
+	std::cout<<"Field::load(const std::string& path) 2"<<std::endl;
 	unit_controller->load(file);
+	std::cout<<"Field::load(const std::string& path) 3"<<std::endl;
 	attack_controller->load(file);
+	std::cout<<"Field::load(const std::string& path) 4"<<std::endl;
 	player_controller->load(file);
+	std::cout<<"Field::load(const std::string& path) 5"<<std::endl;
 	fclose(file);
 }
 void Field::update(){

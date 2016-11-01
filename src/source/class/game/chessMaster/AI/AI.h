@@ -12,15 +12,15 @@ class StepNode;
 class TaskAI;
 class TaskComputeScore;
 namespace AI_MODE{
-	static constexpr int P_VS_AI=0;
-	static constexpr int AI_VS_P=1;
-	static constexpr int AI_VS_AI=2;
-	static constexpr int P_VS_P=3;
-	static constexpr int AUTO_AI_VS_AI=4;
+	static const int P_VS_AI=0;
+	static const int AI_VS_P=1;
+	static const int AI_VS_AI=2;
+	static const int P_VS_P=3;
+	static const int AUTO_AI_VS_AI=4;
 }
 
 class AI {
-	static constexpr int MAX=999999;
+	static const int MAX=999999;
 	friend TaskAI;
 	friend TaskComputeScore;
 public:

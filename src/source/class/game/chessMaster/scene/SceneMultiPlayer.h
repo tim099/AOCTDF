@@ -13,7 +13,7 @@
 namespace CM {
 
 class SceneMultiPlayer : public Scene{
-	static constexpr int MAX=999999;
+	static const int MAX=999999;
 public:
 	SceneMultiPlayer();
 	virtual ~SceneMultiPlayer();

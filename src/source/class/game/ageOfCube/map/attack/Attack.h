@@ -24,12 +24,13 @@ public:
 	void set_player(unsigned _player){player_id=_player;}
 	void draw();
 	void update();
+	virtual void fire(){}
 protected:
 	virtual void save_attack(FILE* file){}
 	virtual void load_attack(FILE* file){}
 	virtual void draw_attack()=0;
 	virtual void attack_update()=0;
-	virtual void fire(){}
+
 	void damage_target(int amount);
 	Unit* target;
 	std::vector<Unit*> collied_units;

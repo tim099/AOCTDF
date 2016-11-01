@@ -31,15 +31,15 @@ MainTower::MainTower(MainTower* tower){
 	set_attack_cycle(100);
 	//attack_damage=100;
 
-	Weapon* weapon=WeaponCreator::get_cur_object()->create("BombLauncher");
+	Weapon* weapon=WeaponCreator::get_cur_object()->create("RailGun");//"RailGun""BombLauncher"
 	weapon->set_attack_range(30.0);
 	weapon->set_attack_damage(100);
 	weapon->set_attack_size(0.4);
 	push_weapon(weapon);
 
-	weapon=WeaponCreator::get_cur_object()->create("BombLauncher");
+	weapon=WeaponCreator::get_cur_object()->create("RailGun");
 	weapon->set_attack_range(30.0);
-	weapon->set_attack_damage(100);
+	weapon->set_attack_damage(200);
 	weapon->set_attack_size(0.4);
 	push_weapon(weapon);
 }

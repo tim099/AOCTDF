@@ -172,7 +172,7 @@ GLM_FUNC_QUALIFIER fquatSIMD operator* (fquatSIMD const & q1, fquatSIMD const & 
 
 GLM_FUNC_QUALIFIER fvec4SIMD operator* (fquatSIMD const & q, fvec4SIMD const & v)
 {
-    static constexpr __m128 two = _mm_set1_ps(2.0f);
+    static const __m128 two = _mm_set1_ps(2.0f);
 
     __m128 q_wwww  = _mm_shuffle_ps(q.Data, q.Data, _MM_SHUFFLE(3, 3, 3, 3));
     __m128 q_swp0  = _mm_shuffle_ps(q.Data, q.Data, _MM_SHUFFLE(3, 0, 2, 1));
@@ -610,9 +610,9 @@ GLM_FUNC_QUALIFIER detail::fquatSIMD angleAxisSIMD
 
 GLM_FUNC_QUALIFIER __m128 fastSin(__m128 x)
 {
-    static constexpr __m128 c0 = _mm_set1_ps(0.16666666666666666666666666666667f);
-    static constexpr __m128 c1 = _mm_set1_ps(0.00833333333333333333333333333333f);
-    static constexpr __m128 c2 = _mm_set1_ps(0.00019841269841269841269841269841f);
+    static const __m128 c0 = _mm_set1_ps(0.16666666666666666666666666666667f);
+    static const __m128 c1 = _mm_set1_ps(0.00833333333333333333333333333333f);
+    static const __m128 c2 = _mm_set1_ps(0.00019841269841269841269841269841f);
 
     __m128 x3 = _mm_mul_ps(x,  _mm_mul_ps(x, x));
     __m128 x5 = _mm_mul_ps(x3, _mm_mul_ps(x, x));

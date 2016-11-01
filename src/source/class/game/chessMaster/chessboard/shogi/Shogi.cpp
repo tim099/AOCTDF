@@ -38,7 +38,7 @@ Shogi::Shogi() {
 	if(rule)delete rule;
 	rule=new ShogiRule();
 	load_mct();
-
+	table_pos.set_pos(glm::vec3(0.5*chess_board->sizex,-6,0.5*chess_board->sizey));
 }
 Shogi::~Shogi() {
 

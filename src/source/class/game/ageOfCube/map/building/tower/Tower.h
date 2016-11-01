@@ -10,7 +10,7 @@ class DrawObject;
 namespace AOC {
 
 class Tower : public AOC::Building {
-	static constexpr unsigned char tower=0;
+	static const unsigned char tower=0;
 public:
 	Tower();
 	Tower(Tower *tower);

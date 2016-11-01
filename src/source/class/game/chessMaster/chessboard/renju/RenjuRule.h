@@ -1,6 +1,6 @@
 #ifndef SOURCE_CLASS_GAME_CHESSMASTER_CHESSBOARD_RENJU_RENJURULE_H_
 #define SOURCE_CLASS_GAME_CHESSMASTER_CHESSBOARD_RENJU_RENJURULE_H_
-#include "class/game/chessMaster/chessboard/Rule.h"
+#include "class/game/chessMaster/chessboard/rule/Rule.h"
 namespace CM {
 
 class RenjuRule : public Rule {

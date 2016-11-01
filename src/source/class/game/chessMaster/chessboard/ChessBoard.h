@@ -9,7 +9,7 @@
 #include "class/tim/globalObject/GlobalObject.h"
 #include "class/game/chessMaster/piece/Step.h"
 #include "class/tim/lua/Lua.h"
-#include "class/game/chessMaster/chessboard/Rule.h"
+#include "class/game/chessMaster/chessboard/rule/Rule.h"
 #include "class/tim/thread/mutex/Mutex.h"
 #include "class/game/chessMaster/chessboard/BoardMCT.h"
 #include "class/game/chessMaster/chessboard/Board.h"
@@ -23,12 +23,16 @@ namespace Display{
 namespace CM {
 
 class ChessBoard : public Tim::GlobalObject<ChessBoard>{
-	static constexpr int max_pieces_num=1000;
+	static const int max_pieces_num=1000;
 public:
 	ChessBoard(int sizex=8,int sizey=3,int sizez=8);
 	virtual ~ChessBoard();
 
 	void draw();
+
+	void update_rule_UI();
+	void draw_rule_UI();
+	void set_rule_UI();
 
 	bool set_type(int x,int y,int z,unsigned char val);
 	int get_type(int x,int y,int z);
@@ -123,6 +127,8 @@ public:
 		pieces.push_back(piece);
 		piece->type=pieces.size();
 	}
+	void switch_rule(std::string name);
+
 	void update();
 
 	//cube being selected by mouse
@@ -141,7 +147,7 @@ public:
 	Tim::Array3D<unsigned char> *board;//the chess_board's structure
 	std::vector<CM::Step*> steps;
 	int cube_type_num;//number of cube type
-
+	bool show_rule_ui;
 
 	std::string game_name;
 	CM::Rule *rule;
@@ -172,6 +178,7 @@ protected:
 	Display::DynamicDrawObject *dboard;
 	Display::CubeModel *cube;
 	math::Position *pos;
+	math::Position table_pos;
 	Display::ModelBufferMap* model_map;
 	Display::TextureMap* tex_map;
 	Display::DrawObjectMap *draw_map;

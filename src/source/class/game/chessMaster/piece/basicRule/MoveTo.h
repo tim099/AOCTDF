@@ -6,9 +6,9 @@
 namespace CM {
 
 class MoveTo: public BasicRule {
-	static constexpr int type_move=1;
-	static constexpr int type_attack=2;
-	static constexpr int type_move_and_attack=3;
+	static const int type_move=1;
+	static const int type_attack=2;
+	static const int type_move_and_attack=3;
 public:
 	MoveTo();
 	virtual ~MoveTo();

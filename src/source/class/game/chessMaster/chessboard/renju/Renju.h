@@ -6,11 +6,11 @@
 namespace CM {
 
 class Renju: public ChessBoard {
-	static constexpr int MAX=10000000;
+	static const int MAX=10000000;
 public:
-	static constexpr int board_width=9;
-	static constexpr int win_length=5;
-	//static constexpr int arr_size=win_lenth+1;
+	static const int board_width=9;
+	static const int win_length=5;
+	//static const int arr_size=win_lenth+1;
 	Renju();
 	virtual ~Renju();
 	void create_pieces();

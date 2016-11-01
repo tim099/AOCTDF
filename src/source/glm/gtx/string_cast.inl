@@ -33,8 +33,8 @@ namespace detail
 		return std::string(text);
 	}
 
-	static constexpr char* True = "true";
-	static constexpr char* False = "false";
+	static const char* True = "true";
+	static const char* False = "false";
 }//namespace detail
 
 	////////////////////////////////
