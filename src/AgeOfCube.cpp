@@ -16,8 +16,8 @@
 
 int main(){
 	game::GamePlayer player;
-	//player.play(new ChessMaster());
-	player.play(new AOC::AgeOfCubes());
+	player.play(new ChessMaster());
+	//player.play(new AOC::AgeOfCubes());
 	//std::cout<<"main()"<<std::endl;
     return 0;
 }
