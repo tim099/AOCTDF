@@ -18,11 +18,19 @@ public:
 	virtual ~MapEditRecord();
 	void push(int _x, int _y, int _z, int _type);
 	void setType(int _type);
-	void undo(Map *map);
-	void redo(Map *map);
+	void setUnit(Unit *_unit);
+	bool undo(Map *map);
+	bool redo(Map *map);
 	void clear();
 
-	bool is_building;
+private:
+	bool undoCube(Map *map);
+	bool undoUnit(Map *map);
+	bool redoCube(Map *map);
+	bool redoUnit(Map *map);
+	Unit *unit;
+	std::string unit_name;
+	math::vec3<int> unit_pos;
 	std::vector<glm::vec3> changed_cubes;
 	std::vector<int> previous_type;
 	int after_type;

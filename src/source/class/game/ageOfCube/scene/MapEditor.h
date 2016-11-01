@@ -26,6 +26,7 @@ public:
 	virtual ~MapEditor();
 	void setMap(Map *_map){map = _map;}
 	void set_cube_type(int x,int y,int z,int type);
+	bool build(Building *building);
 	Display::CubeLight *highlightCube(int x, int y, int z);
 	void highlightSelectedCubes(Display::LightControl *lc);
 	void undo();
